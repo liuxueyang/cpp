@@ -403,18 +403,31 @@ dfs and similar, dsu, graphs, greedy, implementation, strings
 constructive algorithms, greedy, math
 **** TODO 1728C Digital Logarithm
 data structures, greedy, sortings
-**** TODO 1722G Even-Odd XOR
+**** DONE 1722G Even-Odd XOR
+CLOSED: [2024-01-30 Tue 21:53] SCHEDULED: <2024-01-30 Tue>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-30 Tue 21:53] \\
+  constructive algorithms
+:END:
 bitmasks, constructive algorithms, greedy
 **** TODO 1721C Min-Max Array Transformation
 binary search, greedy, two pointers
 **** TODO 1710A Color the Picture
 SCHEDULED: <2024-01-25 Thu>
 constructive algorithms, greedy, math
-**** TODO 1706C Qpwoeirut And The City
-SCHEDULED: <2024-01-25 Thu>
+**** DONE 1706C Qpwoeirut And The City
+CLOSED: [2024-01-30 Tue 21:52] SCHEDULED: <2024-01-25 Thu>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-30 Tue 21:52] \\
+  presum and dp
+:END:
 dp, flows, greedy, implementation
-**** TODO 1701C Schedule Management
-SCHEDULED: <2024-01-25 Thu>
+**** DONE 1701C Schedule Management
+CLOSED: [2024-01-30 Tue 21:51] SCHEDULED: <2024-01-25 Thu>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-30 Tue 21:51] \\
+  binary search
+:END:
 binary search, greedy, implementation, two pointers
 **** DONE 1697C awoo's Favorite Problem
 CLOSED: [2024-01-24 Wed 23:51]
@@ -798,7 +811,16 @@ CLOSED: [2024-01-18 Thu 19:35] SCHEDULED: <2024-01-12 Fri>
 * vjudge
 ** 动态规划与贪心
 https://vjudge.net/contest/605992#overview
-*** TODO P - 最大子段和
-SCHEDULED: <2024-01-25 Thu>
-*** TODO F - LCS
-SCHEDULED: <2024-01-25 Thu>
+*** DONE P - 最大子段和
+CLOSED: [2024-01-30 Tue 21:50] SCHEDULED: <2024-01-25 Thu>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-30 Tue 21:50] \\
+  Basic DP
+:END:
+
+*** DONE F - LCS
+CLOSED: [2024-01-30 Tue 21:50] SCHEDULED: <2024-01-25 Thu>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-30 Tue 21:50] \\
+  Basic DP
+:END:
