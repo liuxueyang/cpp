@@ -1,0 +1,804 @@
+-*- mode: org; org-log-into-drawer: t; -*-
+
+#+TITLE: Problems
+#+STARTUP: lognotedone
+
+* Org mode
+** links
+- [[https://www.youtube.com/watch?v=nUvdddKZQzs&ab_channel=RainerK%C3%B6nig][Orgmode E02S04: Drawers, Logging & quick notes]]
+- [[https://www.youtube.com/watch?v=R4QSTDco_w8&t=2s&ab_channel=RainerK%C3%B6nig][OrgMode E03S01: Automatic logging of status changes]]
+** key bindings
+- ~C-c C-z~ take quick notes
+- ~C-c C-w~ move subtree to another parent
+** org mode commands
+- ~org-agenda-log-mode~ show DONE items in Org Agenda view
+- ~org-agenda-file-to-front~ Add the current file to the top of the agenda file list.
+
+* Codeforces
+** Problem List 1000 --> 1250
+1) [ ] 1747C   Swap Gamegames
+2) [ ] 1766B   Notepad#implementation
+3) [ ] 1820B   JoJo's Incredible Adventuresmath, strings, two pointers
+4) [ ] 1822D   Super-Permutationconstructive algorithms, math
+5) [ ] 1826B   Lunatic Never Content math, number theory
+6) [ ] 1843D   Apple Treecombinatorics, dfs and similar, dp, math, trees
+7) [ ] 1846D   Rudolph and Christmas Treeconstructive algorithms, geometry, math
+8) [ ] 1850E   Cardboard for Picturesbinary search, geometry, implementation, math
+9) [ ] 1858C   Yet Another Permutation Problemconstructive algorithms, math, number theory
+10) [X] 1732A   Bestiebrute force, combinatorics, constructive algorithms, implementation, math, number theory
+11) [X] 1734C   Removing Smallest Multiplesgreedy, math
+12) [X] 1743C   Save the Magazinesconstructive algorithms, dp, greedy
+13) [X] 1744C   Traffic Lightbinary search, implementation, two pointers
+14) [X] 1760E   Binary Inversionsdata structures, greedy, math
+15) [X] 1765M   Minimum LCMmath, number theory
+16) [X] 1783B   Matrix of Differencesconstructive algorithms, math
+17) [X] 1725B   Basketball Togetherbinary search, greedy, sortings
+18) [X] 1726B   Mainak and Interesting Sequencebitmasks, constructive algorithms, math
+19) [X] 1729D   Friends and the Restaurantgreedy, sortings, two pointers
+20) [X] 1729C   Jumping on Tilesconstructive algorithms, strings
+21) [X] 1730C   Minimum Notationdata structures, greedy, math, sortings
+22) [X] 1731B   Kill Demodogsgreedy, math
+23) [X] 1738B   Prefix Sum Addictsconstructive algorithms, greedy, math, sortings
+24) [X] 1739B   Array Recoveryconstructive algorithms, greedy, math
+25) [X] 1736B   Playing with GCDmath, number theory
+26) [X] 1741C   Minimize the Thicknessbrute force, greedy, math, two pointers
+27) [X] 1742E   Scuzabinary search, greedy, math
+28) [X] 1742D   Coprimebrute force, greedy, number theory
+29) [X] 1744D   Divisibility by 2^ngreedy, math, sortings
+30) [X] 1760D   Challenging Valleysimplementation, two pointers
+31) [X] 1761B   Elimination of a Ringconstructive algorithms, greedy, implementation
+32) [X] 1762B   Make Array Goodconstructive algorithms, implementation, number theory, sortings
+33) [X] 1763B   Incineratebinary search, brute force, data structures, implementation, math, sortings
+34) [X] 1765E   Exchangebrute force, math
+35) [X] 1770B   Koxia and Permutationconstructive algorithms
+36) [X] 1770A   Koxia and Whiteboardsbrute force, greedy
+37) [X] 1772C   Different Differencesconstructive algorithms, greedy, math
+38) [X] 1780B   GCD Partitionbrute force, greedy, math, number theory
+39) [X] 1781B   Going to the Cinemabrute force, greedy, sortings
+40) [X] 1784A   Monsters (easy version)brute force, greedy
+41) [X] 1787B   Number Factorizationgreedy, math, number theory
+42) [X] 1788B   Sum of Two Numbersconstructive algorithms, greedy, implementation, math, probabilities
+43) [X] 1790D   Matryoshkasdata structures, greedy, sortings
+44) [X] 1790C   Premutationbrute force, implementation, math
+45) [X] 1791G1  Teleporters (Easy Version)greedy, sortings
+46) [X] 1791E   Negatives and Positivesdp, greedy, sortings
+47) [X] 1791D   Distinct Splitbrute force, greedy, strings
+48) [X] 1792B   Stand-up Comediangreedy, math
+49) [X] 1793C   Dora and Searchconstructive algorithms, data structures, two pointers
+50) [X] 1793B   Fedya and Arrayconstructive algorithms, math
+51) [X] 1796B   Asterisk-Minor Templateimplementation, strings
+52) [X] 1797B   Li Hua and Patternconstructive algorithms, greedy
+53) [X] 1798B   Three Sevensbrute force, data structures, greedy, implementation
+54) [X] 1799B   Equalize by Dividebrute force, constructive algorithms, greedy, math
+55) [X] 1800D   Remove Two Lettersdata structures, greedy, hashing, strings
+56) [X] 1800C2  Powering the Hero (hard version)data structures, greedy
+57) [X] 1800C1  Powering the Hero (easy version)data structures, greedy
+58) [X] 1800B   Count the Number of Pairsgreedy, strings
+59) [X] 1808B   Playing in a Casinomath, sortings
+60) [X] 1811B   Conveyor Beltsimplementation, math
+61) [X] 1816B   Grid Reconstructionconstructive algorithms, greedy
+62) [X] 1826A   Trust Nobodybrute force, greedy, implementation, sortings
+63) [X] 1827A   Counting Orderscombinatorics, math, sortings, two pointers
+64) [X] 1829E   The Lakesdfs and similar, dsu, graphs, implementation
+65) [X] 1829D   Gold Rushbrute force, dfs and similar, dp, implementation
+66) [X] 1831B   Array mergingconstructive algorithms, greedy
+67) [X] 1832C   Contrast Valuegreedy, implementation
+68) [X] 1832B   Maximum Sumbrute force, sortings, two pointers
+69) [X] 1838B   Minimize Permutation Subarraysconstructive algorithms, math
+70) [X] 1839B   Lampsgreedy, sortings
+71) [X] 1840C   Ski Resortcombinatorics, math, two pointers
+72) [X] 1840B   Binary Cafebitmasks, combinatorics, math
+73) [X] 1841B   Keep it Beautifulimplementation
+74) [X] 1842B   Tenzing and Booksbitmasks, greedy, math
+75) [X] 1844B   Permutations & Primesconstructive algorithms, math
+76) [X] 1848B   Vika and the Bridgebinary search, data structures, greedy, implementation, math, sortings
+77) [X] 1849B   Monstersgreedy, math, sortings
+78) [X] 1851C   Tiles Comebackgreedy
+79) [X] 1853B   Fibonaccharsisbinary search, brute force, math
+80) [X] 1857C   Assembly via Minimumsgreedy, sortings
+81) [X] 1857B   Maximum Roundinggreedy, implementation, math
+
+** Problem List 1300
+*** Remaining
+1) [X] 1829F    Forever Winter dfs and similar, graphs, math
+2) [ ] 1807E   Interview binary search, implementation, interactive
+3) [X] 1786B   Cake Assembly Line brute force, sortings
+4) [X] 1776H   Beppa and SwerChat two pointers
+5) [X] 1741D   Masha and a Beautiful Tree dfs and similar, divide and conquer, graphs, sortings, trees
+6) [X] 1736C1  Good Subarrays (Easy Version) binary search, data structures, schedules, two pointers
+7) [ ] 1711B   Party brute force, graphs
+8) [X] 1698C   3SUM Closure brute force, data structures
+9) [ ] 1675D   Vertical Paths graphs, implementation, trees
+10) [ ] 1556B   Take Your Places! implementation
+11) [ ] 1555B   Two Tables brute force
+12) [ ] 1493B   Planet Lapituletti brute force, implementation
+13) [ ] 1433E   Two Round Dances combinatorics, math
+14) [ ] 1424G   Years data structures, sortings
+15) [ ] 1373C   Pluses and Minuses math
+16) [ ] 1366B   Shuffle math, two pointers
+17) [ ] 1360D   Buying Shovels math, number theory
+18) [ ] 1352D  Alice, Bob and Candies implementation
+19) [X] 1839C    Insert Zero and Invert Prefixconstructive algorithms
+20) [X] 1850F    We Were Both Childrenbrute force, implementation, math, number theory
+21) [X] 1846E1   Rudolf and Snowflakes (simple version)brute force, implementation, math
+22) [X] 1826C    Dreaming of Freedomgreedy, math, number theory
+23) [X] 1823C    Strongly Compositegreedy, math, number theory
+24) [X] 1821C   Tear It Apartbrute force, implementation, math, strings
+25) [X] 1819A   Constructive Problembrute force, greedy
+26) [X] 1857D    Strong Verticesmath, sortings, trees
+27) [X] 1851D    Prefix Permutation Sumsimplementation, math
+28) [X] 1844C    Particlesdp, greedy, implementation, math
+*** math
+1) [X] 1815A   Ian and Array Sorting greedy, math
+2) [X] 1794C   Scoring Subsequences binary search, greedy, math, two pointers
+3) [X] 1788C   Matching Numbers constructive algorithms, greedy, math
+4) [X] 1778B   The Forbidden Permutation greedy, math
+5) [X] 1737B   Ela's Fitness and the Luxury Number binary search, implementation, math
+6) [X] 1746C   Permutation Operations constructive algorithms, greedy, implementation, math
+7) [X] 1650D   Twist the Permutation brute force, constructive algorithms, implementation, math
+8) [X] 1459B   Move and Turn dp, math
+9) [X] 1618D   Array and Operations dp, greedy, math
+10) [X] 1669H   Maximal AND bitmasks, greedy, math
+11) [X] 1667A   Make it Increasing brute force, greedy, math
+12) [X] 1692F   3SUM brute force, math
+13) [X] 1617C   Paprika and Permutation binary search, greedy, math, sortings
+14) [X] 1615B   And It's Non-Zero bitmasks, greedy, math
+15) [X] 1612C   Chat Ban binary search, math
+16) [X] 1607D   Blue-Red Permutation greedy, math, sortings
+17) [X] 1601A   Array Elimination bitmasks, greedy, math, number theory
+18) [X] 1603A   Di-visible Confusion constructive algorithms, math, number theory
+19) [X] 1521B   Nastia and a Good Array constructive algorithms, math, number theory
+20) [X] 1594E1  Rubik's Cube Coloring (easy version) combinatorics, math
+21) [ ] 1571B   Epic Novel*special problem, math
+22) [X] 1560D   Make a Power of Two greedy, math, strings
+23) [X] 1538C   Number of Pairs binary search, data structures, math, two pointers
+24) [ ] 1558A   Charmed by the Game brute force, math
+*** graph
+1) [ ] 1638C   Inversion Graph data structures, dsu, graphs, math
+2) [ ] 1534C   Little Alawn's Puzzle combinatorics, dp, dsu, graphs, math
+*** constructive algorithms
+1) [X] 1775B   Gardener and the Array bitmasks, constructive algorithms
+2) [ ] 1774C   Ice and Fire constructive algorithms, dp, greedy
+3) [X] 1768C   Elemental Decompress constructive algorithms, greedy, implementation, sortings
+4) [X] 1753A1  Make Nonzero Sum (easy version) constructive algorithms, dp, greedy
+5) [X] 1733C   Parity Shuffle Sorting constructive algorithms, sortings
+6) [X] 1659B   Bit Flipping bitmasks,  constructive algorithms, greedy, strings
+7) [X] 1647C   Madoka and Childish Pranks constructive algorithms, greedy
+8) [X] 1555C   Coin Rows brute force,  constructive algorithms, dp, implementation
+9) [X] 1547D   Co-growing Sequence bitmasks,  constructive algorithms, greedy
+10) [X] 1454D   Number into Sequence constructive algorithms, math, number theory
+11) [X] 1446A   Knapsack constructive algorithms, greedy, sortings
+12) [X] 1425H   Huge Boxes of Animal Toys constructive algorithms
+13) [X] 1420C1  Pokémon Army (easy version) constructive algorithms, dp, greedy
+14) [X] 1401C   Mere Array constructive algorithms, math, number theory, sortings
+15) [X] 1381A1  Prefix Flip (Easy Version) constructive algorithms, data structures, strings
+16) [X] 1367C   Social Distance constructive algorithms, greedy, math
+17) [X] 1365B   Trouble Sort constructive algorithms, implementation
+*** dp
+1) [ ] 1769C2  Подкрутка II *special problem, dp
+2) [X] 1766C   Hamiltonian Wall dp, implementation
+3) [X] 1703F   Yet Another Problem About Pairs Satisfying an Inequality binary search, data structures, dp, greedy, sortings
+4) [X] 1676G   White-Black Balanced Subtrees dfs and similar, dp, graphs, trees
+5) [X] 1661B   Getting Zero bitmasks, brute force, dfs and similar, dp, graphs, greedy, shortest paths
+6) [X] 1660C   Get an Even String dp, greedy, strings
+7) [ ] 1553B   Reverse String brute force, dp, hashing, implementation, strings
+8) [X] 1470A   Strange Birthday Party binary search, dp, greedy, sortings, two pointers
+9) [X] 1466C   Canine poetry dp, greedy, strings
+10) [X] 1443B   Saving the City dp, greedy, math, sortings
+11) [ ] 1360E   Polygon dp, graphs, implementation, shortest paths
+*** greedy
+1) [ ] 1726C   Jatayu's Balanced Bracket Sequence data structures, dsu, graphs, greedy
+2) [X] 1676F   Longest Strikedata structures, greedy, implementation, sortings, two pointers
+3) [ ] 1574C   Slay the Dragon binary search, greedy, sortings, ternary search
+4) [X] 1498B   Box Fitting binary search, bitmasks, data structures, greedy
+5) [ ] 1759C   Thermostat greedy, math, shortest paths
+6) [X] 1807G2  Subsequence Addition (Hard Version) bitmasks, dp, greedy, implementation, sortings
+7) [X] 1807G1  Subsequence Addition (Easy Version) brute force, data structures, dp, greedy, implementation, sortings
+8) [X] 1825B   LuoTianyi and the Table greedy, math
+9) [X] 1834C   Game with Reversing games, greedy, math, strings
+10) [ ] 1846C   Rudolf and the Another Competition constructive algorithms, data structures, dp, greedy, sortings
+11) [X] 1859C   Another Permutation Problem brute force, dp, greedy, math
+12) [X] 1810C   Make It Permutationbrute force, greedy, sortings
+13) [X] 1717C   Madoka and Formal Statement greedy
+14) [X] 1693A   Directional Increase greedy
+15) [X] 1649B   Game of Ball Passing greedy, implementation
+16) [X] 1627B   Not Sitting games, greedy, sortings
+17) [X] 1585C   Minimize Distance greedy
+18) [X] 1561C   Deep Down Below binary search, greedy, sortings
+19) [X] 1476B   Inflationbinary search, brute force, greedy, math
+20) [X] 1422B   Nice Matrix greedy, implementation, math
+21) [X] 1418B   Negative Prefixes greedy, sortings
+22) [X] 1407B   Big Vova brute force, greedy, math, number theory
+23) [X] 1372B   Omkar and Last Class of Math greedy, math, number theory
+24) [X] 1371C   A Cookie for You greedy, implementation, math
+25) [X] 1364B   Most socially-distanced subsequence greedy, two pointers
+26) [X] 1802B   Settlement of Guinea Pigs greedy, implementation, math
+27) [X] 1804B   Vaccination greedy, implementation
+28) [X] 1809B   Points on Plane binary search, greedy, math
+29) [X] 1811C   Restore the Array constructive algorithms, greedy
+30) [X] 1821B   Sort the Subarray brute force, greedy
+31) [X] 1834B   Maximum Strength greedy, math
+32) [X] 1836B   Astrophysicists greedy, math
+33) [X] 1837C   Best Binary String constructive algorithms, greedy
+34) [X] 1847B   Hamon Odyssey bitmasks, greedy, two pointers
+35) [X] 1859B   Olya and Game with Arrays constructive algorithms, greedy, math, sortings
+
+*** number theory
+1902C	Insert and Equalizebrute force, constructive algorithms, greedy, math, number theory	Submit Add to favourites	1300	 x9772
+1899D	Yarik and Musical Noteshashing, math, number theory	Submit Add to favourites	1300	 x10244
+1881D	Divide and Equalizemath, number theory	Submit Add to favourites	1300	 x11796
+1864C	Divisor Chainbitmasks, constructive algorithms, math, number theory	Submit Add to favourites	1300	 x11689
+1850F	We Were Both Childrenbrute force, implementation, math, number theory	Submit Add to favourites	1300	 x15338
+1826C	Dreaming of Freedomgreedy, math, number theory	Submit Add to favourites	1300	 x11802
+1823C	Strongly Compositegreedy, math, number theory	Submit Add to favourites	1300	 x10876
+1603A	Di-visible Confusionconstructive algorithms, math, number theory	Submit Add to favourites	1300	 x15673
+1601A	Array Eliminationbitmasks, greedy, math, number theory	Submit Add to favourites	1300	 x12405
+1521B	Nastia and a Good Arrayconstructive algorithms, math, number theory	Submit Add to favourites	1300	 x20042
+1454D	Number into Sequenceconstructive algorithms, math, number theory	Submit Add to favourites	1300	 x19106
+1407B	Big Vovabrute force, greedy, math, number theory	Submit Add to favourites	1300	 x16374
+1401C	Mere Arrayconstructive algorithms, math, number theory, sortings	Submit Add to favourites	1300	 x22791
+1372B	Omkar and Last Class of Mathgreedy, math, number theory	Submit Add to favourites	1300	 x25064
+1360D	Buying Shovelsmath, number theory	Submit Add to favourites	1300	 x29213
+1294C	Product of Three Numbersgreedy, math, number theory	Submit Add to favourites	1300	 x30355
+1220B	Multiplication Tablemath, number theory	Submit Add to favourites	1300	 x11166
+1209B	Koala and Lightsimplementation, math, number theory	Submit Add to favourites	1300	 x7821
+1174C	Ehab and a Special Coloring Problemconstructive algorithms, number theory	Submit Add to favourites	1300	 x11659
+1155C	Alarm Clocks Everywheremath, number theory	Submit Add to favourites	1300	 x8562
+1113B	Sasha and Magnetic Machinesgreedy, number theory	Submit Add to favourites	1300	 x7598
+912B	New Year's Evebitmasks, constructive algorithms, number theory	Submit Add to favourites	1300	 x10923
+900B	Position in Fractionmath, number theory	Submit Add to favourites	1300	 x7514
+876B	Divisiblity of Differencesimplementation, math, number theory	Submit Add to favourites	1300	 x8393
+870C	Maximum splittingdp, greedy, math, number theory	Submit Add to favourites	1300	 x8735
+840A	Leha and Functioncombinatorics, greedy, math, number theory, sortings	Submit Add to favourites	1300	 x6902
+633B	A Trivial Problembrute force, constructive algorithms, math, number theory	Submit Add to favourites	1300	 x6428
+573A	Bear and Pokerimplementation, math, number theory	Submit Add to favourites	1300	 x15666
+519C	A and B and Team Traininggreedy, implementation, math, number theory	Submit Add to favourites	1300	 x18913
+515B	Drazil and His Happy Friendsbrute force, dsu, meet-in-the-middle, number theory	Submit Add to favourites	1300	 x7271
+371B	Fox Dividing Cheesemath, number theory	Submit Add to favourites	1300	 x10582
+271B	Prime Matrixbinary search, brute force, math, number theory	Submit Add to favourites	1300	 x11940
+236B	Easy Number Challengeimplementation, number theory	Submit Add to favourites	1300	 x12869
+230B	T-primesbinary search, implementation, math, number theory	Submit Add to favourites	1300	 x65551
+158D	Ice Sculptures*special problem, brute force, number theory	Submit Add to favourites	1300	 x6125
+123A	Prime Permutationimplementation, number theory, strings	Submit Add to favourites	1300	 x3459
+
+** Problem List 1400
+*** number theory
+1875C	Jellyfish and Green Applebitmasks, greedy, math, number theory	 x9626
+1866B	Battling with Numberscombinatorics, math, number theory	 x6512
+1844D	Row Majorconstructive algorithms, greedy, math, number theory, strings	 x10950
+1838C	No Prime Differencesconstructive algorithms, math, number theory	 x12478
+1759D	Make It Roundbrute force, number theory	 x11000
+1758C	Almost All Multiplesgreedy, number theory	 x12015
+1714E	Add Modulo 10brute force, math, number theory	 x14114
+1627C	Not Assigningconstructive algorithms, dfs and similar, number theory, trees	 x13541
+1609C	Complex Market Analysisbinary search, dp, implementation, number theory, schedules, two pointers	 x9249
+1606C	Banknotesgreedy, number theory	 x13272
+1526B	I Hate 1111dp, math, number theory	 x26907
+1519C	Berland Regionalbrute force, data structures, greedy, number theory, sortings	 x15306
+1462D	Add to Neighbour and Removegreedy, math, number theory	 x15702
+1370C	Number Gamegames, math, number theory	 x22731
+1350B	Orac and Modelsdp, math, number theory	 x19739
+1332B	Composite Coloringbrute force, constructive algorithms, greedy, math, number theory	 x16698
+1312C	Adding Powersbitmasks, greedy, implementation, math, number theory, ternary search	 x15436
+1285C	Fadi and LCMbrute force, math, number theory	 x20935
+1266C	Diverse Matrixconstructive algorithms, greedy, math, number theory	 x9188
+1263C	Everyone is a Winner!binary search, math, meet-in-the-middle, number theory	 x13012
+1200C	Round Corridormath, number theory	 x9454
+1091C	New Year and the Sphere Transmissionmath, number theory	 x9226
+937B	Vile Grasshoppersbrute force, math, number theory	 x6712
+762A	k-th divisormath, number theory	 x17054
+757B	Bash's Big Daygreedy, math, number theory	 x9484
+414B	Mashmokh and ACMcombinatorics, dp, number theory	 x19755
+337B	Routine Problemgreedy, math, number theory	 x8869
+284A	Cows and Primitive Rootsimplementation, math, number theory	 x6234
+248B	Chilly Willymath, number theory	 x5093
+150A	Win or Freezegames, math, number theory	 x7447
+** Problem List 1500
+*** number theory
+- [X] 1876B	Effects of Anti Pimples combinatorics, number theory, sortings	 x6494
+- [ ] 1858B	The Walkway brute force, dp, greedy, math, number theory	 x9894
+- [X] 1811E	Living Sequence binary search, dp, math, number theory	 x10593
+- [X] 1804C	Pull Your Luck brute force, greedy, math, number theory	 x10826
+- [X] 1744E1	Divisible Numbers (easy version) brute force, math, number theory	 x9448
+- [X] 1732D1	Balance (Easy version) brute force, data structures, implementation, number theory	 x7767
+- [ ] 1673C	Palindrome Basis brute force, dp, math, number theory	 x10982
+1542B	Plus and Multiplyconstructive algorithms, math, number theory	 x20995
+1538F	Interesting Functionbinary search, dp, math, number theory	 x17496
+1536C	Diluc and Kaeyadata structures, dp, hashing, number theory	 x13112
+1487D	Pythagorean Triplesbinary search, brute force, math, number theory	 x16277
+1444A	Division brute force, math, number theory	 x12231
+1397B	Power Sequence brute force, math, number theory, sortings	 x14045
+1379B	Dubious Cyrptobinary search, brute force, math, number theory	 x12268
+1242A	Tile Paintingconstructive algorithms, math, number theory	 x12058
+1195D1	Submarine in the Rybinsk Sea (easy edition)combinatorics, math, number theory	 x7553
+1178D	Prime Graphconstructive algorithms, greedy, math, number theory	 x6991
+1133D	Zero Quantity Maximizationhashing, math, number theory	 x10088
+1110C	Meaningless Operationsconstructive algorithms, math, number theory	 x8759
+1062B	Mathgreedy, math, number theory	 x8186
+1005D	Polycarp and Div 3dp, greedy, number theory	 x9525
+891A	Pride brute force, dp, greedy, math, number theory	 x9271
+743C	Vladik and fractions brute force, constructive algorithms, math, number theory	 x11485
+742B	Arpa’s obvious problem and Mehrdad’s terrible solution brute force, math, number theory	 x8835
+707C	Pythagorean Triplesmath, number theory	 x11946
+630K	Indivisibilitymath, number theory	 x4855
+576A	Vasya and Petya's Gamemath, number theory	 x12598
+566F	Clique in the Divisibility Graphdp, math, number theory	 x3415
+460B	Little Dima and Equation brute force, implementation, math, number theory	 x11700
+414A	Mashmokh and Numbersconstructive algorithms, number theory	 x9479
+264B	Good Sequencesdp, number theory	 x9299
+172D	Calendar Reform*special problem, number theory	 x1359
+** Problem List 1400 --> 1500
+*** greedy
+**** Remaining
+1) [X] 1903C Theofanis' Nightmare constructive algorithms, greedy
+2) [X] 1901C Add, Divide and Floor constructive algorithms, greedy, math
+3) [X] 1898B Milena and Admirer greedy, math
+4) [X] 1896C Matching Arrays binary search, constructive algorithms, greedy, sortings
+5) [X] 1891C Smilo and Monsters binary search, constructive algorithms, greedy, sortings, two pointers
+6) [X] 1883G1 Dances (Easy version) binary search, greedy, two pointers
+7) [X] 1883D In Love data structures, greedy
+8) [X] 1882C Card Game brute force, greedy
+9) [X] 1878E Iva & Pav binary search, bitmasks, data structures, greedy
+10) [X] 1875C Jellyfish and Green Apple bitmasks, greedy, math, number theory
+11) [X] 1873G ABBC or BACB constructive algorithms, greedy
+12) [X] 1863D Two-Colored Dominoes constructive algorithms, greedy
+13) [X] 1844D Row Major constructive algorithms, greedy, math, number theory, strings
+14) [X] 1840D Wooden Toy Festival binary search, greedy, sortings
+15) [X] 1765N Number Reduction greedy
+16) [X] 1804C Pull Your Luck brute force, greedy, math, number theory
+17) [X] 1837D Bracket Coloring constructive algorithms, greedy
+**** TODO 1860C Game on Permutation
+data structures, dp, games, greedy
+**** TODO 1858B The Walkway
+brute force, dp, greedy, math, number theory
+**** TODO 1847C Vampiric Powers, anyone?
+bitmasks, brute force, dp, greedy
+**** TODO 1845C Strong Password
+binary search, dp, greedy, strings
+**** TODO 1824A LuoTianyi and the Show
+greedy, implementation
+**** TODO 1817A Almost Increasing Subsequence
+binary search, data structures, greedy
+**** TODO 1814C Search in Parallel
+constructive algorithms, greedy, sortings
+**** TODO 1809C Sum on Subarrays
+constructive algorithms, greedy, math
+**** TODO 1800E2 Unforgivable Curse (hard version)
+brute force, constructive algorithms, dfs and similar, dsu, graphs, greedy, strings
+**** TODO 1800E1 Unforgivable Curse (easy version)
+brute force, constructive algorithms, dsu, graphs, greedy, strings
+**** TODO 1792C Min Max Sort
+binary search, brute force, greedy, math, two pointers
+**** TODO 1774B Coloring
+constructive algorithms, greedy, math
+**** TODO 1773E Easy Assembly
+greedy, sortings
+**** TODO 1767D Playoff
+combinatorics, constructive algorithms, dp, greedy, math
+**** TODO 1765K Torus Path
+greedy, math
+**** TODO 1764C Doremy's City Construction
+graphs, greedy
+**** TODO 1761C Set Construction
+constructive algorithms, dfs and similar, graphs, greedy
+**** TODO 1760F Quests
+binary search, greedy, sortings
+**** TODO 1758C Almost All Multiples
+greedy, number theory
+**** TODO 1753A2 Make Nonzero Sum (hard version)
+constructive algorithms, dp, greedy
+**** TODO 1749C Number Game
+binary search, data structures, games, greedy, implementation
+**** TODO 1742G Orray
+bitmasks, brute force, greedy, math, sortings
+**** TODO 1742F Smaller
+constructive algorithms, greedy, strings
+**** TODO 1740C Bricks and Bags
+constructive algorithms, games, greedy, sortings
+**** TODO 1738C Even Number Addicts
+dp, games, greedy, math
+**** TODO 1735C Phase Shift
+dfs and similar, dsu, graphs, greedy, implementation, strings
+**** TODO 1733D1 Zero-One (Easy Version)
+constructive algorithms, greedy, math
+**** TODO 1728C Digital Logarithm
+data structures, greedy, sortings
+**** TODO 1722G Even-Odd XOR
+bitmasks, constructive algorithms, greedy
+**** TODO 1721C Min-Max Array Transformation
+binary search, greedy, two pointers
+**** TODO 1710A Color the Picture
+SCHEDULED: <2024-01-25 Thu>
+constructive algorithms, greedy, math
+**** TODO 1706C Qpwoeirut And The City
+SCHEDULED: <2024-01-25 Thu>
+dp, flows, greedy, implementation
+**** TODO 1701C Schedule Management
+SCHEDULED: <2024-01-25 Thu>
+binary search, greedy, implementation, two pointers
+**** DONE 1697C awoo's Favorite Problem
+CLOSED: [2024-01-24 Wed 23:51]
+:LOGBOOK:
+- CLOSING NOTE [2024-01-24 Wed 23:51] \\
+  Interesting greedy problem
+:END:
+binary search, constructive algorithms, data structures, greedy, implementation, strings, two pointers
+**** TODO 1696C Fishingprince Plays With Array
+constructive algorithms, greedy, implementation, math
+**** DONE 1691C Sum of Substrings
+CLOSED: [2024-01-24 Wed 23:03] SCHEDULED: <2024-01-23 Tue>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-24 Wed 23:03] \\
+  Interesting greedy problem
+:END:
+brute force, constructive algorithms, greedy, math, strings
+**** TODO 1690E Price Maximization
+SCHEDULED: <2024-01-23 Tue>
+binary search, greedy, math, two pointers
+**** DONE 1684C Column Swapping
+CLOSED: [2024-01-23 Tue 23:43] SCHEDULED: <2024-01-23 Tue>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-23 Tue 23:43] \\
+  brute force
+:END:
+brute force, constructive algorithms, greedy, implementation, sortings
+**** DONE 1682C LIS or Reverse LIS?
+CLOSED: [2024-01-23 Tue 22:43] SCHEDULED: <2024-01-23 Tue>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-23 Tue 22:43] \\
+  greedy and constructive
+:END:
+constructive algorithms, greedy, implementation, math
+**** DONE 1675E Replace With the Previous, Minimize
+CLOSED: [2024-01-22 Mon 22:57] SCHEDULED: <2024-01-22 Mon>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-22 Mon 22:57] \\
+  Good greedy problem
+:END:
+dsu, greedy, strings
+**** DONE 1659C Line Empire
+CLOSED: [2024-01-22 Mon 22:12] SCHEDULED: <2024-01-22 Mon>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-22 Mon 22:12] \\
+  Interesting greedy
+:END:
+binary search, brute force, dp, greedy, implementation, math
+**** DONE 1654C Alice and the Cake :bfs:
+CLOSED: [2024-01-22 Mon 19:46]
+:LOGBOOK:
+- CLOSING NOTE [2024-01-22 Mon 19:46] \\
+  greedy, but BFS
+:END:
+data structures, greedy, implementation, sortings
+**** DONE 1644C Increase Subarray Sums :DP:
+CLOSED: [2024-01-22 Mon 13:56] SCHEDULED: <2024-01-20 Sat>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-22 Mon 13:56] \\
+  Interesting greedy, but DP
+:END:
+brute force, dp, greedy, implementation
+**** DONE 1628A Meximum Array
+CLOSED: [2024-01-21 Sun 23:31] SCHEDULED: <2024-01-20 Sat>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-21 Sun 23:31] \\
+  Interesting greedy problem. MEX
+:END:
+binary search, constructive algorithms, greedy, implementation, math, two pointers
+**** DONE 1624D Palindromes Coloring
+CLOSED: [2024-01-20 Sat 17:59] SCHEDULED: <2024-01-20 Sat>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-20 Sat 17:59] \\
+  Interesting greedy problem
+:END:
+binary search, greedy, sortings, strings
+**** DONE 1621B Integers Shop
+CLOSED: [2024-01-20 Sat 11:48] SCHEDULED: <2024-01-18 Thu>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-20 Sat 11:48] \\
+  INF is not big enough. Use INFL or INT_MAX
+:END:
+data structures, greedy, implementation
+**** DONE 1606C Banknotes
+CLOSED: [2024-01-19 Fri 22:32] SCHEDULED: <2024-01-18 Thu>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-19 Fri 22:32] \\
+  Interesting greedy problem
+:END:
+greedy, number theory
+**** DONE 1605C Dominant Character
+CLOSED: [2024-01-17 Wed 23:10] SCHEDULED: <2024-01-17 Wed>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-17 Wed 23:10] \\
+  Interesting greedy problem
+:END:
+brute force, greedy, implementation, strings
+**** DONE 1579D Productive Meeting
+CLOSED: [2024-01-17 Wed 22:36] SCHEDULED: <2024-01-17 Wed>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-17 Wed 22:36] \\
+  typical greedy.
+:END:
+constructive algorithms, graphs, greedy
+**** DONE 1559D1 Mocha and Diana (Easy Version) :dsu:
+CLOSED: [2024-01-17 Wed 20:59] SCHEDULED: <2024-01-17 Wed>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-17 Wed 20:59] \\
+  dsu and greedy
+:END:
+brute force, constructive algorithms, dsu, graphs, greedy, trees
+**** DONE 1553D Backspace
+CLOSED: [2024-01-17 Wed 19:16] SCHEDULED: <2024-01-17 Wed>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-17 Wed 19:16] \\
+  Interesting greedy problem
+:END:
+dp, greedy, strings, two pointers
+**** DONE 1552B Running for Gold
+CLOSED: [2024-01-16 Tue 23:40] SCHEDULED: <2024-01-15 Mon>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-16 Tue 23:40] \\
+  Interesting greedy problem
+:END:
+combinatorics, graphs, greedy, sortings
+**** DONE 1551B2 Wonderful Coloring - 2
+CLOSED: [2024-01-16 Tue 23:19] SCHEDULED: <2024-01-15 Mon>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-16 Tue 23:19] \\
+  Good greedy problem
+:END:
+binary search, constructive algorithms, data structures, greedy
+**** DONE 1548A Web of Lies
+CLOSED: [2024-01-16 Tue 19:52] SCHEDULED: <2024-01-15 Mon>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-16 Tue 19:52] \\
+  Interesting greedy problem
+:END:
+brute force, graphs, greedy
+**** DONE 1540A Great Graphs
+CLOSED: [2024-01-15 Mon 20:17] SCHEDULED: <2024-01-15 Mon>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-15 Mon 20:17] \\
+  Interesting greedy problem
+:END:
+constructive algorithms, graphs, greedy, shortest paths, sortings
+**** DONE 1535C Unstable String :DP:
+CLOSED: [2024-01-15 Mon 00:10] SCHEDULED: <2024-01-14 Sun>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-15 Mon 00:10] \\
+  Interesting DP
+:END:
+binary search, dp, greedy, implementation, strings, two pointers
+**** DONE 1579C Ticks :Implementation:
+CLOSED: [2024-01-14 Sun 23:39] SCHEDULED: <2024-01-14 Sun>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-14 Sun 23:39] \\
+  Easy implementation
+:END:
+greedy, implementation
+**** DONE 1519C Berland Regional
+CLOSED: [2024-01-13 Sat 22:31] SCHEDULED: <2024-01-13 Sat>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-13 Sat 22:31] \\
+  Interesting greedy problem
+:END:
+brute force, data structures, greedy, number theory, sortings
+**** DONE 1517C Fillomino 2
+CLOSED: [2024-01-13 Sat 21:57] SCHEDULED: <2024-01-13 Sat>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-13 Sat 21:57] \\
+  Interesting greedy problem
+:END:
+constructive algorithms, dfs and similar, greedy, implementation
+**** DONE 1516B AGAGA XOOORRR
+CLOSED: [2024-01-13 Sat 21:23] SCHEDULED: <2024-01-13 Sat>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-13 Sat 21:23] \\
+  1. XOR presum
+  2. odd corner case
+:END:
+bitmasks, brute force, dp, greedy
+**** DONE 1490F Equalize the Array
+CLOSED: [2024-01-13 Sat 20:48] SCHEDULED: <2024-01-13 Sat>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-13 Sat 20:48] \\
+  Interesting binary search
+:END:
+binary search, data structures, greedy, math, sortings
+**** DONE 1506D Epic Transformation constructive algorithms, data structures, greedy
+CLOSED: [2024-01-12 Fri 22:13] SCHEDULED: <2024-01-12 Fri>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-12 Fri 22:13] \\
+  typical greedy problem
+:END:
+
+**** DONE 1494B Berland Crossword
+CLOSED: [2024-01-12 Fri 23:05] SCHEDULED: <2024-01-12 Fri>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-12 Fri 23:05] \\
+  Brute forces & DFS
+:END:
+bitmasks, brute force, greedy, implementation
+**** DONE 1492C Maximum width
+CLOSED: [2024-01-12 Fri 23:54] SCHEDULED: <2024-01-12 Fri>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-12 Fri 23:54] \\
+  Interesting greedy problem
+:END:
+binary search, data structures, dp, greedy, two pointers
+**** KILL 1487C Minimum Ties
+CLOSED: [2024-01-18 Thu 19:36] SCHEDULED: <2024-01-13 Sat>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-18 Thu 19:36] \\
+  Too hard for me currently
+- Note taken on [2024-01-13 Sat 21:58] \\
+  Too hard
+- Note taken on [2024-01-12 Fri 23:55] \\
+  Too hard
+:END:
+brute force, constructive algorithms, dfs and similar, graphs, greedy, implementation, math
+**** DONE 1573B Swaps
+CLOSED: [2024-01-11 Thu 23:45] SCHEDULED: <2024-01-11 Thu>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-11 Thu 23:45] \\
+  Easy greedy
+:END:
+greedy, math, sortings
+**** DONE 1551C Interesting Story
+CLOSED: [2024-01-11 Thu 23:09] SCHEDULED: <2024-01-11 Thu>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-11 Thu 23:09] \\
+  Good greedy problem
+:END:
+greedy, sortings, strings
+**** DONE 1526C1 Potions (Easy Version)
+CLOSED: [2024-01-11 Thu 21:26] SCHEDULED: <2024-01-11 Thu>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-11 Thu 21:26] \\
+  Good DP
+:END:
+brute force, data structures, dp, greedy
+**** DONE 1515D Phoenix and Socks
+CLOSED: [2024-01-11 Thu 20:47] SCHEDULED: <2024-01-11 Thu>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-11 Thu 20:47] \\
+  Interesting problem.
+
+  Check odd/even situations.
+:END:
+greedy, sortings, two pointers
+**** DONE 1466D 13th Labour of Heracles
+CLOSED: [2024-01-10 Wed 22:18] SCHEDULED: <2024-01-10 Wed>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-10 Wed 22:18] \\
+  Problem description is difficult to understand.
+  But it's intuitive to find the solution.
+:END:
+data structures, greedy, sortings, trees
+**** DONE 1520E Arranging The Sheep
+CLOSED: [2024-01-10 Wed 21:39] SCHEDULED: <2024-01-10 Wed>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-10 Wed 21:39] \\
+  Find the middle number
+:END:
+greedy, math
+**** DONE 1515C Phoenix and Towers
+CLOSED: [2024-01-10 Wed 19:52] SCHEDULED: <2024-01-10 Wed>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-10 Wed 19:52] \\
+  Guess the solution and it passed!
+:END:
+constructive algorithms, data structures, greedy
+**** DONE 1499C Minimum Grid Path
+CLOSED: [2024-01-10 Wed 19:32] SCHEDULED: <2024-01-10 Wed>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-10 Wed 19:32] \\
+  It is not hard to implement.
+  It is also intuitive to prove.
+- Note taken on [2024-01-10 Wed 00:03] \\
+  Find the minimum of sum(c_i * len_i), sum(len_i) = n
+:END:
+brute force, data structures, greedy, math
+**** DONE 1490E Accidental Victory
+CLOSED: [2024-01-09 Tue 23:36]
+:LOGBOOK:
+- CLOSING NOTE [2024-01-09 Tue 23:36] \\
+  O(n) greedy
+  只需要判定最好情况下，一个人能否获胜。
+:END:
+binary search, data structures, greedy
+**** DONE 1462D Add to Neighbour and Remove
+CLOSED: [2024-01-09 Tue 22:37]
+:LOGBOOK:
+- CLOSING NOTE [2024-01-09 Tue 22:37] \\
+  发现操作的性质，最终每一段的和是总和的因数，接下来就是判定问题。
+:END:
+greedy, math, number theory
+**** TODO 1452B Toy Blocks
+binary search, greedy, math, sortings
+**** TODO 1451C String Equality
+dp, greedy, hashing, implementation, strings
+**** TODO 1443C The Delivery Dilemma
+binary search, greedy, sortings
+**** TODO 1431D Used Markers
+special problem, greedy
+**** TODO 1427B Chess Cheater
+greedy, implementation, sortings
+**** TODO 1426D Non-zero Segments
+constructive algorithms, data structures, greedy, sortings
+**** DONE 1833D Flipper
+CLOSED: [2024-01-09 Tue 19:58]
+:LOGBOOK:
+- CLOSING NOTE [2024-01-09 Tue 19:58] \\
+  题解的边界处理比较漂亮，直接抄过来了
+:END:
+brute force, constructive algorithms, greedy
+*** constructive algorithms
+**** DONE 1463B Find The Array
+CLOSED: [2024-01-09 Tue 20:43]
+:LOGBOOK:
+- CLOSING NOTE [2024-01-09 Tue 20:43] \\
+  神奇构造题。利用奇数位置的和与偶数位置的和的性质。
+:END:
+bitmasks, constructive algorithms, greedy
+* Uva
+ | Count |
+ |-------|
+ | 29    |
+
+* LeetCode
+** Divide and Conquer
+*** DONE LCR 170
+SCHEDULED: <2024-01-10 Wed>
+[[https://leetcode.cn/problems/shu-zu-zhong-de-ni-xu-dui-lcof/description/][LCR 170. 交易逆序对的总数]]
+CLOSED: [2024-01-10 Wed 23:55]
+:LOGBOOK:
+- CLOSING NOTE [2024-01-10 Wed 23:55] \\
+  Merge sort
+:END:
+* CodeChef
+** contest
+*** TODO starters-116-div4
+**** DONE A Minimum Wage
+CLOSED: [2024-01-11 Thu 11:05] SCHEDULED: <2024-01-11 Thu>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-11 Thu 11:05] \\
+  Easy
+:END:
+
+**** DONE B Hattrick
+CLOSED: [2024-01-11 Thu 11:15] SCHEDULED: <2024-01-11 Thu>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-11 Thu 11:15] \\
+  Easy
+:END:
+
+**** DONE C Access Control
+CLOSED: [2024-01-11 Thu 11:23] SCHEDULED: <2024-01-11 Thu>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-11 Thu 11:23] \\
+  Easy
+:END:
+
+**** DONE D ORST
+CLOSED: [2024-01-11 Thu 11:32] SCHEDULED: <2024-01-11 Thu>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-11 Thu 11:32] \\
+  Easy
+:END:
+
+**** KILL E Chef Product
+CLOSED: [2024-01-18 Thu 19:35] SCHEDULED: <2024-01-12 Fri>
+:LOGBOOK:
+- CLOSING NOTE [2024-01-18 Thu 19:35] \\
+  It is a little hard for me currently
+- Note taken on [2024-01-13 Sat 20:20] \\
+  Too hard
+:END:
+
+* vjudge
+** 动态规划与贪心
+https://vjudge.net/contest/605992#overview
+*** TODO P - 最大子段和
+SCHEDULED: <2024-01-25 Thu>
+*** TODO F - LCS
+SCHEDULED: <2024-01-25 Thu>
