@@ -124,51 +124,42 @@ template <typename T, typename... V> void _print(T t, V... v) {
 #endif
 
 const int N = 100100;
-ll n, m, a[N], k;
+ll n, m, a[N], k, b[N];
 
 void solve() {
-    cin >> n >> m >> k;
-    
+  cin >> n >> m >> k;
+
+  For1(i, 1, k) { cin >> a[i]; }
+  sort(a + 1, a + 1 + k);
+
+  ll tot = n * m;
+  if (a[k] >= tot) {
+    cout << "Yes\n";
+    return;
+  }
+
+  auto check = [&](ll n, ll m) -> bool {
+    ll cnt = 0;
+    bool found = false;
     For1(i, 1, k) {
-        cin >> a[i];
+      b[i] = a[i] / n;
+      if (b[i] >= 2)
+        cnt += b[i];
+      if (b[i] >= 3)
+        found = true;
     }
-    sort(a + 1, a + 1 + k);
-    
-    ll tot = n * m;
-    if (a[k] >= tot) {
-        cout << "Yes\n"; return;
-    }
-    
-    ll top;
-    
-    if (n % 2 == 0) {
-        top = 2 * m;
-        ll n1 = n / 2, cnt1 = 0;
-        
-        Rof1(i, 1, k) {
-            if (a[i] < top) break;
-            cnt1 += a[i] / top;
-        }
-        
-        if (cnt1 >= n1) {
-            cout << "Yes\n"; return;
-        }
-    }
-    
-    if (m % 2 == 0) {
-        top = 2 * n;
-        ll m1 = m / 2, cnt1 = 0;
-        
-        Rof1(i, 1, k) {
-            if (a[i] < top) break;
-            cnt1 += a[i] / top;
-        }
-        
-        if (cnt1 >= m1) {
-            cout << "Yes\n"; return;
-        }
-    }
-    
+    if (cnt < m)
+      return false;
+
+    if (m % 2 == 0)
+      return true;
+
+    return found;
+  };
+
+  if (check(n, m) || check(m, n)) {
+    cout << "Yes\n";
+  } else
     cout << "No\n";
 }
 
