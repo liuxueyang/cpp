@@ -126,7 +126,6 @@ template <typename T, typename... V> void _print(T t, V... v) {
 void solve() {
   ll a, b, r;
   cin >> a >> b >> r;
-  // dbg(a, b);
   if (a < b)
     swap(a, b);
 
@@ -139,30 +138,26 @@ void solve() {
     return;
   }
 
-  r = min(r, a);
-
-  ll base = 0;
-  ll r1 = r;
-  while (r1) {
-    base++;
-    r1 >>= 1;
-  }
-  base--;
-
   ll x = 0;
-  Rof1(i, 0, base) {
-    ll ai = ((a >> i) & 1), bi = ((b >> i) & 1);
-    bool flag = ((a >> (i)) > 1);
-    if (ai && !bi && flag) {
-      ll x1 = x ^ (1 << i);
-      ll a1 = a ^ x1, b1 = b ^ x1;
+  bool flag = true;
 
-      if (x1 <= r && a1 >= b1) {
-        x = x1;
+  Rof1(i, 0, 60) {
+    ll ai = ((a >> i) & 1), bi = ((b >> i) & 1);
+    if (ai == bi)
+      continue;
+
+    if (flag) {
+      flag = false;
+    } else {
+      if (!bi) {
+        ll x1 = x ^ (1LL << i);
+
+        if (x1 <= r) {
+          x = x1;
+        }
       }
     }
   }
-  // dbg(a, b, x);
 
   ll ans = llabs((a ^ x) - (b ^ x));
 
