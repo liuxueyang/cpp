@@ -412,8 +412,12 @@ CLOSED: [2024-01-30 Tue 21:53] SCHEDULED: <2024-01-30 Tue>
 bitmasks, constructive algorithms, greedy
 **** TODO 1721C Min-Max Array Transformation
 binary search, greedy, two pointers
-**** TODO 1710A Color the Picture
-SCHEDULED: <2024-01-25 Thu>
+**** DONE 1710A Color the Picture
+CLOSED: [2024-02-01 Thu 23:37] SCHEDULED: <2024-01-25 Thu>
+:LOGBOOK:
+- CLOSING NOTE [2024-02-01 Thu 23:37] \\
+  Good greedy and constructive algorithms
+:END:
 constructive algorithms, greedy, math
 **** DONE 1706C Qpwoeirut And The City
 CLOSED: [2024-01-30 Tue 21:52] SCHEDULED: <2024-01-25 Thu>
