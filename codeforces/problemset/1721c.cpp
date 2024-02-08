@@ -126,12 +126,17 @@ template <typename T, typename... V> void _print(T t, V... v) {
 const int N = 200100;
 
 int n, a[N], b[N], d[N], d1[N];
+multiset<int> s;
 
 void solve() {
   cin >> n;
   For1(i, 1, n) { cin >> a[i]; }
   sort(a + 1, a + 1 + n);
-  For1(i, 1, n) { cin >> b[i]; }
+  s.clear();
+  For1(i, 1, n) {
+    cin >> b[i];
+    s.insert(b[i]);
+  }
   sort(b + 1, b + 1 + n);
   For1(i, 1, n) {
     int l = 1, r = n, mid;
@@ -144,19 +149,15 @@ void solve() {
     }
     d[i] = r;
   }
-  For1(i, 1, n) {
-    int l = i, r = n, mid;
-    while (l < r) {
-      mid = (l + r + 1) / 2;
-      if (d[mid] <= i)
-        l = mid;
-      else
-        r = mid - 1;
-    }
-    d1[i] = b[l] - a[i];
-  }
   For1(i, 1, n) cout << b[d[i]] - a[i] << ' ';
   NL;
+
+  Rof1(i, 1, n) {
+    auto it = s.lower_bound(a[i]);
+    d1[i] = *prev(s.end()) - a[i];
+    s.erase(it);
+  }
+
   For1(i, 1, n) cout << d1[i] << ' ';
   NL;
 }
