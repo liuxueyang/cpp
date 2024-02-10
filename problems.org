@@ -440,7 +440,12 @@ CLOSED: [2024-01-24 Wed 23:51]
   Interesting greedy problem
 :END:
 binary search, constructive algorithms, data structures, greedy, implementation, strings, two pointers
-**** TODO 1696C Fishingprince Plays With Array
+**** DONE 1696C Fishingprince Plays With Array
+CLOSED: [2024-02-10 Sat 21:08] SCHEDULED: <2024-02-10 Sat>
+:LOGBOOK:
+- CLOSING NOTE [2024-02-10 Sat 21:08] \\
+  Good greedy
+:END:
 constructive algorithms, greedy, implementation, math
 **** DONE 1691C Sum of Substrings
 CLOSED: [2024-01-24 Wed 23:03] SCHEDULED: <2024-01-23 Tue>
