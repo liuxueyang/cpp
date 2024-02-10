@@ -124,7 +124,8 @@ template <typename T, typename... V> void _print(T t, V... v) {
 #endif
 
 const int N = 200100;
-int n, a[N], b[N];
+int n, a[N], b[N], ans;
+using MII = map<int, int>;
 
 int getn(int x) {
   int ans{};
@@ -133,6 +134,47 @@ int getn(int x) {
     x /= 10;
   }
   return ans;
+}
+
+void remove_9(MII &m1, MII &m2) {
+  for (auto &[x, c] : m1) {
+    if (x == 1)
+      continue;
+
+    if (m2[x]) {
+      int &c1 = m2[x], c2 = min(c1, c);
+      c1 -= c2, c -= c2;
+      ans += c + c1;
+      c = c1 = 0;
+    } else {
+      ans += c;
+      c = 0;
+    }
+  }
+}
+
+void remove_10(MII &m1, MII &m2) {
+  MII todo;
+
+  for (auto &[x, c] : m1) {
+    if (x >= 10) {
+      if (m2[x]) {
+        int &c1 = m2[x], c2 = min(c, c1);
+        c1 -= c2, c -= c2;
+        if (c) {
+          todo[getn(x)] += c;
+          ans += c;
+          c = 0;
+        }
+      } else {
+        todo[getn(x)] += c;
+        ans += c;
+        c = 0;
+      }
+    }
+  }
+  for (auto &[x, c] : todo)
+    m1[x] += c;
 }
 
 void solve() {
@@ -148,87 +190,12 @@ void solve() {
     ++mb[b[i]];
   }
 
-  int ans = 0;
+  ans = 0;
 
-  auto vaccum = [&](map<int, int> &m1, map<int, int> &m2) {
-    VI era;
-    for (auto &[x, cnt1] : m1) {
-      if (!cnt1) {
-        era.pb(x);
-        continue;
-      }
-      if (has(m2, x)) {
-        int cnt2 = m2[x];
-        int cnt = min(cnt2, cnt1);
-        cnt1 -= cnt;
-        m2[x] -= cnt;
-        if (!m2[x])
-          m2.erase(x);
-      }
-    }
-    for (auto x : era)
-      m1.erase(x);
-  };
-
-  auto clean2 = [&](map<int, int> &m) {
-    VI era, s;
-    for (auto &[x, cnt] : m) {
-      if (!cnt) {
-        era.pb(x);
-        continue;
-      }
-      if (x >= 11) {
-        s.pb(x);
-      }
-    }
-    for (auto x : era)
-      m.erase(x);
-    for (auto x : s) {
-      int len = getn(x);
-      m[len] += m[x];
-      ans += m[x];
-      m.erase(x);
-    }
-  };
-
-  auto clean3 = [&](map<int, int> &m) {
-    VI era, s;
-    for (auto &[x, cnt] : m) {
-      if (!cnt) {
-        era.pb(x);
-        continue;
-      }
-      if (x == 10) {
-        s.pb(x);
-      }
-    }
-    for (auto x : era)
-      m.erase(x);
-    for (auto x : s) {
-      int len = getn(x);
-      m[len] += m[x];
-      ans += m[x];
-      m.erase(x);
-    }
-  };
-
-  auto clean4 = [&](map<int, int> &m) {
-    for (auto &[x, y] : m) {
-      if (x == 1)
-        continue;
-      ans += y;
-    }
-  };
-
-  vaccum(ma, mb);
-  clean2(ma);
-  clean2(mb);
-  vaccum(ma, mb);
-  clean3(ma);
-  clean3(mb);
-  vaccum(ma, mb);
-  clean4(ma);
-  clean4(mb);
+  remove_10(ma, mb);
+  remove_10(mb, ma);
+  remove_9(ma, mb);
+  remove_9(mb, ma);
 
   cout << ans << '\n';
 }
