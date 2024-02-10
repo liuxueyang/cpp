@@ -401,7 +401,12 @@ dp, games, greedy, math
 dfs and similar, dsu, graphs, greedy, implementation, strings
 **** TODO 1733D1 Zero-One (Easy Version)
 constructive algorithms, greedy, math
-**** TODO 1728C Digital Logarithm
+**** DONE 1728C Digital Logarithm
+CLOSED: [2024-02-10 Sat 22:13] SCHEDULED: <2024-02-10 Sat>
+:LOGBOOK:
+- CLOSING NOTE [2024-02-10 Sat 22:13] \\
+  Good greedy
+:END:
 data structures, greedy, sortings
 **** DONE 1722G Even-Odd XOR
 CLOSED: [2024-01-30 Tue 21:53] SCHEDULED: <2024-01-30 Tue>
@@ -410,7 +415,12 @@ CLOSED: [2024-01-30 Tue 21:53] SCHEDULED: <2024-01-30 Tue>
   constructive algorithms
 :END:
 bitmasks, constructive algorithms, greedy
-**** TODO 1721C Min-Max Array Transformation
+**** DONE 1721C Min-Max Array Transformation
+CLOSED: [2024-02-10 Sat 22:11] SCHEDULED: <2024-02-10 Sat>
+:LOGBOOK:
+- CLOSING NOTE [2024-02-10 Sat 22:11] \\
+  Interesting greedy problem
+:END:
 binary search, greedy, two pointers
 **** DONE 1710A Color the Picture
 CLOSED: [2024-02-01 Thu 23:37] SCHEDULED: <2024-01-25 Thu>
