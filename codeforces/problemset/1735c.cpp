@@ -1,4 +1,4 @@
-// Date: Sun Feb 11 11:04:16 2024
+// Date: Sun Feb 11 13:02:42 2024
 
 #include <climits>
 #include <cmath>
@@ -123,85 +123,79 @@ template <typename T, typename... V> void _print(T t, V... v) {
 #define dbg(x...)
 #endif
 
-// For LeetCode
-#define LN ListNode
-#define LNP ListNode *
-#define TN TreeNode
-#define TNP TreeNode *
+const int N = 10010;
+int fa[N], sz[N], n, m;
 
-#ifdef _DEBUG
-struct ListNode {
-  int val;
-  ListNode *next;
-  ListNode() : val(0), next(nullptr) {}
-  ListNode(int val) : val(val), next(nullptr) {}
-  ListNode(int val, ListNode *next) : val(val), next(next) {}
-};
-
-struct TreeNode {
-  int val;
-  TreeNode *left;
-  TreeNode *right;
-  TreeNode() : val(0), left(nullptr), right(nullptr) {}
-  TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-  TreeNode(int x, TreeNode *left, TreeNode *right)
-      : val(x), left(left), right(right) {}
-};
-#endif
-// End of LeetCode
-
-const int N = 1000100;
-int s[N], p[N], ne[N];
-
-int kmp(int n, int m) {
-  int ans{};
-
-  for (int i = 2, j = 0; i <= m; ++i) {
-    while (j && p[i] != p[j + 1])
-      j = ne[j];
-    if (p[i] == p[j + 1])
-      ++j;
-    ne[i] = j;
-  }
-
-  for (int i = 1, j = 0; i <= n; ++i) {
-    while (j && s[i] != p[j + 1])
-      j = ne[j];
-    if (s[i] == p[j + 1])
-      ++j;
-    if (j == m) {
-      j = ne[j];
-      ans++;
-    }
-  }
-
-  return ans;
+void Init() {
+  for (int i = 1; i <= n; ++i)
+    fa[i] = i, sz[i] = 1;
 }
 
-class Solution {
-public:
-  int countMatchingSubarrays(vector<int> &a, vector<int> &p1) {
-    int n = SZ(a);
-    VI b(n - 1, 0);
+int Find(int x) {
+  if (x == fa[x])
+    return x;
+  return fa[x] = Find(fa[x]);
+}
 
-    For(i, 0, n - 1) {
-      if (a[i + 1] == a[i])
-        ;
-      else if (a[i + 1] > a[i])
-        b[i] = 1;
-      else
-        b[i] = -1;
+void Union(int x, int y) {
+  int rx = Find(x), ry = Find(y);
+  if (rx == ry)
+    return;
+  fa[ry] = rx;
+  sz[rx] += sz[ry];
+}
+
+void solve() {
+  int n1;
+  string s;
+  cin >> n1 >> s;
+  map<char, char> m;
+  set<int> vis;
+  n = 26;
+  Init();
+
+  For(i, 0, n1) {
+    if (has(m, s[i]))
+      continue;
+
+    int x = s[i] - 'a' + 1, rx = Find(x);
+
+    For(j, 0, 26) {
+      int y = j + 1;
+
+      if (sz[rx] == 26) {
+        if (has(vis, y))
+          continue;
+      } else if (rx == Find(y) || has(vis, y))
+        continue;
+
+      vis.insert(y);
+      Union(x, y);
+      m[s[i]] = 'a' + j;
+      break;
     }
-
-    int m = SZ(p1);
-
-    int n1 = n - 1;
-    For1(i, 1, n1) { s[i] = b[i - 1]; }
-
-    For(j, 0, m) { p[j + 1] = p1[j]; }
-
-    int ans = kmp(n1, m);
-
-    return ans;
   }
-};
+
+  string t;
+  For(i, 0, n1) { t += m[s[i]]; }
+  cout << t;
+  NL;
+}
+
+int main(void) {
+#ifdef _DEBUG
+  freopen("1735c.in", "r", stdin);
+#endif
+  std::ios::sync_with_stdio(false);
+  cin.tie(NULL);
+  cout.tie(NULL);
+
+  int T = 1;
+  cin >> T;
+
+  while (T--) {
+    solve();
+  }
+
+  return 0;
+}

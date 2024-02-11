@@ -403,8 +403,12 @@ constructive algorithms, games, greedy, sortings
 **** TODO 1738C Even Number Addicts
 SCHEDULED: <2024-02-12 Mon>
 dp, games, greedy, math
-**** TODO 1735C Phase Shift
-SCHEDULED: <2024-02-11 Sun>
+**** DONE 1735C Phase Shift
+CLOSED: [2024-02-11 Sun 16:08] SCHEDULED: <2024-02-11 Sun>
+:LOGBOOK:
+- CLOSING NOTE [2024-02-11 Sun 16:08] \\
+  Good greedy. Use ufs: union find set.
+:END:
 dfs and similar, dsu, graphs, greedy, implementation, strings
 **** DONE 1733D1 Zero-One (Easy Version)
 CLOSED: [2024-02-11 Sun 10:00] SCHEDULED: <2024-02-11 Sun>
