@@ -406,8 +406,12 @@ dp, games, greedy, math
 **** TODO 1735C Phase Shift
 SCHEDULED: <2024-02-11 Sun>
 dfs and similar, dsu, graphs, greedy, implementation, strings
-**** TODO 1733D1 Zero-One (Easy Version)
-SCHEDULED: <2024-02-11 Sun>
+**** DONE 1733D1 Zero-One (Easy Version)
+CLOSED: [2024-02-11 Sun 10:00] SCHEDULED: <2024-02-11 Sun>
+:LOGBOOK:
+- CLOSING NOTE [2024-02-11 Sun 10:00] \\
+  Good greedy. Read problem carefully!
+:END:
 constructive algorithms, greedy, math
 **** DONE 1728C Digital Logarithm
 CLOSED: [2024-02-10 Sat 22:13] SCHEDULED: <2024-02-10 Sat>
