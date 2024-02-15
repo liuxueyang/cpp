@@ -394,14 +394,26 @@ binary search, data structures, games, greedy, implementation
 **** TODO 1742G Orray
 SCHEDULED: <2024-02-13 Tue>
 bitmasks, brute force, greedy, math, sortings
-**** TODO 1742F Smaller
-SCHEDULED: <2024-02-13 Tue>
+**** DONE 1742F Smaller
+CLOSED: [2024-02-15 Thu 20:58] SCHEDULED: <2024-02-13 Tue>
+:LOGBOOK:
+- CLOSING NOTE [2024-02-15 Thu 20:58] \\
+  Good Greedy. Use long long!
+:END:
 constructive algorithms, greedy, strings
-**** TODO 1740C Bricks and Bags
-SCHEDULED: <2024-02-12 Mon>
+**** DONE 1740C Bricks and Bags
+CLOSED: [2024-02-15 Thu 20:18] SCHEDULED: <2024-02-12 Mon>
+:LOGBOOK:
+- CLOSING NOTE [2024-02-15 Thu 20:18] \\
+  greedy and constructive
+:END:
 constructive algorithms, games, greedy, sortings
-**** TODO 1738C Even Number Addicts
-SCHEDULED: <2024-02-12 Mon>
+**** KILL 1738C Even Number Addicts
+CLOSED: [2024-02-15 Thu 20:19] SCHEDULED: <2024-02-12 Mon>
+:LOGBOOK:
+- CLOSING NOTE [2024-02-15 Thu 20:19] \\
+  too hard
+:END:
 dp, games, greedy, math
 **** DONE 1735C Phase Shift
 CLOSED: [2024-02-11 Sun 16:08] SCHEDULED: <2024-02-11 Sun>
