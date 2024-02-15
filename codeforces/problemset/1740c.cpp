@@ -134,16 +134,14 @@ void solve() {
   sort(a + 1, a + 1 + n);
   ll ans = 0;
 
-  For1(i, 2, n - 1) {
-    ckmax(ans, a[n] + a[i] - 2LL * a[1]);
-    if (a[i] != a[1])
-      break;
+  For1(i, 2, n) {
+    ll tmp = a[i] - a[1] + a[i] - a[i - 1];
+    ckmax(ans, tmp);
   }
 
-  Rof1(i, 2, n - 1) {
-    ckmax(ans, 2LL * a[n] - a[i] - a[1]);
-    if (a[i] != a[n])
-      break;
+  For1(i, 1, n - 2) {
+    ll tmp = a[i + 1] - a[i] + a[n] - a[i];
+    ckmax(ans, tmp);
   }
 
   cout << ans << '\n';
