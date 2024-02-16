@@ -151,15 +151,19 @@ ostream &operator<<(ostream &os, const lll &v) {
 }
 
 void solve() {
-  lll k, x, a;
+  ll k, x, a;
   cin >> k >> x >> a;
 
   bool flag = true;
 
-  lll sum = 1, pre = 1;
+  ll sum = 1, pre = 1;
   For1(i, 2, x) {
     pre = sum / (k - 1) + 1;
     sum += pre;
+    if (sum >= a) {
+      flag = false;
+      break;
+    }
   }
 
   if (sum >= a)
