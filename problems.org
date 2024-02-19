@@ -391,8 +391,12 @@ constructive algorithms, dp, greedy
 **** TODO 1749C Number Game
 SCHEDULED: <2024-02-14 Wed>
 binary search, data structures, games, greedy, implementation
-**** TODO 1742G Orray
-SCHEDULED: <2024-02-13 Tue>
+**** DONE 1742G Orray
+CLOSED: [2024-02-19 Mon 20:59] SCHEDULED: <2024-02-13 Tue>
+:LOGBOOK:
+- CLOSING NOTE [2024-02-19 Mon 20:59] \\
+  Good greedy. Read the problem carefully! It is OR not XOR!
+:END:
 bitmasks, brute force, greedy, math, sortings
 **** DONE 1742F Smaller
 CLOSED: [2024-02-15 Thu 20:58] SCHEDULED: <2024-02-13 Tue>
