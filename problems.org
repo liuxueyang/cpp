@@ -385,11 +385,19 @@ constructive algorithms, dfs and similar, graphs, greedy
 binary search, greedy, sortings
 **** TODO 1758C Almost All Multiples
 greedy, number theory
-**** TODO 1753A2 Make Nonzero Sum (hard version)
-SCHEDULED: <2024-02-14 Wed>
+**** DONE 1753A2 Make Nonzero Sum (hard version)
+CLOSED: [2024-02-22 Thu 12:44] SCHEDULED: <2024-02-14 Wed>
+:LOGBOOK:
+- CLOSING NOTE [2024-02-22 Thu 12:44] \\
+  Good greedy. There are some corner cases. I should be more careful.
+:END:
 constructive algorithms, dp, greedy
-**** TODO 1749C Number Game
-SCHEDULED: <2024-02-14 Wed>
+**** DONE 1749C Number Game
+CLOSED: [2024-02-22 Thu 12:46] SCHEDULED: <2024-02-14 Wed>
+:LOGBOOK:
+- CLOSING NOTE [2024-02-22 Thu 12:46] \\
+  Good greedy. I guess it's a common greedy strategy.
+:END:
 binary search, data structures, games, greedy, implementation
 **** DONE 1742G Orray
 CLOSED: [2024-02-19 Mon 20:59] SCHEDULED: <2024-02-13 Tue>
