@@ -370,20 +370,28 @@ brute force, constructive algorithms, dsu, graphs, greedy, strings
 **** TODO 1792C Min Max Sort
 binary search, brute force, greedy, math, two pointers
 **** TODO 1774B Coloring
+SCHEDULED: <2024-02-29 Thu>
 constructive algorithms, greedy, math
 **** TODO 1773E Easy Assembly
+SCHEDULED: <2024-02-28 Wed>
 greedy, sortings
 **** TODO 1767D Playoff
+SCHEDULED: <2024-02-27 Tue>
 combinatorics, constructive algorithms, dp, greedy, math
 **** TODO 1765K Torus Path
+SCHEDULED: <2024-02-26 Mon>
 greedy, math
 **** TODO 1764C Doremy's City Construction
+SCHEDULED: <2024-02-25 Sun>
 graphs, greedy
 **** TODO 1761C Set Construction
+SCHEDULED: <2024-02-24 Sat>
 constructive algorithms, dfs and similar, graphs, greedy
 **** TODO 1760F Quests
+SCHEDULED: <2024-02-23 Fri>
 binary search, greedy, sortings
 **** TODO 1758C Almost All Multiples
+SCHEDULED: <2024-02-22 Thu>
 greedy, number theory
 **** DONE 1753A2 Make Nonzero Sum (hard version)
 CLOSED: [2024-02-22 Thu 12:44] SCHEDULED: <2024-02-14 Wed>
