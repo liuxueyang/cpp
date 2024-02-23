@@ -126,19 +126,19 @@ template <typename T, typename... V> void _print(T t, V... v) {
 const int N = 200100;
 int n, a[N], x;
 
-VI defact(int n) {
-  VI res;
-  for (ll i = 2; i * i <= n; ++i) {
+map<ll, int> prime_facto(ll n) {
+  map<ll, int> res;
+  for (ll i = 2; i <= n / i; ++i) {
     while (n % i == 0) {
-      res.pb(i);
+      res[i]++;
       n /= i;
     }
   }
-  if (n)
-    res.pb(n);
-  sort(all(res));
+  if (n > 1) res[n]++;
+
   return res;
 }
+
 
 void solve() {
   cin >> n >> x;
@@ -157,8 +157,12 @@ void solve() {
       a[i] = i;
   }
 
-  VI ve = defact(n / x);
-  deque<int> de(all(ve));
+  auto mm = prime_facto(n / x);
+  deque<int> de;
+
+  for (auto &[x, cnt] : mm) {
+    while (cnt--) de.pb(x);
+  }
 
   int cur = x;
   while (cur != n) {
