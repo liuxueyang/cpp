@@ -151,16 +151,33 @@ void solve() {
     return;
   }
 
-  ans = check(2);
-  ll tmp = check(3);
-  ckmin(ans, tmp);
+  p[1] = 0;
+  for (int i = 2; i <= n; i += 2) {
+    ll top = max(a[i - 1], a[i + 1]) + 1, delta = max(top - a[i], 0LL);
+    p[i] = p[i + 1] = delta + p[i - 1];
+  }
+
+  p1[n] = 0;
+  for (int i = n - 1; i >= 1; i -= 2) {
+    ll top = max(a[i - 1], a[i + 1]) + 1, delta = max(top - a[i], 0LL);
+    p1[i] = p1[i - 1] = delta + p1[i + 1];
+  }
+
+  ans = -1;
+  for (int i = 2; i <= n; i += 2) {
+    ll tmp = p[i - 1] + p1[i];
+    if (ans == -1)
+      ans = tmp;
+    else
+      ckmin(ans, tmp);
+  }
 
   cout << ans << '\n';
 }
 
 int main(void) {
 #ifdef _DEBUG
-  freopen("1706c.in", "r", stdin);
+  // freopen("1706c.in", "r", stdin);
 #endif
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
