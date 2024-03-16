@@ -893,7 +893,12 @@ CLOSED: [2024-03-16 Sat 23:06]
 - CLOSING NOTE [2024-03-16 Sat 23:06]
 :END:
 
-**** [ ] 2547
+**** DONE 2547
+CLOSED: [2024-03-16 Sat 23:36]
+:LOGBOOK:
+- CLOSING NOTE [2024-03-16 Sat 23:36]
+:END:
+
 **** [ ] 2463
 **** [ ] 2977
 ** Divide and Conquer
