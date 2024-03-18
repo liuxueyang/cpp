@@ -899,7 +899,12 @@ CLOSED: [2024-03-16 Sat 23:36]
 - CLOSING NOTE [2024-03-16 Sat 23:36]
 :END:
 
-**** [ ] 2463
+**** DONE 2463
+CLOSED: [2024-03-18 Mon 22:46]
+:LOGBOOK:
+- CLOSING NOTE [2024-03-18 Mon 22:46]
+:END:
+
 **** [ ] 2977
 ** Divide and Conquer
 *** DONE LCR 170
