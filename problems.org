@@ -387,8 +387,12 @@ graphs, greedy
 **** TODO 1761C Set Construction
 SCHEDULED: <2024-02-24 Sat>
 constructive algorithms, dfs and similar, graphs, greedy
-**** TODO 1760F Quests
-SCHEDULED: <2024-02-23 Fri>
+**** DONE 1760F Quests
+CLOSED: [2024-03-21 Thu 20:18] SCHEDULED: <2024-02-23 Fri>
+:LOGBOOK:
+- CLOSING NOTE [2024-03-21 Thu 20:18] \\
+  Good greedy
+:END:
 binary search, greedy, sortings
 **** TODO 1758C Almost All Multiples
 SCHEDULED: <2024-02-22 Thu>
