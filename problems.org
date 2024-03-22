@@ -384,8 +384,12 @@ greedy, math
 **** TODO 1764C Doremy's City Construction
 SCHEDULED: <2024-02-25 Sun>
 graphs, greedy
-**** TODO 1761C Set Construction
-SCHEDULED: <2024-02-24 Sat>
+**** DONE 1761C Set Construction :topsort:
+CLOSED: [2024-03-22 Fri 10:00] SCHEDULED: <2024-02-24 Sat>
+:LOGBOOK:
+- CLOSING NOTE [2024-03-22 Fri 10:00] \\
+  Good greedy. topsort. BFS
+:END:
 constructive algorithms, dfs and similar, graphs, greedy
 **** DONE 1760F Quests
 CLOSED: [2024-03-21 Thu 20:18] SCHEDULED: <2024-02-23 Fri>
