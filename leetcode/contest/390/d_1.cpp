@@ -1,4 +1,4 @@
-// Date: Sun Mar 24 16:51:03 2024
+// Date: Sun Mar 24 22:48:03 2024
 
 #include <climits>
 #include <cmath>
@@ -159,70 +159,58 @@ struct po {
 po val[N];
 
 void Insert(string s, int i) {
-  int p = 0;
-
-  po &v = val[p];
-  int cur = SZ(s);
-  if (v.len == 0) {
-    v.len = cur;
-    v.i = i;
-  } else if (ckmin(v.len, cur)) {
-    v.i = i;
+  int p = 0, cur = SZ(s);
+  auto &t = val[p];
+  if (!t.len || ckmin(t.len, cur)) {
+    t = po{cur, i};
   }
 
   for (auto c : s) {
     int u = c - 'a';
     if (!son[p][u])
       son[p][u] = ++idx;
-
     p = son[p][u];
 
-    int cur = SZ(s);
-    po &v = val[p];
-
-    if (v.len == 0) {
-      v.len = cur;
-      v.i = i;
-    } else if (ckmin(v.len, cur)) {
-      v.i = i;
+    auto &t = val[p];
+    if (!t.len || ckmin(t.len, cur)) {
+      t = po{cur, i};
     }
   }
 }
 
 int Find(string s) {
   int p = 0;
-
   for (auto c : s) {
     int u = c - 'a';
-    if (!son[p][u])
+    if (!son[p][u]) {
       break;
+    }
     p = son[p][u];
   }
-
   return val[p].i;
 }
 
 class Solution {
 public:
   vector<int> stringIndices(vector<string> &a, vector<string> &b) {
-    int n = SZ(a);
-    int sum = 0;
+    int sum{};
     for (auto s : a)
       sum += SZ(s);
 
     idx = 0;
     For1(i, 0, sum) {
-      val[i] = po{0, 0};
       For(j, 0, 26) son[i][j] = 0;
+      val[i] = po{0, 0};
     }
 
+    int n = SZ(a);
+    VI res;
+
     For(i, 0, n) {
-      auto s = a[i];
+      string s = a[i];
       reverse(all(s));
       Insert(s, i);
     }
-
-    VI res;
 
     for (auto s : b) {
       reverse(all(s));
@@ -241,14 +229,6 @@ int main(void) {
   cout.tie(NULL);
 
   Solution a;
-  vector<string> a_{"abcd", "bcd", "xbcd"}, b_{"cd", "bcd", "xyz"};
-  auto res = a.stringIndices(a_, b_);
-  dbg(res);
-
-  a_ = vector<string>{"abcdefgh", "poiuygh", "ghghgh"},
-  b_ = vector<string>{"gh", "acbfgh", "acbfegh"};
-  res = a.stringIndices(a_, b_);
-  dbg(res);
 
   return 0;
 }
