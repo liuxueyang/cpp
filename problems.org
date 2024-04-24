@@ -384,11 +384,19 @@ greedy, math
 **** TODO 1764C Doremy's City Construction
 SCHEDULED: <2024-02-25 Sun>
 graphs, greedy
-**** TODO 1761C Set Construction
-SCHEDULED: <2024-02-24 Sat>
+**** DONE 1761C Set Construction :topsort:
+CLOSED: [2024-03-22 Fri 10:00] SCHEDULED: <2024-02-24 Sat>
+:LOGBOOK:
+- CLOSING NOTE [2024-03-22 Fri 10:00] \\
+  Good greedy. topsort. BFS
+:END:
 constructive algorithms, dfs and similar, graphs, greedy
-**** TODO 1760F Quests
-SCHEDULED: <2024-02-23 Fri>
+**** DONE 1760F Quests
+CLOSED: [2024-03-21 Thu 20:18] SCHEDULED: <2024-02-23 Fri>
+:LOGBOOK:
+- CLOSING NOTE [2024-03-21 Thu 20:18] \\
+  Good greedy
+:END:
 binary search, greedy, sortings
 **** TODO 1758C Almost All Multiples
 SCHEDULED: <2024-02-22 Thu>
@@ -830,6 +838,82 @@ bitmasks, constructive algorithms, greedy
  | 29    |
 
 * LeetCode
+** DP
+*** Divides 1
+**** DONE 410 :DP:
+CLOSED: [2024-03-16 Sat 23:05]
+:LOGBOOK:
+- CLOSING NOTE [2024-03-16 Sat 23:05]
+:END:
+
+**** DONE 813
+CLOSED: [2024-03-16 Sat 23:05]
+:LOGBOOK:
+- CLOSING NOTE [2024-03-16 Sat 23:05]
+:END:
+
+**** DONE 1278
+CLOSED: [2024-03-16 Sat 23:05]
+:LOGBOOK:
+- CLOSING NOTE [2024-03-16 Sat 23:05]
+:END:
+
+**** DONE 1335
+CLOSED: [2024-03-16 Sat 23:05]
+:LOGBOOK:
+- CLOSING NOTE [2024-03-16 Sat 23:05]
+:END:
+
+**** DONE 2478
+CLOSED: [2024-03-16 Sat 23:05]
+:LOGBOOK:
+- CLOSING NOTE [2024-03-16 Sat 23:05]
+:END:
+
+**** DONE 2911
+CLOSED: [2024-03-16 Sat 23:05]
+:LOGBOOK:
+- CLOSING NOTE [2024-03-16 Sat 23:05]
+:END:
+
+*** Divides 2
+**** DONE 132
+CLOSED: [2024-03-16 Sat 23:06]
+:LOGBOOK:
+- CLOSING NOTE [2024-03-16 Sat 23:06]
+:END:
+
+**** DONE 2707
+CLOSED: [2024-03-16 Sat 23:06]
+:LOGBOOK:
+- CLOSING NOTE [2024-03-16 Sat 23:06]
+:END:
+
+**** DONE 2767
+CLOSED: [2024-03-16 Sat 23:06]
+:LOGBOOK:
+- CLOSING NOTE [2024-03-16 Sat 23:06]
+:END:
+
+**** DONE 1105
+CLOSED: [2024-03-16 Sat 23:06]
+:LOGBOOK:
+- CLOSING NOTE [2024-03-16 Sat 23:06]
+:END:
+
+**** DONE 2547
+CLOSED: [2024-03-16 Sat 23:36]
+:LOGBOOK:
+- CLOSING NOTE [2024-03-16 Sat 23:36]
+:END:
+
+**** DONE 2463
+CLOSED: [2024-03-18 Mon 22:46]
+:LOGBOOK:
+- CLOSING NOTE [2024-03-18 Mon 22:46]
+:END:
+
+**** [ ] 2977
 ** Divide and Conquer
 *** DONE LCR 170
 SCHEDULED: <2024-01-10 Wed>
