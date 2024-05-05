@@ -151,55 +151,55 @@ struct TreeNode {
 #endif
 // End of LeetCode
 
+const int N = 100100;
+int d[N][26];
+
 class Solution {
 public:
   int minAnagramLength(string s) {
     int n = SZ(s);
+    memset(d, 0, sizeof d);
 
-    auto check = [&](int m) -> bool {
-      VI base(26, 0);
-      For(i, 0, m) { base[s[i] - 'a']++; }
-
-      for (int i = m; i < n; i += m) {
-        VI tmp(26, 0);
-        For(j, i, i + m) { tmp[s[j] - 'a']++; }
-        if (tmp != base) {
-          return false;
+    For(i, 0, n) {
+      For(j, 0, 26) {
+        if (s[i] - 'a' == j) {
+          if (i == 0)
+            d[i][j] = 1;
+          else
+            d[i][j] += d[i - 1][j] + 1;
+        } else {
+          if (i == 0)
+            ;
+          else
+            d[i][j] = d[i - 1][j];
         }
       }
-      return true;
-    };
+    }
 
-    VI divs;
-    if (n == 1)
-      return 1;
-
-    for (int i = 1; i * i <= n; i++) {
-      int j = n / i;
+    For1(i, 1, n) {
       if (n % i == 0) {
-        if (i == j)
-          divs.pb(i);
-        else {
-          divs.pb(i);
-          divs.pb(j);
+        bool ok = true;
+
+        for (int j = i; j < n; j += i) {
+          For(k, 0, 26) {
+            int tmp = d[j + i - 1][k] - d[j - 1][k];
+
+            if (d[i - 1][k] != tmp) {
+              ok = false;
+              break;
+            }
+          }
+
+          if (!ok) {
+            break;
+          }
         }
+
+        if (ok)
+          return i;
       }
     }
 
-    sort(all(divs));
-    dbg(divs);
-
-    int len = SZ(divs), l = 0, r = len - 1, mid;
-    while (l < r) {
-      mid = (l + r) / 2;
-      if (check(divs[mid]))
-        r = mid;
-      else
-        l = mid + 1;
-    }
-
-    if (check(divs[r]))
-      return divs[r];
     return n;
   }
 };
