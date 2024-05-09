@@ -168,6 +168,72 @@ public:
       return ans;
     }
 
+    auto get_val = [&](int x) -> ll {
+      int mx = x - minv;
+      ll sum = ll(n) * x - s1;
+
+      if (2 * mx <= sum) {
+        ll tmp = sum / 2 * c2;
+        if (sum & 1) {
+          tmp += c1;
+        }
+        return tmp;
+      } else {
+        return (sum - mx) * c2 + ll(2 * mx - sum) * c1;
+      }
+    };
+
+    if (maxv & 1) {
+      ans = get_val(maxv);
+      maxv++;
+    }
+
+    auto check_0 = [&](int x) -> bool {
+      return get_val(2 * x) < get_val(2 * (x + 1));
+    };
+
+    int l = maxv / 2, r = maxv, mid;
+    while (l < r) {
+      mid = (l + r) / 2;
+      if (check_0(mid))
+        r = mid;
+      else
+        l = mid + 1;
+    }
+    ckmin(ans, get_val(r * 2));
+
+    auto check_1 = [&](int x) -> bool {
+      return get_val(2 * x + 1) < get_val(2 * (x + 1) + 1);
+    };
+
+    l = maxv / 2, r = maxv;
+    while (l < r) {
+      mid = (l + r) / 2;
+      if (check_1(mid))
+        r = mid;
+      else
+        l = mid + 1;
+    }
+    ckmin(ans, get_val(r * 2 + 1));
+
+    return ans % MOD;
+  }
+
+  int minCostToEqualizeArrayV2(vector<int> &a, int c1, int c2) {
+    int n = SZ(a);
+    ll s1{}, ans = INFL;
+
+    for (auto x : a)
+      s1 += x;
+    int minv = *min_element(all(a)), maxv = *max_element(all(a));
+
+    if (n == 1)
+      return 0;
+    else if (2 * c1 <= c2 || n == 2) {
+      ans = (ll(n) * maxv - s1) * c1 % MOD;
+      return ans;
+    }
+
     For1(x, maxv, 2 * maxv) {
       int mx = x - minv;
       ll sum = ll(n) * x - s1;
@@ -214,6 +280,10 @@ int main(void) {
 
   in = VI{1000000, 2, 1, 2, 1000000};
   ans = a.minCostToEqualizeArray(in, 10000, 4000);
+  dbg(ans);
+
+  in = VI{1, 14, 14, 15};
+  ans = a.minCostToEqualizeArray(in, 2, 1);
   dbg(ans);
   return 0;
 }
