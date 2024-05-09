@@ -155,43 +155,32 @@ class Solution {
 public:
   int minCostToEqualizeArray(vector<int> &a, int c1, int c2) {
     int n = SZ(a);
-    ll s1{}, ans = INF;
+    ll s1{}, ans = INFL;
 
     for (auto x : a)
       s1 += x;
-    int a0 = *min_element(all(a)), a1 = *max_element(all(a));
+    int minv = *min_element(all(a)), maxv = *max_element(all(a));
 
     if (n == 1)
       return 0;
     else if (2 * c1 <= c2 || n == 2) {
-      ans = (ll(n) * a1 - s1) * c1 % MOD;
+      ans = (ll(n) * maxv - s1) * c1 % MOD;
       return ans;
     }
 
-    int top = (s1 - 2 * a0) / (n - 2);
-    ckmax(top, a1);
-
-    dbg(top);
-    For1(x, a1, 2 * a1) {
-      int mx = x - a0;
+    For1(x, maxv, 2 * maxv) {
+      int mx = x - minv;
       ll sum = ll(n) * x - s1;
-      if (2 * mx < sum) {
-        dbg(sum, x, mx);
-        ll tmp;
-        if (sum & 1) {
-          tmp = ll(sum / 2) * c2 + c1;
-        } else {
-          tmp = ll(sum / 2) * c2;
-        }
 
-        dbg(ans, tmp);
-        ckmin(ans, (tmp));
-        // break;
+      if (2 * mx <= sum) {
+        ll tmp = sum / 2 * c2;
+        if (sum & 1) {
+          tmp += c1;
+        }
+        ckmin(ans, tmp);
       } else {
         ll tmp = (sum - mx) * c2 + ll(2 * mx - sum) * c1;
-        if (ckmin(ans, tmp)) {
-          dbg(mx, sum, tmp, x);
-        }
+        ckmin(ans, tmp);
       }
     }
 
@@ -223,6 +212,9 @@ int main(void) {
   ans = a.minCostToEqualizeArray(in, 60, 2);
   dbg(ans);
 
+  in = VI{1000000, 2, 1, 2, 1000000};
+  ans = a.minCostToEqualizeArray(in, 10000, 4000);
+  dbg(ans);
   return 0;
 }
 
