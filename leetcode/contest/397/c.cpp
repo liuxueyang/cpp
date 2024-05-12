@@ -158,6 +158,23 @@ class Solution {
 public:
   int maxScore(vector<vector<int>> &g) {
     int n = SZ(g), m = SZ(g[0]), ans = -INF;
+    vector<VI> g1(n + 1, VI(m + 1, INF));
+    For(i, 0, n) For(j, 0, m) g1[i + 1][j + 1] = g[i][j];
+
+    memset(d, 0x3f, sizeof d);
+    For1(i, 1, n) For1(j, 1, m)
+        ckmin(d[i][j], std::min({d[i - 1][j], d[i][j - 1], g1[i][j]}));
+
+    For1(i, 1, n) For1(j, 1, m) {
+      int tmp = min(d[i][j - 1], d[i - 1][j]);
+      ckmax(ans, g1[i][j] - tmp);
+    }
+
+    return ans;
+  }
+
+  int maxScore_bad(vector<vector<int>> &g) {
+    int n = SZ(g), m = SZ(g[0]), ans = -INF;
 
     For(i, 0, n) For(j, 0, m) d[i][j] = -INF;
     d[n - 1][m - 1] = 0;
