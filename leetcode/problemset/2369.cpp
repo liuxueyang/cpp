@@ -153,6 +153,7 @@ struct TreeNode {
 
 const int N = 100100;
 int d[N];
+bool d1[N], vis[N];
 
 class Solution {
 public:
@@ -196,11 +197,40 @@ public:
     return res = 0;
   }
 
-  bool validPartition(vector<int> &a_) {
+  bool validPartition1(vector<int> &a_) {
     a = a_;
     n = SZ(a);
     memset(d, -1, sizeof d);
     return dfs(n - 1) == 1;
+  }
+
+  bool dfs1(int i) {
+    if (i < 0)
+      return true;
+    if (vis[i])
+      return d1[i];
+
+    if (i == 0)
+      return false;
+    else {
+      d1[i] = d1[i] || (a[i] == a[i - 1] && dfs1(i - 2));
+      if (i >= 2) {
+        d1[i] = d1[i] || (a[i] == a[i - 1] && a[i] == a[i - 2] && dfs1(i - 3));
+        d1[i] = d1[i] ||
+                (a[i] == a[i - 1] + 1 && a[i] == a[i - 2] + 2 && dfs1(i - 3));
+      }
+    }
+
+    vis[i] = true;
+    return d1[i];
+  }
+
+  bool validPartition(vector<int> &a_) {
+    a = a_;
+    n = SZ(a);
+    memset(d1, false, sizeof d1);
+    memset(vis, false, sizeof vis);
+    return dfs1(n - 1);
   }
 };
 
