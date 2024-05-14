@@ -168,7 +168,7 @@ public:
     n++;
     ll len1 = 1LL << p, len2 = len1 << 1, ans = n / len2 * len1;
     ll rem = n % len2;
-    if (n >= len1)
+    if (rem >= len1)
       ans += rem - len1;
     return ans;
   }
@@ -216,7 +216,7 @@ public:
   ll cal_out(ll l, ll r, ll m) {
     ll sum{};
     for (int i = 0; (1ll << i) <= r; ++i) {
-      ll tmp = count(r) - count(l - 1);
+      ll tmp = get(i, r) - get(i, l - 1);
       sum += tmp * i;
     }
     return qmi(2, sum, m);
@@ -233,7 +233,7 @@ public:
         ans.pb(tmp);
       } else {
         int tmp = cal_in(p1.f1, p1.f2, 64, m) * cal_in(p2.f1, 1, p2.f2, m) % m;
-        tmp = tmp * cal_out(p1.f1 + 1, p2.f1 - 1, m);
+        tmp = tmp * cal_out(p1.f1 + 1, p2.f1 - 1, m) % m;
         ans.pb(tmp);
       }
     }
@@ -249,6 +249,13 @@ int main(void) {
   cout.tie(NULL);
 
   Solution a;
+  vector<vector<ll>> p{{1, 3, 7}};
+  auto ans = a.findProductsOfElements(p);
+  dbg(ans);
+
+  p = vector<vector<ll>>{{2, 5, 3}, {7, 7, 4}};
+  ans = a.findProductsOfElements(p);
+  dbg(ans);
 
   return 0;
 }

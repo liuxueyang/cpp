@@ -226,7 +226,8 @@ public:
     VI ans;
     for (auto &v : que) {
       ll l = v[0], r = v[1], m = v[2];
-	  l++, r++;
+      l++, r++;
+
       auto p1 = get_pos(l), p2 = get_pos(r);
       if (p1.f1 == p2.f1) {
         ans.pb(cal_in(p1.f1, p1.f2, p2.f2, m));
