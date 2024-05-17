@@ -181,7 +181,8 @@ public:
 
     return ans;
   }
-  int minExtraChar(string s1, vector<string> &dic) {
+
+  int minExtraChar_dfs(string s1, vector<string> &dic) {
     s = s1;
     n = SZ(s);
     len = 0;
@@ -191,6 +192,31 @@ public:
       ckmax(len, SZ(x));
     }
     return dfs(n - 1);
+  }
+
+  int minExtraChar(string s1, vector<string> &dic) {
+    n = SZ(s1);
+    s = " " + s1;
+    len = 0;
+    memset(d, 0x3f, sizeof d);
+    for (auto &x : dic) {
+      m.insert(x);
+      ckmax(len, SZ(x));
+    }
+
+    d[0] = 0;
+
+    For1(i, 1, n) {
+      For1(j, max(1, i - len + 1), i) {
+        string tmp = s.substr(j, i - j + 1);
+        if (has(m, tmp)) {
+          ckmin(d[i], d[j - 1]);
+        }
+      }
+      ckmin(d[i], d[i - 1] + 1);
+    }
+
+    return d[n];
   }
 };
 
