@@ -1,4 +1,4 @@
-// Date: Fri May 17 23:09:44 2024
+// Date: Sat May 18 08:53:05 2024
 
 #include <climits>
 #include <cmath>
@@ -151,71 +151,44 @@ struct TreeNode {
 #endif
 // End of LeetCode
 
-const int N = 100100;
-ll d[N];
+const int N = 15;
+int d[N];
 bool vis[N];
-
-int cal(string t) {
-  int n1 = SZ(t);
-
-  if (n1 == 1) {
-    if (t[0] == '*')
-      return 9;
-    else
-      return 1;
-  }
-
-  if (t[0] == '0' || t[0] == '3')
-    return 0;
-
-  int ans{};
-  For1(i, 10, 26) {
-    int t0 = i / 10, t1 = i % 10;
-
-    if (t[1] == '*' && t1 == 0)
-      continue;
-
-    if ((t0 == t[0] - '0' || t[0] == '*') && (t1 == t[1] - '0' || t[1] == '*'))
-      ans++;
-  }
-  return ans;
-}
 
 class Solution {
 public:
   string s;
   int n;
 
-  ll dfs(int i) {
+  int dfs(int i) {
     if (i == -1)
       return 1;
     if (vis[i])
       return d[i];
-    ll &ans = d[i], tmp;
-
+    int &ans = d[i];
     For1(j, max(0, i - 1), i) {
-      if (s[j] == '0')
+      if (s[j] == '0') {
+        if (j == i) {
+          ans += dfs(j - 1);
+        }
         continue;
-
-      string t1 = s.substr(j, i - j + 1);
-      int num = cal(t1);
-
-      if (!num)
-        continue;
-
-      tmp = dfs(j - 1) * num % MOD;
-      ans = (ans + tmp) % MOD;
+      }
+      int n1{};
+      For1(k, j, i) { n1 = n1 * 10 + (s[k] - '0'); }
+      if (n1 >= 0 && n1 <= 25) {
+        ans += dfs(j - 1);
+      }
     }
-
     vis[i] = true;
     return ans;
   }
-  int numDecodings(string s1) {
-    n = SZ(s1);
-    s = s1;
+
+  int crackNumber(int n1) {
+    s = to_string(n1);
+    n = SZ(s);
     memset(vis, false, sizeof vis);
     memset(d, 0, sizeof d);
-    return dfs(n - 1) % MOD;
+    return dfs(n - 1);
   }
 };
 
@@ -227,14 +200,10 @@ int main(void) {
   cout.tie(NULL);
 
   Solution a;
-
-  auto res = a.numDecodings("*");
+  int res = a.crackNumber(216612);
   dbg(res);
 
-  res = a.numDecodings("1*");
-  dbg(res);
-
-  res = a.numDecodings("2*");
+  res = a.crackNumber(506);
   dbg(res);
 
   return 0;
