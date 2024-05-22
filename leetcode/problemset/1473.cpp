@@ -154,6 +154,7 @@ struct TreeNode {
 const int N = 110, M = 25;
 int n, m, d[N][N][M], a[N], k, c[N][M];
 bool vis[N][N][M];
+int calc;
 
 class Solution {
 public:
@@ -178,7 +179,7 @@ public:
         return ans;
       } else {
         int sum{}, q = a[i];
-        Rof1(j, max(k - 1, 1), i) {
+        Rof1(j, max(k, 1), i) {
           if (a[j]) {
             if (a[j] != q)
               break;
@@ -199,7 +200,7 @@ public:
         continue;
 
       sum = 0;
-      Rof1(j, max(k - 1, 1), i) {
+      Rof1(j, max(k, 1), i) {
         if (a[j]) {
           if (a[j] != q)
             break;
@@ -208,6 +209,7 @@ public:
         }
         tmp = dfs(j - 1, k - 1, q);
         ckmin(ans, tmp + sum);
+        calc++;
       }
     }
 
@@ -234,6 +236,61 @@ public:
   }
 };
 
+class Solution1 {
+private:
+  // 极大值
+  // 选择 INT_MAX / 2 的原因是防止整数相加溢出
+  static constexpr int INFTY = INT_MAX / 2;
+
+public:
+  int minCost(vector<int> &houses, vector<vector<int>> &cost, int m, int n,
+              int target) {
+    // 将颜色调整为从 0 开始编号，没有被涂色标记为 -1
+    for (int &c : houses) {
+      --c;
+    }
+
+    // dp 所有元素初始化为极大值
+    vector<vector<vector<int>>> dp(
+        m, vector<vector<int>>(n, vector<int>(target, INFTY)));
+
+    for (int i = 0; i < m; ++i) {
+      for (int j = 0; j < n; ++j) {
+        if (houses[i] != -1 && houses[i] != j) {
+          continue;
+        }
+
+        for (int k = 0; k < target; ++k) {
+          for (int j0 = 0; j0 < n; ++j0) {
+            if (j == j0) {
+              if (i == 0) {
+                if (k == 0) {
+                  dp[i][j][k] = 0;
+                }
+              } else {
+                dp[i][j][k] = min(dp[i][j][k], dp[i - 1][j][k]);
+              }
+            } else if (i > 0 && k > 0) {
+              dp[i][j][k] = min(dp[i][j][k], dp[i - 1][j0][k - 1]);
+            }
+            calc++;
+          }
+
+          if (dp[i][j][k] != INFTY && houses[i] == -1) {
+            dp[i][j][k] += cost[i][j];
+          }
+        }
+      }
+    }
+
+    int ans = INFTY;
+    for (int j = 0; j < n; ++j) {
+      ans = min(ans, dp[m - 1][j][target - 1]);
+    }
+    return ans == INFTY ? -1 : ans;
+  }
+};
+
 #ifdef _DEBUG
 
 int main(void) {
@@ -252,11 +309,48 @@ int main(void) {
   // res = a.minCost(p, q, n, m, k);
   // dbg(res);
 
-  p = VI{0, 2, 1, 2, 0};
-  q = vector<VI>{{1, 10}, {10, 1}, {10, 1}, {1, 10}, {5, 1}};
-  n = 5, m = 2, k = 3;
+  // p = VI{0, 2, 1, 2, 0};
+  // q = vector<VI>{{1, 10}, {10, 1}, {10, 1}, {1, 10}, {5, 1}};
+  // n = 5, m = 2, k = 3;
+  // res = a.minCost(p, q, n, m, k);
+  // dbg(res);
+
+  calc = 0;
+  n = 100, m = 20, k = 50;
+  p = VI(n, 0);
+  q = vector<VI>(n, VI(m, 1));
   res = a.minCost(p, q, n, m, k);
-  dbg(res);
+  dbg(res, calc);
+
+  Solution1 a1;
+  calc = 0;
+  n = 100, m = 20, k = 50;
+  p = VI(n, 0);
+  q = vector<VI>(n, VI(m, 1));
+  res = a1.minCost(p, q, n, m, k);
+  dbg(res, calc);
+
+  int n1 = 100;
+  m = 20;
+
+  For1(k, 1, n1) {
+    calc = 0;
+    n = 100, m = 20;
+    p = VI(n, 0);
+    q = vector<VI>(n, VI(m, 1));
+    int res1 = a.minCost(p, q, n, m, k);
+    int calc1 = calc;
+
+    calc = 0;
+    p = VI(n, 0);
+    q = vector<VI>(n, VI(m, 1));
+    int res2 = a1.minCost(p, q, n, m, k);
+    int calc2 = calc;
+
+    double pr = double(calc1) / calc2;
+    assert(res1 == res2);
+    dbg(k, res1, res2, calc1, calc2, pr);
+  }
 
   return 0;
 }
