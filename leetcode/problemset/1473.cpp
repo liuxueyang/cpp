@@ -162,13 +162,26 @@ public:
     if (!i || !k) {
       if (!i && !k)
         return 0;
-      else
+      else if (!k) {
+        int sum{};
+        if (a[i]) {
+          if (a[i] != p)
+            return INF;
+        } else {
+          sum = c[i][p];
+        }
+        int tmp = dfs(i - 1, k, p) + sum;
+        ckmin(d[i][k][p], tmp);
+
+        return tmp;
+      } else
         return INF;
     }
-    if (vis[i][k][p])
-      return d[i][k][p];
 
     int &ans = d[i][k][p], tmp;
+
+    if (vis[i][k][p])
+      return ans;
 
     if (a[i]) {
       if (a[i] == p) {
@@ -178,17 +191,9 @@ public:
         vis[i][k][p] = true;
         return ans;
       } else {
-        int sum{}, q = a[i];
-        Rof1(j, max(k, 1), i) {
-          if (a[j]) {
-            if (a[j] != q)
-              break;
-          } else {
-            sum += c[j][q];
-          }
-          tmp = dfs(j - 1, k - 1, q);
-          ckmin(ans, tmp + sum);
-        }
+        int q = a[i];
+        tmp = dfs(i - 1, k - 1, q);
+        ckmin(ans, tmp);
         vis[i][k][p] = true;
         return ans;
       }
@@ -196,26 +201,21 @@ public:
 
     int sum{};
     For1(q, 1, m) {
-      if (q == p)
-        continue;
-
-      sum = 0;
-      Rof1(j, max(k, 1), i) {
-        if (a[j]) {
-          if (a[j] != q)
-            break;
-        } else {
-          sum += c[j][q];
-        }
-        tmp = dfs(j - 1, k - 1, q);
-        ckmin(ans, tmp + sum);
-        calc++;
+      sum = c[i][q];
+      if (q == p) {
+        tmp = dfs(i - 1, k, p);
+      } else {
+        tmp = dfs(i - 1, k - 1, q);
       }
+
+      ckmin(ans, tmp + sum);
+      calc++;
     }
 
     vis[i][k][p] = true;
     return ans;
   }
+
   int minCost(vector<int> &a1, vector<vector<int>> &c1, int _n1, int m1_,
               int k1) {
     n = SZ(a1);
@@ -230,8 +230,10 @@ public:
     memset(d, 0x3f, sizeof d);
     memset(vis, false, sizeof vis);
     int ans = dfs(n, k, 22);
+
     if (ans >= INF)
       ans = -1;
+
     return ans;
   }
 };
@@ -315,20 +317,20 @@ int main(void) {
   // res = a.minCost(p, q, n, m, k);
   // dbg(res);
 
-  calc = 0;
-  n = 100, m = 20, k = 50;
-  p = VI(n, 0);
-  q = vector<VI>(n, VI(m, 1));
-  res = a.minCost(p, q, n, m, k);
-  dbg(res, calc);
+  // calc = 0;
+  // n = 100, m = 20, k = 50;
+  // p = VI(n, 0);
+  // q = vector<VI>(n, VI(m, 1));
+  // res = a.minCost(p, q, n, m, k);
+  // dbg(res, calc);
 
   Solution1 a1;
-  calc = 0;
-  n = 100, m = 20, k = 50;
-  p = VI(n, 0);
-  q = vector<VI>(n, VI(m, 1));
-  res = a1.minCost(p, q, n, m, k);
-  dbg(res, calc);
+  // calc = 0;
+  // n = 100, m = 20, k = 50;
+  // p = VI(n, 0);
+  // q = vector<VI>(n, VI(m, 1));
+  // res = a1.minCost(p, q, n, m, k);
+  // dbg(res, calc);
 
   int n1 = 100;
   m = 20;
@@ -350,6 +352,8 @@ int main(void) {
     double pr = double(calc1) / calc2;
     assert(res1 == res2);
     dbg(k, res1, res2, calc1, calc2, pr);
+
+    // break;
   }
 
   return 0;
