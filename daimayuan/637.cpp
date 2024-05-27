@@ -1,6 +1,5 @@
-// Date: Mon May 27 21:53:16 2024
+// Date: Mon May 27 22:30:08 2024
 
-#include <cassert>
 #include <climits>
 #include <cmath>
 #include <cstdio>
@@ -125,72 +124,59 @@ template <typename T, typename... V> void _print(T t, V... v) {
 #define dbg(x...)
 #endif
 
-const int N = 200100;
-int n, q;
-ll a[N];
+const int N = 510;
+int n, m, q, a[N][N];
 
-template <class T> struct BIT {
-  int n;
-  vector<T> c;
+template <class T> struct BIT2 {
+  int n, m;
+  vector<vector<T>> c;
 
-  BIT(int n_) : n(n_) { c = vector<T>(n + 10, 0); }
+  BIT2(int n_, int m_) : n(n_), m(m_) {
+    c = vector<vector<T>>(n + 10, vector<T>(m + 10, 0));
+  }
 
   int lowbit(int x) { return x & -x; }
 
-  void update(int i, T d) {
-    assert(i != 0);
-    for (; i <= n; i += lowbit(i)) {
-      c[i] += d;
-    }
-  }
-
-  T query(int i) {
-    T ans{};
-    assert(i <= n);
-    for (; i; i -= lowbit(i)) {
-      ans += c[i];
-    }
-    return ans;
-  }
-
-  int search(T s) {
-    // find the largest pos which presum(a[pos]) >= s
-    int pos{};
-
-    // 2^18 >= n(2e5)
-    for (int j = 18; j >= 0; --j) {
-      int pos1 = pos + (1 << j);
-      if (pos1 <= n && c[pos1] <= s) {
-        s -= c[pos1];
-        pos = pos1;
+  void update(int x, int y, T d) {
+    for (int p = x; p <= n; p += lowbit(p)) {
+      for (int q = y; q <= m; q += lowbit(q)) {
+        c[p][q] += d;
       }
     }
-    return pos;
+  }
+
+  T query(int x, int y) {
+    T ans{};
+    for (int p = x; p; p -= lowbit(p)) {
+      for (int q = y; q; q -= lowbit(q)) {
+        ans += c[p][q];
+      }
+    }
+    return ans;
   }
 };
 
 void solve() {
-  cin >> n >> q;
+  cin >> n >> m >> q;
 
-  BIT<ll> tr(n);
-  For1(i, 1, n) {
-    cin >> a[i];
-    tr.update(i, a[i]);
+  BIT2<ll> tr(n, m);
+
+  For1(i, 1, n) For1(j, 1, m) {
+    cin >> a[i][j];
+    tr.update(i, j, a[i][j]);
   }
 
   while (q--) {
-    int op, x, d;
-    ll s;
-
+    int op, x, y, d;
     cin >> op;
-    if (op == 1) {
-      cin >> x >> d;
 
-      tr.update(x, d - a[x]);
-      a[x] = d;
+    if (op == 1) {
+      cin >> x >> y >> d;
+      tr.update(x, y, d - a[x][y]);
+      a[x][y] = d;
     } else {
-      cin >> s;
-      int ans = tr.search(s);
+      cin >> x >> y;
+      ll ans = tr.query(x, y);
       cout << ans << '\n';
     }
   }
@@ -198,7 +184,7 @@ void solve() {
 
 int main(void) {
 #ifdef _DEBUG
-  freopen("636.in", "r", stdin);
+  freopen("637.in", "r", stdin);
 #endif
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
