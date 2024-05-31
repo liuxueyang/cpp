@@ -151,9 +151,56 @@ struct TreeNode {
 #endif
 // End of LeetCode
 
+template <class T> struct BIT {
+  int n;
+  vector<T> c;
+
+  BIT(int n_) : n(n_) { c = vector<T>(n + 10, 0); }
+
+  int lowbit(int x) { return x & -x; }
+
+  void update(int i, T d) {
+    for (; i <= n; i += lowbit(i)) {
+      ckmax(c[i], d);
+    }
+  }
+
+  T query(int i) {
+    T ans{};
+    for (; i; i -= lowbit(i)) {
+      ckmax(ans, c[i]);
+    }
+    return ans;
+  }
+};
+
 class Solution {
 public:
   int bestTeamScore(vector<int> &s, vector<int> &a) {
+    vector<PII> b;
+    int n = SZ(a), mx = 0;
+
+    For(i, 0, n) {
+      b.pb({s[i], a[i]});
+      ckmax(mx, a[i]);
+    }
+    sort(all(b));
+
+    VI d(mx + 1, 0);
+    BIT<int> tr(mx + 1);
+
+    for (auto &[x, y] : b) {
+      int tmp = tr.query(y);
+      ckmax(d[y], tmp + x);
+      tr.update(y, d[y]);
+    }
+
+    int ans = *max_element(all(d));
+
+    return ans;
+  }
+
+  int bestTeamScore_v3(vector<int> &s, vector<int> &a) {
     vector<PII> b;
     int n = SZ(a);
 
