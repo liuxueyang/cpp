@@ -155,6 +155,29 @@ class Solution {
 public:
   int bestTeamScore(vector<int> &s, vector<int> &a) {
     vector<PII> b;
+    int n = SZ(a), mx = 0;
+
+    For(i, 0, n) {
+      b.pb({s[i], a[i]});
+      ckmax(mx, a[i]);
+    }
+    sort(all(b));
+
+    VI d(mx + 1, 0);
+
+    For(i, 0, n) {
+      int cur = b[i].f2, tmp = 0;
+      For1(j, 0, b[i].f2) { ckmax(tmp, d[j] + b[i].f1); }
+      ckmax(d[cur], tmp);
+    }
+
+    int ans = *max_element(all(d));
+
+    return ans;
+  }
+
+  int bestTeamScore_v1(vector<int> &s, vector<int> &a) {
+    vector<PII> b;
     int n = SZ(a);
 
     For(i, 0, n) { b.pb({a[i], s[i]}); }
@@ -187,6 +210,20 @@ int main(void) {
   cout.tie(NULL);
 
   Solution a;
+  VI sc, ag;
+  int res;
+
+  sc = VI{1, 3, 5, 10, 15}, ag = VI{1, 2, 3, 4, 5};
+  res = a.bestTeamScore(sc, ag);
+  dbg(res);
+
+  sc = VI{4, 5, 6, 5}, ag = VI{2, 1, 2, 1};
+  res = a.bestTeamScore(sc, ag);
+  dbg(res);
+
+  sc = VI{1, 2, 3, 5}, ag = VI{8, 9, 10, 1};
+  res = a.bestTeamScore(sc, ag);
+  dbg(res);
 
   return 0;
 }
