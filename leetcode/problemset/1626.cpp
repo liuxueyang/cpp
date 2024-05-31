@@ -155,6 +155,29 @@ class Solution {
 public:
   int bestTeamScore(vector<int> &s, vector<int> &a) {
     vector<PII> b;
+    int n = SZ(a);
+
+    For(i, 0, n) { b.pb({s[i], a[i]}); }
+    sort(all(b));
+
+    VI d(n, 0);
+
+    For(i, 0, n) { d[i] = b[i].f1; }
+
+    For(i, 1, n) {
+      For(j, 0, i) {
+        if (b[i].f2 >= b[j].f2) {
+          ckmax(d[i], d[j] + b[i].f1);
+        }
+      }
+    }
+
+    int ans = *max_element(all(d));
+
+    return ans;
+  }
+  int bestTeamScore_v2(vector<int> &s, vector<int> &a) {
+    vector<PII> b;
     int n = SZ(a), mx = 0;
 
     For(i, 0, n) {
