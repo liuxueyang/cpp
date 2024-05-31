@@ -174,27 +174,36 @@ template <class T> struct BIT {
   }
 };
 
+template <class T> struct Discretize {
+  vector<T> c;
+  int n;
+
+  Discretize(vector<T> c_) : n(SZ(c_)) {
+    c = c_;
+    sort(all(c));
+    c.resize(distance(c.begin(), unique(all(c))));
+  }
+
+  int get(T x) { return distance(c.begin(), lower_bound(all(c), x)) + 1; }
+  int size() { return SZ(c); }
+};
+
 class Solution {
 public:
   vector<int> resultArray(vector<int> &a) {
-    VI ans, a1, a2, b(a);
+    VI ans, a1, a2;
 
-    sort(all(b));
-    b.resize(distance(b.begin(), unique(all(b))));
+    Discretize<int> dis(a);
 
-    auto get = [&](int i) {
-      return distance(b.begin(), lower_bound(all(b), i)) + 1;
-    };
-
-    int n = SZ(a), sz = SZ(b) + 10;
+    int n = SZ(a), sz = dis.size() + 10;
     BIT<int> tr1(sz), tr2(sz);
 
     a1.pb(a[0]), a2.pb(a[1]);
-    tr1.update(get(a[0]), 1);
-    tr2.update(get(a[1]), 1);
+    tr1.update(dis.get(a[0]), 1);
+    tr2.update(dis.get(a[1]), 1);
 
     For(i, 2, n) {
-      int x = get(a[i]), len1 = SZ(a1), len2 = SZ(a2);
+      int x = dis.get(a[i]), len1 = SZ(a1), len2 = SZ(a2);
       int cnt1 = len1 - tr1.query(x), cnt2 = len2 - tr2.query(x);
 
       if (cnt1 > cnt2) {
