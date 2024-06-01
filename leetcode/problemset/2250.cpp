@@ -1,5 +1,6 @@
 // Date: Sat Jun  1 13:04:57 2024
 
+#include <cassert>
 #include <climits>
 #include <cmath>
 #include <cstdio>
@@ -151,9 +152,83 @@ struct TreeNode {
 #endif
 // End of LeetCode
 
+template <class T> struct BIT {
+  int n;
+  vector<T> c;
+
+  BIT(int n_) : n(n_) { c = vector<T>(n + 10, 0); }
+
+  int lowbit(int x) { return x & -x; }
+
+  void update(int i, T d) {
+    assert(i != 0);
+    for (; i <= n; i += lowbit(i)) {
+      c[i] += d;
+    }
+  }
+
+  T query(int i) {
+    T ans{};
+    assert(i <= n);
+    for (; i; i -= lowbit(i)) {
+      ans += c[i];
+    }
+    return ans;
+  }
+
+  int search(T s) {
+    // find the largest pos which presum(a[pos]) >= s
+    int pos{};
+
+    // 2^18 >= n(2e5)
+    for (int j = 18; j >= 0; --j) {
+      int pos1 = pos + (1 << j);
+      if (pos1 <= n && c[pos1] <= s) {
+        s -= c[pos1];
+        pos = pos1;
+      }
+    }
+    return pos;
+  }
+};
+
 class Solution {
 public:
   vector<int> countRectangles(vector<vector<int>> &a, vector<vector<int>> &b) {
+    int m = SZ(b), n = SZ(a);
+    VI ans(m, 0), d(110, 0);
+    vector<PII> a1(n), b1(m);
+    BIT<int> tr(110);
+
+    For(i, 0, n) { a1[i] = PII(a[i][0], a[i][1]); }
+    sort(all(a1), greater<PII>());
+
+    For(i, 0, m) { b1[i] = PII(b[i][0], b[i][1]); }
+    sort(all(b1), greater<PII>());
+
+    map<PII, int> vis;
+
+    int j = 0;
+    For(i, 0, m) {
+      while (j < n && a1[j].f1 >= b1[i].f1) {
+        tr.update(a1[j].f2, 1);
+        ++j;
+      }
+
+      int cur = tr.query(b1[i].f2 - 1);
+
+      vis[b1[i]] = j - cur;
+    }
+
+    For(i, 0, m) {
+      PII t = PII(b[i][0], b[i][1]);
+      ans[i] = vis[t];
+    }
+
+    return ans;
+  }
+  vector<int> countRectangles_v1(vector<vector<int>> &a,
+                                 vector<vector<int>> &b) {
     int m = SZ(b), n = SZ(a);
     VI ans(m, 0), d(110, 0);
     vector<PII> a1(n), b1(m);
@@ -195,6 +270,13 @@ int main(void) {
   cout.tie(NULL);
 
   Solution a;
+  vector<VI> rec, po;
+  VI res;
+
+  rec = vector<VI>{{1, 2}, {2, 3}, {2, 5}};
+  po = vector<VI>{{2, 1}, {1, 4}};
+  res = a.countRectangles(rec, po);
+  dbg(res);
 
   return 0;
 }
