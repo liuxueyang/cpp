@@ -192,20 +192,6 @@ template <class T> struct BIT {
   }
 };
 
-template <class T> struct Discretize {
-  vector<T> c;
-  int n;
-
-  Discretize(vector<T> c_) : n(SZ(c_)) {
-    c = c_;
-    sort(all(c));
-    c.resize(distance(c.begin(), unique(all(c))));
-  }
-
-  int get(T x) { return distance(c.begin(), lower_bound(all(c), x)) + 1; }
-  int size() { return SZ(c); }
-};
-
 class Solution {
 public:
   long long countOperationsToEmptyArray(vector<int> &a) {
