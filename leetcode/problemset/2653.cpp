@@ -161,28 +161,21 @@ template <class T> struct BIT {
   int lowbit(int x) { return x & -x; }
 
   void update(int i, T d) {
-    assert(i != 0);
-    for (; i <= n; i += lowbit(i)) {
+    for (; i <= n; i += lowbit(i))
       c[i] += d;
-    }
   }
 
   T query(int i) {
     T ans{};
-    assert(i <= n);
-    for (; i; i -= lowbit(i)) {
+    for (; i; i -= lowbit(i))
       ans += c[i];
-    }
     return ans;
   }
 
   int search(T s) {
-    // find the largest pos which presum(a[pos]) >= s
-    int pos{};
-
-    // 2^18 >= n(2e5)
-    for (int j = 18; j >= 0; --j) {
-      int pos1 = pos + (1 << j);
+    int pos{}, pos1{};
+    Rof1(j, 0, 18) {
+      pos1 = pos + (1 << j);
       if (pos1 <= n && c[pos1] <= s) {
         s -= c[pos1];
         pos = pos1;
@@ -196,51 +189,46 @@ template <class T> struct Discretize {
   vector<T> c;
   int n;
 
-  Discretize(vector<T> c_) : n(SZ(c_)) {
-    c = c_;
+  Discretize(vector<T> c_) : c(c_) {
     sort(all(c));
     c.resize(distance(c.begin(), unique(all(c))));
+    n = SZ(c);
   }
 
   int get(T x) { return distance(c.begin(), lower_bound(all(c), x)) + 1; }
-  T ori(int x) {
-    assert(x <= size());
-    return *(c.begin() + x - 1);
+  T origin(int i) {
+    assert(i >= 1 && i <= n);
+    return c[i - 1];
   }
-  int size() { return SZ(c); }
+  int size() { return n; }
 };
 
 class Solution {
 public:
   vector<int> getSubarrayBeauty(vector<int> &a, int k, int x) {
-    int n = SZ(a), len = n - k + 1;
-    VI ans(len, 0);
-    BIT<int> tr(200);
+    VI ans;
+
     Discretize<int> dis(a);
+    BIT<int> tr(dis.size());
+    int n = SZ(a);
 
-    tr.update(dis.get(a[0]), 1);
-
-    if (n == 1) {
-      int tmp = tr.search(x - 1) + 1;
-      int y = dis.ori(tmp);
-      if (y < 0)
-        ans[0] = y;
+    For(i, 0, k - 1) {
+      int v = dis.get(a[i]);
+      tr.update(v, 1);
     }
 
-    for (int i = 0, j = 1; j < n; j++) {
-      while (j < n && j - i + 1 <= k) {
-        tr.update(dis.get(a[j]), 1);
-        ++j;
-      }
-      --j;
+    for (int i = 0, j = k - 1; j < n; j++) {
+      int v = dis.get(a[j]);
+      tr.update(v, 1);
 
-      int tmp = tr.search(x - 1) + 1;
-      int y = dis.ori(tmp);
+      int tmp = tr.search(x - 1);
+      tmp = dis.origin(tmp + 1);
+      if (tmp >= 0)
+        tmp = 0;
+      ans.pb(tmp);
 
-      if (y < 0)
-        ans[i] = y;
-
-      tr.update(dis.get(a[i++]), -1);
+      int u = dis.get(a[i++]);
+      tr.update(u, -1);
     }
 
     return ans;
