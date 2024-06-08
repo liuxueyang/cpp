@@ -1,5 +1,6 @@
-// Date: Tue May 28 22:16:27 2024
+// Date: Sat Jun  8 17:27:53 2024
 
+#include <cassert>
 #include <climits>
 #include <cmath>
 #include <cstdio>
@@ -155,16 +156,13 @@ template <class T> struct BIT {
   int n;
   vector<T> c;
 
-  BIT(int n_) : n(n_) { c = vector<T>(n + 10, 0); }
+  BIT(int n_) : n(n_) { c = vector(n + 10, 0); }
 
   int lowbit(int x) { return x & -x; }
-
   void update(int i, T d) {
-    for (; i <= n; i += lowbit(i)) {
+    for (; i <= n; i += lowbit(i))
       c[i] += d;
-    }
   }
-
   T query(int i) {
     T sum{};
     for (; i; i -= lowbit(i)) {
@@ -174,39 +172,49 @@ template <class T> struct BIT {
   }
 };
 
+template <class T> struct Discretize {
+  vector<T> c;
+  int n;
+
+  Discretize(vector<T> c_) : c(c_) {
+    sort(all(c));
+    c.resize(distance(c.begin(), unique(all(c))));
+    n = SZ(c);
+  }
+
+  int get(T x) { return 1 + distance(c.begin(), lower_bound(all(c), x)); }
+
+  int size() { return n; }
+};
+
 class Solution {
 public:
-  int countRangeSum(vector<int> &a, int low, int high) {
+  int countRangeSum(vector<int> &a, int low, int up) {
     int n = SZ(a), ans{};
-    set<ll> vis;
     vector<ll> b(n + 1, 0);
-    map<ll, int> m;
 
-    For1(i, 1, n) {
-      b[i] = b[i - 1] + a[i - 1];
-      vis.insert(b[i]);
-      vis.insert(b[i] - high);
-      vis.insert(b[i] - low);
-    }
-    vis.insert(0);
+    For1(i, 1, n) { b[i] = b[i - 1] + a[i - 1]; }
 
-    int idx = 1;
-    for (auto &x : vis) {
-      if (!has(m, x))
-        m[x] = ++idx;
-    }
+    vector<ll> b1(b), b2(b);
 
-    BIT<int> tr(idx + 10);
+    For1(i, 1, n) { b1.pb(b[i] - low); }
+    For1(i, 1, n) { b2.pb(b[i] - up); }
 
-    tr.update(m[0], 1);
+    Discretize<ll> dis1(b1), dis2(b2);
+    int sz1 = dis1.size(), sz2 = dis2.size();
+    BIT<int> tr1(sz1), tr2(sz2);
 
-    For1(i, 1, n) {
-      ll x = b[i], y = b[i] - high, z = b[i] - low;
-      int u = m[x], v = m[y], w = m[z];
-      int cnt1 = tr.query(w), cnt2 = tr.query(v - 1);
+    For1(i, 0, n) {
+      int x = dis1.get(b[i] - low);
+      int cnt1 = tr1.query(x);
+
+      int y = dis2.get(b[i] - up);
+      int cnt2 = tr2.query(y - 1);
 
       ans += cnt1 - cnt2;
-      tr.update(u, 1);
+
+      tr1.update(dis1.get(b[i]), 1);
+      tr2.update(dis2.get(b[i]), 1);
     }
 
     return ans;
@@ -222,16 +230,16 @@ int main(void) {
 
   Solution a;
   VI p;
-  int low, high, res;
+  int low, up, res;
 
-  p = VI{-2, 5, -1};
-  low = -2, high = 2;
-  res = a.countRangeSum(p, low, high);
+  p = {-2, 5, -1};
+  low = -2, up = 2;
+  res = a.countRangeSum(p, low, up);
   dbg(res);
 
-  p = VI{0};
-  low = 0, high = 0;
-  res = a.countRangeSum(p, low, high);
+  p = {0};
+  low = 0, up = 0;
+  res = a.countRangeSum(p, low, up);
   dbg(res);
 
   return 0;
