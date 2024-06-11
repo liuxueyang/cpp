@@ -159,8 +159,7 @@ struct SegmentTree {
   tuple<int, int> children(int id) { return {id * 2, id * 2 + 1}; }
 
   void update(int id) {
-    int left, right;
-    tie(left, right) = children(id);
+    int left = id * 2, right = left + 1;
     seg[id].val = seg[left].val + seg[right].val;
   }
 
