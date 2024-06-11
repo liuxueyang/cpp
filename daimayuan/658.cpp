@@ -146,60 +146,77 @@ info operator+(const info &l, const info &r) {
   return res;
 }
 
-struct Node {
-  info val;
-} seg[N * 4];
+struct SegmentTree {
+  int n;
+  struct node {
+    info val;
+  };
 
-void update(int id) { seg[id].val = seg[id * 2].val + seg[id * 2 + 1].val; }
+  vector<node> seg;
 
-void build(int id, int l, int r) {
-  if (l == r) {
-    seg[id].val = info(a[l]);
-    return;
+  SegmentTree(int n_) : n(n_) { seg = vector<node>(n * 4 + 10); }
+
+  tuple<int, int> children(int id) { return {id * 2, id * 2 + 1}; }
+
+  void update(int id) {
+    int left, right;
+    tie(left, right) = children(id);
+    seg[id].val = seg[left].val + seg[right].val;
   }
 
-  int left = id * 2, right = left + 1, mid = (l + r) / 2;
-  build(left, l, mid);
-  build(right, mid + 1, r);
-  update(id);
-}
+  void build(int id, int l, int r) {
+    if (l == r) {
+      seg[id].val = info(a[l]);
+      return;
+    }
 
-void change(int id, int l, int r, int pos, int x) {
-  if (l == r) {
-    seg[id].val = info(x);
-    return;
+    int left = id * 2, right = left + 1, mid = (l + r) / 2;
+    build(left, l, mid);
+    build(right, mid + 1, r);
+    update(id);
   }
 
-  int left = id * 2, right = left + 1, mid = (l + r) / 2;
-  if (pos <= mid)
-    change(left, l, mid, pos, x);
-  else
-    change(right, mid + 1, r, pos, x);
+  void change(int id, int l, int r, int pos, int x) {
+    if (l == r) {
+      seg[id].val = info(x);
+      return;
+    }
 
-  update(id);
-}
+    int left = id * 2, right = left + 1, mid = (l + r) / 2;
+    if (pos <= mid)
+      change(left, l, mid, pos, x);
+    else
+      change(right, mid + 1, r, pos, x);
 
-info query(int id, int l, int r, int ql, int qr) {
-  if (ql == l && qr == r) {
-    return seg[id].val;
+    update(id);
   }
 
-  int left = id * 2, right = left + 1, mid = (l + r) / 2;
+  info query(int id, int l, int r, int ql, int qr) {
+    if (ql == l && qr == r) {
+      return seg[id].val;
+    }
 
-  if (qr <= mid)
-    return query(left, l, mid, ql, qr);
-  if (ql >= mid + 1)
-    return query(right, mid + 1, r, ql, qr);
+    int left = id * 2, right = left + 1, mid = (l + r) / 2;
 
-  return query(left, l, mid, ql, mid) + query(right, mid + 1, r, mid + 1, qr);
-}
+    if (qr <= mid)
+      return query(left, l, mid, ql, qr);
+    if (ql >= mid + 1)
+      return query(right, mid + 1, r, ql, qr);
+
+    return query(left, l, mid, ql, mid) + query(right, mid + 1, r, mid + 1, qr);
+  }
+};
+
+SegmentTree tr(10);
 
 void solve() {
   cin >> n >> q;
 
+  tr = SegmentTree(n);
+
   For1(i, 1, n) { cin >> a[i]; }
 
-  build(1, 1, n);
+  tr.build(1, 1, n);
 
   while (q--) {
     int op;
@@ -207,11 +224,11 @@ void solve() {
     if (op == 1) {
       int x, d;
       cin >> x >> d;
-      change(1, 1, n, x, d);
+      tr.change(1, 1, n, x, d);
     } else {
       int l, r;
       cin >> l >> r;
-      info ans = query(1, 1, n, l, r);
+      info ans = tr.query(1, 1, n, l, r);
       cout << ans.mss << '\n';
     }
   }
