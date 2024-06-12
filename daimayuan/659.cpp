@@ -131,13 +131,13 @@ int n, q, a[N];
 struct tag {
   ll val;
   tag() : val(0) {}
-  tag(int x) : val(x) {}
+  tag(ll x) : val(x) {}
 };
 
 struct info {
   ll val;
   info() {}
-  info(int x) : val(x) {}
+  info(ll x) : val(x) {}
 };
 
 tag operator+(const tag &l, const tag &r) { return tag(l.val + r.val); }
