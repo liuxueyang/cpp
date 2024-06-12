@@ -126,7 +126,7 @@ template <typename T, typename... V> void _print(T t, V... v) {
 #endif
 
 const int N = 200100;
-int n, q, a[N];
+int n, q;
 
 struct tag {
   ll val;
@@ -147,15 +147,18 @@ info operator+(const info &l, const tag &t) { return info(l.val + t.val); }
 info operator+(const info &l, const info &r) { return info(max(l.val, r.val)); }
 
 struct SegmentTree {
-  int n;
   struct node {
     info val;
     tag t;
   };
 
+  int n;
   vector<node> seg;
+  vector<int> a;
 
-  SegmentTree(int n_) : n(n_) { seg = vector<node>(n * 4 + 10); }
+  SegmentTree(int n_, vector<int> a_) : n(n_), a(a_) {
+    seg = vector<node>(n * 4 + 10);
+  }
 
   void set_tag(int id, tag t) {
     seg[id].val = seg[id].val + t;
@@ -244,14 +247,13 @@ struct SegmentTree {
   }
 };
 
-SegmentTree tr(10);
-
 void solve() {
   cin >> n >> q;
+  vector<int> a(n + 1);
 
   For1(i, 1, n) { cin >> a[i]; }
 
-  tr = SegmentTree(n);
+  SegmentTree tr = SegmentTree(n, a);
   tr.build(1, 1, n);
 
   while (q--) {
