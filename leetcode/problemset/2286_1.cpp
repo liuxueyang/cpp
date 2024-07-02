@@ -240,10 +240,7 @@ struct SegmentTree {
   int find_gather(int id, int l, int r, int ql, int qr, int k) {
     int left = id * 2, right = left + 1, mid = (l + r) / 2;
 
-    dbg(id, l, r, ql, qr, k);
-
     if (l == ql && r == qr) {
-      dbg(id, seg[id].val.mx);
       if (seg[id].val.mx < k)
         return -1;
 
@@ -294,6 +291,8 @@ struct SegmentTree {
     int pos = find_scatter(left, l, mid, ql, mid, k);
     if (pos != -1)
       return pos;
+    // BUG: k - seg[left].val.sum (k is presum, seg[left].val.sum is the left
+    // part)
     return find_scatter(right, mid + 1, r, mid + 1, qr, k - seg[left].val.sum);
   }
 

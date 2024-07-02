@@ -246,17 +246,13 @@ struct SegmentTree {
 
   int find_scatter(int id, int l, int r, int ql, int qr, int k) {
     int left = id << 1, right = left + 1, mid = (l + r) / 2;
-    dbg(l, r, ql, qr);
 
     if (ql == l && qr == r) {
-      dbg(id, seg[id].val.sum, l, r);
       if (seg[id].val.sum < k)
         return -1;
 
       if (l == r)
         return l;
-
-      dbg(l, r, left, seg[left].val.sum, k);
 
       if (seg[left].val.sum >= k)
         return find_scatter(left, l, mid, ql, mid, k);
@@ -272,7 +268,7 @@ struct SegmentTree {
     int pos = find_scatter(left, l, mid, ql, mid, k);
     if (pos != -1)
       return pos;
-    return find_scatter(right, mid + 1, r, mid + 1, qr, k);
+    return find_scatter(right, mid + 1, r, mid + 1, qr, k - seg[left].val.sum);
   }
 
   int find_gather(int id, int l, int r, int ql, int qr, int k) {
@@ -300,13 +296,6 @@ struct SegmentTree {
       return pos;
     return find_gather(right, mid + 1, r, mid + 1, qr, k);
   }
-
-  void print() {
-    For1(i, 1, n) {
-      auto x = query(1, 1, n, i, i);
-      dbg(i, x.sum);
-    }
-  }
 };
 
 class BookMyShow {
@@ -330,12 +319,12 @@ public:
     if (pos == -1)
       return VI();
 
-    VI ans(2);
-    ans[0] = pos - 1;
+    VI ans(2, pos - 1);
 
     auto cnti = tr.query(1, 1, n, pos, pos);
     int cnt = cnti.sum;
     ans[1] = m - cnt;
+
     tr.change(1, 1, n, pos, cnt - k);
 
     return ans;
@@ -343,24 +332,21 @@ public:
 
   bool scatter(int k, int maxRow) {
     maxRow++;
-
     int pos = tr.find_scatter(1, 1, n, 1, maxRow, k);
-
     if (pos == -1)
       return false;
 
-    For(i, last + 1, pos) { tr.change(1, 1, n, i, 0); }
+    ll psum{};
+
+    if (pos - 1 >= 1) {
+      auto cnti = tr.query(1, 1, n, 1, pos - 1);
+      psum = cnti.sum;
+      For1(i, last + 1, pos - 1) { tr.change(1, 1, n, i, 0); }
+    }
     ckmax(last, pos - 1);
 
-    ll psum = 0;
-    if (pos - 1 >= 1) {
-      auto psum_i = tr.query(1, 1, n, 1, pos - 1);
-      psum = psum_i.sum;
-    }
-
-    int rem = k - psum;
-    auto cnti = tr.query(1, 1, n, pos, pos);
-    tr.change(1, 1, n, pos, cnti.sum - rem);
+    auto cnti2 = tr.query(1, 1, n, pos, pos);
+    tr.change(1, 1, n, pos, cnti2.sum - (k - psum));
 
     return true;
   }
@@ -382,7 +368,6 @@ int main(void) {
 
   BookMyShow b(4, 5);
   auto r1 = b.scatter(6, 2);
-  b.tr.print();
   dbg(r1);
 
   return 0;
