@@ -231,12 +231,12 @@ struct SegmentTree {
       return;
     }
 
-    if (pos <= mid && seg[left].val.mx > 0)
-      fill_zero(left, l, mid, pos);
-
-    if (pos > mid) {
+    if (pos <= mid) {
       if (seg[left].val.mx > 0)
-        fill_zero(left, l, mid, mid);
+        fill_zero(left, l, mid, pos);
+    } else {
+      if (seg[left].val.mx > 0)
+        fill_zero(left, l, mid, pos);
       if (seg[right].val.mx > 0)
         fill_zero(right, mid + 1, r, pos);
     }
@@ -341,7 +341,9 @@ public:
     if (pos - 1 >= 1) {
       auto cnti = tr.query(1, 1, n, 1, pos - 1);
       psum = cnti.sum;
-      For1(i, last + 1, pos - 1) { tr.change(1, 1, n, i, 0); }
+
+      tr.fill_zero(1, 1, n, pos - 1);
+      // For1(i, last + 1, pos - 1) { tr.change(1, 1, n, i, 0); }
     }
     ckmax(last, pos - 1);
 
