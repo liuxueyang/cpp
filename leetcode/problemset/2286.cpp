@@ -155,6 +155,7 @@ struct TreeNode {
 struct info {
   int mx;
   ll sum;
+
   info() : mx(0), sum(0) {}
   info(int _mx, ll _sum) : mx(_mx), sum(_sum) {}
 };
@@ -193,23 +194,33 @@ struct SegmentTree {
     update(id);
   }
 
-  int change(int id, int l, int r, int pos, int x) {
-    int ans = -1;
-
+  void change(int id, int l, int r, int pos, int x) {
     if (l == r) {
-      ans = m - seg[id].val.mx;
-      seg[id].val = info(seg[id].val.mx - x, seg[id].val.sum - x);
-      return ans;
+      seg[id].val = info(x, x);
+      return;
     }
     int mid = (l + r) / 2, left = id << 1, right = left + 1;
     if (pos <= mid)
-      ans = change(left, l, mid, pos, x);
+      change(left, l, mid, pos, x);
     else
-      ans = change(right, mid + 1, r, pos, x);
+      change(right, mid + 1, r, pos, x);
 
     update(id);
+  }
 
-    return ans;
+  info query(int id, int l, int r, int ql, int qr) {
+    int left = id << 1, right = left + 1, mid = (l + r) / 2;
+
+    if (l == r) {
+      return seg[id].val;
+    }
+
+    if (qr <= mid)
+      return query(left, l, mid, ql, qr);
+    if (ql > mid)
+      return query(right, mid + 1, r, ql, qr);
+
+    return query(left, l, mid, ql, mid) + query(right, mid + 1, r, mid + 1, qr);
   }
 
   void fill_zero(int id, int l, int r, int pos) {
@@ -235,17 +246,22 @@ struct SegmentTree {
 
   int find_scatter(int id, int l, int r, int ql, int qr, int k) {
     int left = id << 1, right = left + 1, mid = (l + r) / 2;
+    dbg(l, r, ql, qr);
 
     if (ql == l && qr == r) {
+      dbg(id, seg[id].val.sum, l, r);
       if (seg[id].val.sum < k)
         return -1;
 
       if (l == r)
         return l;
 
+      dbg(l, r, left, seg[left].val.sum, k);
+
       if (seg[left].val.sum >= k)
         return find_scatter(left, l, mid, ql, mid, k);
-      return find_scatter(right, mid + 1, r, mid + 1, qr, k);
+      return find_scatter(right, mid + 1, r, mid + 1, qr,
+                          k - seg[left].val.sum);
     }
 
     if (qr <= mid)
@@ -284,6 +300,13 @@ struct SegmentTree {
       return pos;
     return find_gather(right, mid + 1, r, mid + 1, qr, k);
   }
+
+  void print() {
+    For1(i, 1, n) {
+      auto x = query(1, 1, n, i, i);
+      dbg(i, x.sum);
+    }
+  }
 };
 
 class BookMyShow {
@@ -291,12 +314,14 @@ public:
   int n;
   SegmentTree tr;
   VI a;
+  int last;
 
   BookMyShow(int _n, int _m) : n(_n) {
     m = _m;
     a = VI(n + 1, m);
     tr = SegmentTree(n, a);
     tr.build(1, 1, n);
+    last = 0;
   }
 
   vector<int> gather(int k, int maxRow) {
@@ -307,26 +332,35 @@ public:
 
     VI ans(2);
     ans[0] = pos - 1;
-    ans[1] = tr.change(1, 1, n, pos, k);
+
+    auto cnti = tr.query(1, 1, n, pos, pos);
+    int cnt = cnti.sum;
+    ans[1] = m - cnt;
+    tr.change(1, 1, n, pos, cnt - k);
 
     return ans;
   }
 
   bool scatter(int k, int maxRow) {
     maxRow++;
+
     int pos = tr.find_scatter(1, 1, n, 1, maxRow, k);
+
     if (pos == -1)
       return false;
 
-    dbg(pos, tr.seg[pos - 1].val.sum);
+    For(i, last + 1, pos) { tr.change(1, 1, n, i, 0); }
+    ckmax(last, pos - 1);
 
-    int rem = k - tr.seg[pos - 1].val.sum;
-    dbg(rem);
+    ll psum = 0;
+    if (pos - 1 >= 1) {
+      auto psum_i = tr.query(1, 1, n, 1, pos - 1);
+      psum = psum_i.sum;
+    }
 
-    tr.change(1, 1, n, pos, rem);
-
-    if (pos - 1 >= 1)
-      tr.fill_zero(1, 1, n, pos - 1);
+    int rem = k - psum;
+    auto cnti = tr.query(1, 1, n, pos, pos);
+    tr.change(1, 1, n, pos, cnti.sum - rem);
 
     return true;
   }
@@ -346,15 +380,10 @@ int main(void) {
   cin.tie(NULL);
   cout.tie(NULL);
 
-  BookMyShow b(2, 5);
-  dbg(b.gather(4, 0));
-  dbg(b.gather(2, 0));
-  auto r1 = b.scatter(5, 1);
+  BookMyShow b(4, 5);
+  auto r1 = b.scatter(6, 2);
+  b.tr.print();
   dbg(r1);
-  auto r2 = b.scatter(5, 1);
-  dbg(r2);
-  // dbg(b.scatter(5, 1));
-  // dbg(b.scatter(5, 1));
 
   return 0;
 }
