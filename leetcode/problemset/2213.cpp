@@ -186,20 +186,15 @@ info operator+(const info &l, const info &r) {
 
   ans.pre = l.pre;
   ans.prec = l.prec;
-  if (l.pre == len_l && l.prec == r.prec) {
-    ans.pre = l.sum + r.pre;
-  }
-
   ans.post = r.post;
   ans.postc = r.postc;
-  if (r.post == len_r && r.postc == l.postc) {
-    ans.post = r.sum + l.post;
-  }
 
-  if (ckmax(ans.sum, ans.pre))
-    ans.sumc = ans.prec;
-  if (ckmax(ans.sum, ans.post))
-    ans.sumc = ans.postc;
+  if (l.postc == r.prec) {
+    if (l.pre == len_l)
+      ans.pre = l.sum + r.pre;
+    if (r.post == len_r)
+      ans.post = r.sum + l.post;
+  }
 
   return ans;
 }
