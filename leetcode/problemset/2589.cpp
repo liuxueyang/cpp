@@ -173,10 +173,6 @@ info operator+(const info &l, const info &r) {
   ans.x0 = l.x0 + r.x0;
   ans.x1 = l.x1 + r.x1;
 
-  assert(ans.x1 <= ans.r - ans.l + 1);
-
-  // assert(ans.x0 <= ans.r - ans.l + 1);
-
   return ans;
 }
 
@@ -269,10 +265,13 @@ struct SegmentTree {
         push_down(id);
 
       if (cnt >= seg[id].val.x0) {
+        cnt -= seg[id].val.x0;
+
         seg[id].t = tag(true);
         seg[id].val = seg[id].val + tag(true);
-        cnt -= seg[id].val.x0;
-        push_down(id);
+
+        if (l != r)
+          push_down(id);
 
         return;
       }
@@ -352,7 +351,6 @@ public:
         continue;
       ans += rem;
 
-      dbg(rem);
       tr.binary_search(1, 1, n, v[0], v[1], rem);
     }
     return ans;
