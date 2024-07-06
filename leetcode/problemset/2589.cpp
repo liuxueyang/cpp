@@ -266,12 +266,7 @@ struct SegmentTree {
 
       if (cnt >= seg[id].val.x0) {
         cnt -= seg[id].val.x0;
-
-        seg[id].t = tag(true);
-        seg[id].val = seg[id].val + tag(true);
-
-        if (l != r)
-          push_down(id);
+        set_tag(id, tag(true));
 
         return;
       }
