@@ -237,7 +237,6 @@ struct SegmentTree {
 
   void modify(int id, int l, int r, int ql, int qr, tag t) {
     int mid = (l + r) / 2, left = id * 2, right = left + 1;
-    // dbg(l, r, ql, qr);
     if (ql == l && qr == r) {
       set_tag(id, t);
       return;
@@ -262,11 +261,10 @@ struct SegmentTree {
 
     if (l == ql && r == qr) {
       if (l == r || cnt == seg[id].val.x0) {
-        cnt = 0;
+        cnt -= seg[id].val.x0;
         return l;
       }
       push_down(id);
-      dbg(l, r, cnt, seg[right].val.x0);
 
       if (cnt <= seg[right].val.x0) {
         return binary_search(right, mid + 1, r, mid + 1, qr, cnt);
@@ -292,9 +290,6 @@ struct SegmentTree {
 
   void binary_modify(int id, int l, int r, int ql, int qr, int &cnt) {
     int mid = (l + r) / 2, left = id * 2, right = left + 1;
-    if (!cnt)
-      return;
-
     if (l == ql && r == qr) {
       if (l != r)
         push_down(id);
@@ -380,13 +375,11 @@ public:
       if (rem <= 0)
         continue;
       ans += rem;
-      dbg(rem);
 
-      // tr.binary_modify(1, 1, n, v[0], v[1], rem);
-      int pos = tr.binary_search(1, 1, n, v[0], v[1], rem);
+      tr.binary_modify(1, 1, n, v[0], v[1], rem);
+      // int pos = tr.binary_search(1, 1, n, v[0], v[1], rem);
 
-      dbg(v[0], pos, v[1]);
-      tr.modify(1, 1, n, pos, v[1], tag(true));
+      // tr.modify(1, 1, n, pos, v[1], tag(true));
     }
     return ans;
   }
