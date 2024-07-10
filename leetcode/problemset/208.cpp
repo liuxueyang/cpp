@@ -155,12 +155,55 @@ struct TreeNode {
 const int N = 300100;
 
 struct TrieTree {
+  TrieTree *son[26];
+  int cnt;
+
+  TrieTree() : cnt(0) { fill(son, son + 26, nullptr); }
+
+  ~TrieTree() { For(i, 0, 26) delete son[i]; }
+
+  void insert(const string &s) {
+    TrieTree *p = this;
+    for (auto c : s) {
+      int u = c - 'a';
+      if (p->son[u] == nullptr)
+        p->son[u] = new TrieTree();
+      p = p->son[u];
+    }
+
+    p->cnt++;
+  }
+
+  bool search(const string &s) {
+    TrieTree *p = this;
+    for (auto c : s) {
+      int u = c - 'a';
+      if (p->son[u] == nullptr)
+        return false;
+      p = p->son[u];
+    }
+    return p->cnt > 0;
+  }
+
+  bool starts_with(const string &s) {
+    TrieTree *p = this;
+    for (auto c : s) {
+      int u = c - 'a';
+      if (!p->son[u])
+        return false;
+      p = p->son[u];
+    }
+    return true;
+  }
+};
+
+struct TrieTree1 {
   int n, idx;
   vector<VI> son;
   VI cnt;
 
-  TrieTree() {}
-  TrieTree(int _n) : n(_n), idx(0) {
+  TrieTree1() {}
+  TrieTree1(int _n) : n(_n), idx(0) {
     son = vector<VI>(n, VI(26, -1));
     cnt = VI(n, 0);
   }
@@ -202,7 +245,7 @@ struct TrieTree {
 class Trie {
 public:
   TrieTree tr;
-  Trie() { tr = TrieTree(N); }
+  Trie() { tr = TrieTree(); }
 
   void insert(string word) { tr.insert(word); }
 
