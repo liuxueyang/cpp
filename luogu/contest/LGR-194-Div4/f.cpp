@@ -136,14 +136,17 @@ void Init() {
 
 void Add(int a, int b) { e[idx] = b, ne[idx] = h[a], h[a] = idx++; }
 
-void dfs(int x) {
+void dfs(int x, int o) {
+  if (o == 3)
+    return;
+
   cnt++;
   vis[x] = 1;
 
   ForE(j, x) {
     int y = e[j];
     if (!vis[y])
-      dfs(y);
+      dfs(y, o + 1);
   }
 }
 
@@ -165,7 +168,7 @@ void solve() {
     For1(i, 1, n) {
       memset(vis, 0, sizeof vis);
       cnt = 0;
-      dfs(i);
+      dfs(i, 0);
       cout << cnt - 1 << ' ';
     }
     cout << '\n';
