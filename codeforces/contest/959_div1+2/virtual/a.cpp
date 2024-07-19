@@ -1,4 +1,4 @@
-// Date: Thu Jul 18 23:47:23 2024
+// Date: Fri Jul 19 12:33:00 2024
 
 #include <climits>
 #include <cmath>
@@ -155,58 +155,32 @@ template <typename T, typename... V> void _print(T t, V... v) {
 #define dbg(x...)
 #endif
 
-const int N = 200100;
-ll a[N], p[N], b[N];
+const int N = 15;
+int a[N][N], n, m;
 
 void solve() {
-  int n;
-  ll x, ans{};
-  cin >> n >> x;
-  memset(p, 0, sizeof p);
-
-  For1(i, 1, n) { cin >> a[i]; }
-
-  ll tmp = 0;
+  cin >> n >> m;
   For1(i, 1, n) {
-    tmp += a[i];
-    if (tmp > x) {
-      tmp = 0;
-    }
-    b[i] = tmp;
-  }
-
-  Rof1(i, 1, n) {
-    if (b[i])
-      p[i] = p[i + 1] + 1;
-    else
-      p[i] = p[i + 1];
-  }
-
-  ans += p[1];
-
-  For1(i, 2, n) {
-    ll tmp = 0;
-    For1(j, i, n) {
-      tmp += a[j];
-      if (tmp > x) {
-        tmp = 0;
-      }
-      if (tmp != b[j]) {
-        if (tmp)
-          ans++;
-      } else {
-        ans += p[j];
-        break;
-      }
+    For1(j, 1, m) {
+      cin >> a[i][j];
+      a[i][j]++;
+      if (a[i][j] > n * m)
+        a[i][j] = 1;
     }
   }
-
-  cout << ans << '\n';
+  if (n == 1 && m == 1) {
+    cout << "-1\n";
+    return;
+  }
+  For1(i, 1, n) {
+    For1(j, 1, m) { cout << a[i][j] << ' '; }
+    NL;
+  }
 }
 
 int main(void) {
 #ifdef _DEBUG
-  freopen("c.in", "r", stdin);
+  freopen("a.in", "r", stdin);
 #endif
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
