@@ -145,13 +145,19 @@ ll get(ll len) {
     ans = 9 * mypow(p - 1) + get(len - 1);
   }
 
-  return ans + 1;
+  return ans;
 }
 
-// TODO: WA
 void solve() {
   ll n;
   while (cin >> n) {
+    if (n == 1) {
+      cout << "0\n";
+      continue;
+    }
+
+    n--;
+
     int l = 1, r = 71, mid;
     while (l < r) {
       mid = (l + r) / 2;
