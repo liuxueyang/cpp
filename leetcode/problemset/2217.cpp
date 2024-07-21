@@ -1,4 +1,4 @@
-// Date: Sat Jul 20 21:02:32 2024
+// Date: Sun Jul 21 20:47:37 2024
 
 #include <cassert>
 #include <climits>
@@ -30,8 +30,8 @@ typedef pair<ll, ll> PLL;
 template <class T> using pq = priority_queue<T>;
 template <class T> using pqg = priority_queue<T, vector<T>, greater<T>>;
 
-const int INF = 0x3f3f3f3f, MOD = 1e9 + 7, MOD1 = 998244353;
-const ll INFL = 0x3f3f3f3f3f3f3f3f;
+const int INF = 0x3f3f3f3f, MOD = 1e9 + 7, MOD1 = 998'244'353;
+const ll INFL = 0x3f3f3f3f'3f3f3f3f;
 const double eps = 1e-8;
 const int dir[8][2] = {
     {0, 1}, {0, -1}, {1, 0}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1},
@@ -125,82 +125,81 @@ template <typename T, typename... V> void _print(T t, V... v) {
 #define dbg(x...)
 #endif
 
-ll mypow(ll len) {
+// For LeetCode
+#define LN ListNode
+#define LNP ListNode *
+#define TN TreeNode
+#define TNP TreeNode *
+
+#ifdef _DEBUG
+struct ListNode {
+  int val;
+  ListNode *next;
+  ListNode() : val(0), next(nullptr) {}
+  ListNode(int val) : val(val), next(nullptr) {}
+  ListNode(int val, ListNode *next) : val(val), next(next) {}
+};
+
+struct TreeNode {
+  int val;
+  TreeNode *left;
+  TreeNode *right;
+  TreeNode() : val(0), left(nullptr), right(nullptr) {}
+  TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+  TreeNode(int x, TreeNode *left, TreeNode *right)
+      : val(x), left(left), right(right) {}
+};
+#endif
+// End of LeetCode
+
+ll mypow(int k) {
   ll ans = 1;
-  if (len == 0)
-    return ans;
-  while (len--) {
+  if (k == 0)
+    return 1;
+  while (k--)
     ans *= 10;
-  }
   return ans;
 }
+class Solution {
+public:
+  vector<long long> kthPalindrome(vector<int> &que, int len) {
+    int n = SZ(que);
+    vector<ll> res(n, -1);
 
-ll get(ll len) {
-  ll ans{};
-  if (len % 2 == 0) {
-    ll k = len / 2;
-    ans = 2 * (mypow(k) - 1);
-  } else {
-    ll p = (len + 1) / 2;
-    ans = 9 * mypow(p - 1) + get(len - 1);
-  }
+    int x = (len + 1) / 2;
+    ll cnt = 9 * mypow(x - 1);
 
-  return ans;
-}
+    For(i, 0, n) {
+      int d = que[i];
+      if (d > cnt)
+        continue;
+      ll tmp = mypow(x - 1) + d - 1;
+      string s1 = to_string(tmp);
+      string t = s1;
 
-void solve() {
-  ll n;
-  while (cin >> n) {
-    if (n == 1) {
-      cout << "0\n";
-      continue;
-    }
+      if (len & 1) {
+        s1.pop_back();
+      }
 
-    n--;
-
-    // binary search is not necessary
-    int l = 1, r = 71, mid;
-    while (l < r) {
-      mid = (l + r) / 2;
-      ll sum = get(mid);
-      if (sum >= n)
-        r = mid;
-      else
-        l = mid + 1;
-    }
-    ll n1 = n - get(r - 1);
-    int len = r;
-    int k = (len - 1) / 2;
-    ll left = mypow(k) + n1 - 1;
-    string s1 = to_string(left), ans;
-
-    if (len & 1) {
-      ans = s1;
-      s1.pop_back();
       reverse(all(s1));
-      ans += s1;
-    } else {
-      ans = s1;
-      reverse(all(s1));
-      ans += s1;
+      t += s1;
+      res[i] = stoll(t);
     }
-    cout << ans << '\n';
+
+    return res;
   }
-}
+};
+
+#ifdef _DEBUG
 
 int main(void) {
-#ifdef _DEBUG
-  freopen("d.in", "r", stdin);
-#endif
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
   cout.tie(NULL);
 
-  int T = 1;
-
-  while (T--) {
-    solve();
-  }
+  Solution a;
 
   return 0;
 }
+
+#endif
