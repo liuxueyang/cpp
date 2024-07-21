@@ -160,10 +160,7 @@ public:
     int n = SZ(a);
 
     VI c(n + 1, 0);
-    For(i, 0, n) {
-      c[i] = a[i] - b[i];
-      dbg(i, c[i]);
-    }
+    For(i, 0, n) { c[i] = a[i] - b[i]; }
 
     int cur = 0;
     int flag = 0;
@@ -178,7 +175,7 @@ public:
             cur = abs(c[i]);
           } else {
             ans += abs(c[i]) - cur;
-            cur = abs(c[i]) - cur;
+            cur = abs(c[i]);
           }
         } else {
           flag = -1;
@@ -191,7 +188,7 @@ public:
             cur = c[i];
           } else {
             ans += c[i] - cur;
-            cur = c[i] - cur;
+            cur = c[i];
           }
         } else {
           flag = 1;
