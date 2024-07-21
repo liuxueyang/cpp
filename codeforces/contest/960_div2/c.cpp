@@ -156,9 +156,9 @@ template <typename T, typename... V> void _print(T t, V... v) {
 #endif
 
 const int N = 200100;
-int n, a[N], b[N], c[N], p[N];
+int n, a[N], b[N], c[N];
+ll p[N];
 
-// TODO: WA
 void solve() {
   cin >> n;
   ll sum{}, ans{};
@@ -169,35 +169,31 @@ void solve() {
   }
   ans = sum;
 
-  memset(c, 0, sizeof c);
+  For(I, 0, 2) {
+    memset(c, 0, sizeof c);
 
-  int cur = 0;
-  For1(i, 1, n) {
-    c[a[i]]++;
+    int cur = 0;
+    For1(i, 1, n) {
+      c[a[i]]++;
 
-    if (c[a[i]] >= 2) {
-      ckmax(cur, a[i]);
+      if (c[a[i]] >= 2) {
+        ckmax(cur, a[i]);
+      }
+      ans += a[i] = b[i] = cur;
     }
-    b[i] = cur;
   }
 
-  memset(p, 0, sizeof p);
-
+  p[n + 1] = 0;
   Rof1(i, 1, n) { p[i] = p[i + 1] + b[i]; }
 
   int l = 1, r = n;
   while (l <= n && b[l] == 0) {
     l++;
   }
-  ans += p[l] - p[r + 1];
-
-  while (l + 1 <= r && b[l] != b[l + 1])
-    ++l;
-  --r;
 
   while (l <= r) {
-    ans += p[l] - p[r + 1];
     --r;
+    ans += p[l] - p[r + 1];
   }
 
   cout << ans << '\n';
