@@ -172,32 +172,36 @@ void solve() {
   vector<PII> ans;
   string ns = to_string(n);
 
-  For1(i, 1, 1e6) {
-    int tmp = flen(i) - i;
-    if (tmp % d == 0 && (tmp / d) > 0) {
-      a = tmp / d;
-      b = n * a - i;
-      if (flen(n) * a <= b)
-        continue;
-      string s = ns;
-      int leni = flen(i);
+  if (d == 0) {
+    For1(i, 2, 1e4) { ans.pb({i, i - 1}); }
+  } else {
+    For1(i, 1, 1e6) {
+      int tmp = flen(i) - i;
+      if (tmp % d == 0 && (tmp / d) > 0) {
+        a = tmp / d;
+        b = n * a - i;
+        if (flen(n) * a <= b)
+          continue;
+        string s = ns;
+        int leni = flen(i);
 
-      while (SZ(s) < leni) {
-        s += ns;
-      }
-      while (SZ(s) > leni)
-        s.pop_back();
+        while (SZ(s) < leni) {
+          s += ns;
+        }
+        while (SZ(s) > leni)
+          s.pop_back();
 
-      if (s == to_string(i) && a >= 1 && a <= 10000 && b >= 1 &&
-          b <= min(a * n, 10000)) {
-        ans.pb({a, b});
+        if (s == to_string(i) && a >= 1 && a <= 10000 && b >= 1 &&
+            b <= min(a * n, 10000)) {
+          ans.pb({a, b});
+        }
       }
     }
   }
 
   cout << SZ(ans) << '\n';
   for (auto [x, y] : ans) {
-    cout << x << ' ' << y << '\n';
+    cout << x << ' ' << y << ' ' << '\n';
   }
 }
 
