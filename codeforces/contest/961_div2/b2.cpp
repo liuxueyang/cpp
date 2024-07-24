@@ -173,32 +173,15 @@ void solve() {
     ull a1 = x, a2 = x + 1;
     if (has(ma, a2)) {
       ull c1 = y, c2 = ma[a2];
-      ull cnt1{}, rem{m}, rem2_cnt{c2};
 
-      if (c1 * a1 >= m) {
-        cnt1 = m / a1;
-        rem = m - cnt1 * a1;
-      } else {
-        rem = m - ull(c1) * a1;
-      }
-
-      if (a2 * c2 >= rem) {
-        ull cnt2 = rem / a2;
-        rem -= cnt2 * a2;
-        rem2_cnt -= cnt2;
-      } else {
-        rem -= a2 * c2;
-        rem2_cnt = 0;
-      }
-
-      if (rem && rem2_cnt) {
-        ull rep = min(rem2_cnt, ull(c1));
-        // dbg(rem, rem2_cnt, rep);
-        if (rep <= rem)
-          rem -= rep;
-        else
-          rem = 0;
-      }
+      ull k1 = min(c1, m / a1);
+      ull k2 = min(c2, (m - k1 * a1) / a2);
+      ull rem = m - k1 * a1 - k2 * a2;
+      ull delt = min(c2 - k2, k1);
+      if (delt >= rem)
+        rem = 0;
+      else
+        rem -= delt;
 
       ckmax(res, m - rem);
     } else {
