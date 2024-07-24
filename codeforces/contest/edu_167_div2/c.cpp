@@ -173,11 +173,10 @@ void solve() {
         cnt2++;
       }
     } else {
-      int x = max(a[i], b[i]);
-      if (c1 <= c2)
-        c1 += x;
+      if (a[i] > b[i])
+        c1 += a[i];
       else
-        c2 += x;
+        c2 += b[i];
     }
   }
 
