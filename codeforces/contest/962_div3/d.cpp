@@ -161,11 +161,9 @@ void solve() {
   cin >> n >> x;
 
   ll ans{};
-  dbg(n, x);
 
-  For1(i, 1, x - 2) {
-    // dbg(i, x - i - 1);
-    For1(j, i, 1000) {
+  For1(i, 1, min((n - 1) / 2, x - 2)) {
+    For1(j, i, min(x - 1 - i, (n - 2) / i)) {
       int k1 = min(x - i - j, (n - i * j) / (i + j));
       if (k1 < i || k1 < j || k1 <= 0)
         continue;
