@@ -157,10 +157,34 @@ template <typename T, typename... V> void _print(T t, V... v) {
 #endif
 
 const int N = 100100;
-int n, a[N];
+int n, a[N], b[N];
 
-// TODO: another solution
-void solve() {}
+void solve() {
+  cin >> n;
+
+  For1(i, 1, n) { cin >> a[i]; }
+  b[1] = 0;
+  int cur = a[1];
+
+  For1(i, 2, n) {
+    if (cur > a[i]) {
+      b[i] = cur - a[i];
+    } else {
+      cur = a[i];
+      b[i] = 0;
+    }
+  }
+
+  ll ans{};
+  int mx = 0;
+  For1(i, 1, n) {
+    ans += b[i];
+    ckmax(mx, b[i]);
+  }
+
+  ans += mx;
+  cout << ans << '\n';
+}
 
 int main(void) {
 #ifdef _DEBUG
