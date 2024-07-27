@@ -1,4 +1,4 @@
 CompileFlags:
-    Add: [-Wc++17-extensions, --std=c++20, -D_DEBUG, -Wall, -Wno-unused-const-variable]
+    Add: [-Wc++17-extensions, --std=c++20, -D_DEBUG, -Wall, -Wno-unused-const-variable, -I/Users/liuxueyang/cpp/header, -I/Users/lxueyang/cpp/header]
 Diagnostics:
   UnusedIncludes: None
