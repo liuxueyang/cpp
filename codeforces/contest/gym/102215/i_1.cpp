@@ -125,7 +125,6 @@ template <typename T, typename... V> void _print(T t, V... v) {
 #define dbg(x...)
 #endif
 
-// TODO: This solution not works
 void solve() {
   int a, b;
   while (cin >> a >> b) {
@@ -134,19 +133,18 @@ void solve() {
 
     if (cur >= 2 * b) {
       ll k = cur / (2 * b);
-      ans += 4 * ((k + 1) * (a - b * k) - k * b);
-
-      if (cur % (2 * b))
-        cur = cur % (2 * b);
-      else
-        cur = 0;
+      ans += 4 * (k * (a - b) - b * k * (k - 1));
+      cur -= 2 * b * k;
     }
 
     while (cur >= 0) {
-      if (cur >= b)
+      if (cur >= 2 * b)
+        ans += 4 * (cur - b);
+      else if (cur >= b)
         ans += 3 * (cur - b);
       else
         ans += cur - b;
+
       cur -= 2 * b;
     }
 
