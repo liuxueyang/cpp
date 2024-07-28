@@ -41,6 +41,19 @@ template <typename T, typename... V> void _print(T t, V... v) {
   _print(v...);
 }
 
+template <typename ForwardIterator>
+void dbgr(ForwardIterator begin, ForwardIterator end) {
+  cerr << "\e[91m" << "[";
+  ForwardIterator it = begin;
+  while (it != end) {
+    if (it != begin)
+      cerr << ", ";
+    __print(*it);
+    it++;
+  }
+  cerr << "]\e[39m\n";
+}
+
 #define dbg(x...)                                                              \
   cerr << "\e[91m" << __func__ << ":" << __LINE__ << " [" << #x << "] = [";    \
   _print(x);                                                                   \

@@ -1,4 +1,4 @@
-// Date: Fri Jul 26 21:56:31 2024
+// Date: Sun Jul 28 16:20:34 2024
 
 #include <cassert>
 #include <climits>
@@ -30,8 +30,8 @@ typedef pair<ll, ll> PLL;
 template <class T> using pq = priority_queue<T>;
 template <class T> using pqg = priority_queue<T, vector<T>, greater<T>>;
 
-const int INF = 0x3f3f3f3f, MOD = 1e9 + 7, MOD1 = 998'244'353;
-const ll INFL = 0x3f3f3f3f'3f3f3f3f;
+const int INF = 0x3f3f3f3f, MOD = 1e9 + 7, MOD1 = 998244353;
+const ll INFL = 0x3f3f3f3f3f3f3f3f;
 const double eps = 1e-8;
 const int dir[8][2] = {
     {0, 1}, {0, -1}, {1, 0}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1},
@@ -73,92 +73,47 @@ template <typename t> ostream &operator<<(ostream &out, vector<t> &vec) {
   return out;
 }
 
-// int128 input and output
-#ifdef _DEBUG
-using lll = __int128;
-
-istream &operator>>(istream &is, lll &v) {
-  string s;
-  is >> s;
-  v = 0;
-  for (auto &it : s)
-    if (isdigit(it))
-      v = v * 10 + it - '0';
-  if (s[0] == '-')
-    v *= -1;
-  return is;
-}
-
-ostream &operator<<(ostream &os, const lll &v) {
-  if (v == 0)
-    return (os << "0");
-  lll num = v;
-  if (v < 0)
-    os << '-', num = -num;
-  string s;
-  for (; num > 0; num /= 10)
-    s.pb((char)(num % 10) + '0');
-  reverse(all(s));
-  return (os << s);
-}
-#endif
-// end of int128
-
 #ifdef _DEBUG
 #include "debug.h"
 #else
 #define dbg(x...)
+#define dbgi(x)
+#define dbgln()
+#define dbgr()
 #endif
 
-const int N = 100100;
-int n, a[N], b[N];
+const int N = 20;
+int a[N];
 
 void solve() {
-  cin >> n;
-  dbg(n);
+  int n = 10;
 
-  For1(i, 1, n) {
-    cin >> a[i];
-    // dbgi(a[i]);
-  }
-  // dbgln();
+  For1(i, 1, n) { a[i] = i * 2; }
 
-  dbg(VI(a + 1, a + 1 + n));
-  dbga(a + 1, a + 1 + n);
+  dbgr(a + 1, a + 1 + n);
 
-  b[1] = 0;
-  int cur = a[1];
+  vector<PII> b(n);
 
-  For1(i, 2, n) {
-    if (cur > a[i]) {
-      b[i] = cur - a[i];
-    } else {
-      cur = a[i];
-      b[i] = 0;
-    }
-  }
+  For(i, 0, n) { b[i] = {i * 2, i * 2 + 1}; }
 
-  ll ans{};
-  int mx = 0;
-  For1(i, 1, n) {
-    ans += b[i];
-    ckmax(mx, b[i]);
-  }
+  dbgr(b.begin(), b.end());
 
-  ans += mx;
-  cout << ans << '\n';
+  set<PII> s;
+
+  For(i, 0, n) { s.insert({i, i * 2}); }
+
+  dbgr(all(s));
 }
 
 int main(void) {
 #ifdef _DEBUG
-  freopen("b.in", "r", stdin);
+  freopen("debug.in", "r", stdin);
 #endif
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
   cout.tie(NULL);
 
   int T = 1;
-  cin >> T;
 
   while (T--) {
     solve();
