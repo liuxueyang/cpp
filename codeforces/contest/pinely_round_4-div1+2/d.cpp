@@ -113,46 +113,25 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr()
 #endif
 
-const int N = 100010;
-int primes[N], cnt;
-bool st[N];
-int d[N];
-VI edge[N];
-
-void get_primes(int n) {
-  st[0] = st[1] = true;
-  for (int i = 2; i <= n; ++i) {
-    if (!st[i]) {
-      primes[cnt++] = i;
-      for (ll j = ll(i) * i; j <= n; j += i) {
-        st[j] = true;
-      }
-    }
-  }
-}
-
-// TODO:
 void solve() {
-  int n = 20;
-  get_primes(1e5 + 5);
-  memset(d, 0, sizeof d);
-  int dg{};
+  int n;
+  cin >> n;
 
-  For1(i, 1, n) {
-    For1(j, i, n) {
-      if (!st[i ^ j]) {
-        d[i]++;
-        d[j]++;
-        ckmax(dg, d[i]);
-        ckmax(dg, d[j]);
-        dbg(i, j, i ^ j);
-        edge[i].pb(j);
-      }
-    }
+  if (n == 1) {
+    cout << "1\n1\n";
+  } else if (n == 2) {
+    cout << "2\n1 2\n";
+  } else if (n == 3) {
+    cout << "2\n1 2 2\n";
+  } else if (n == 4) {
+    cout << "3\n1 2 2 3\n";
+  } else if (n == 5) {
+    cout << "3\n1 2 2 3 3\n";
+  } else {
+    cout << "4\n";
+    For(i, 0, n) { cout << (i % 4) + 1 << ' '; }
+    NL;
   }
-
-  For1(i, 1, n) { dbg(i, d[i], edge[i]); }
-  dbg(cnt, dg);
 }
 
 int main(void) {
