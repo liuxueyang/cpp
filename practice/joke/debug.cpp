@@ -11,7 +11,9 @@
 #include <functional>
 #include <iomanip>
 #include <iostream>
+#include <iterator>
 #include <map>
+#include <numeric>
 #include <queue>
 #include <set>
 #include <sstream>
@@ -51,6 +53,7 @@ const ull Pr = 131;
 #define has(a, x) (a.find(x) != a.end())
 #define nemp(a) (!a.empty())
 #define all(a) (a).begin(), (a).end()
+#define all1(a, len) (a + 1), (a + 1 + len)
 #define SZ(a) int((a).size())
 #define NL cout << '\n';
 
@@ -79,8 +82,35 @@ template <typename t> ostream &operator<<(ostream &out, vector<t> &vec) {
 #define dbg(x...)
 #define dbgi(x)
 #define dbgln()
-#define dbgr()
+#define dbgr(x...)
 #endif
+
+template <typename ForwardIterator>
+void Inputr(ForwardIterator begin, ForwardIterator end) {
+  ForwardIterator it = begin;
+  while (it != end) {
+    cin >> *it;
+    it++;
+  }
+}
+
+template <typename ForwardIterator>
+void Outputr(ForwardIterator begin, ForwardIterator end) {
+  ForwardIterator it = begin;
+  while (it != end) {
+    if (it != begin)
+      cout << ' ';
+    cout << *it;
+    it++;
+  }
+  NL;
+}
+
+template <typename T, typename ForwardIterator>
+void Outputr1(ForwardIterator begin, ForwardIterator end) {
+  copy(begin, end, ostream_iterator<T>(cout, " "));
+  NL;
+}
 
 const int N = 20;
 int a[N];
@@ -103,6 +133,37 @@ void solve() {
   For(i, 0, n) { s.insert({i, i * 2}); }
 
   dbgr(all(s));
+
+  cin >> n;
+
+  VI va(n);
+  int sum;
+
+  Inputr(a + 1, a + 1 + n);
+  Outputr(a + 1, a + 1 + n);
+  sum = accumulate(a + 1, a + 1 + n, 0);
+  dbg(sum);
+  Outputr(all1(a, n));
+
+  // Inputr(all(va));
+  // Outputr(all(va));
+
+  // sum = reduce(all(va));
+  // dbg(sum);
+
+  sum = 0;
+  for_each(all(va), [&](int x) { sum += x; });
+  dbg(sum);
+
+  sum = accumulate(all(va), 0);
+  dbg(sum);
+
+  int mx = *max_element(all(va), [&](int x, int y) { return x > y; });
+  dbg(mx);
+
+  copy(all(va), ostream_iterator<int>(cout, " "));
+  NL;
+  Outputr1<int>(all(va));
 }
 
 int main(void) {
