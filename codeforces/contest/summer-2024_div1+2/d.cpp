@@ -132,20 +132,24 @@ void solve() {
 
   memset(d, 0x3f, sizeof d);
 
-  d[1][0] = 1;
-  int ans{INF};
-  For1(i, 2, len) {
-    For1(j, 0, n / 2) {
+  // d[1][0] = 1;
+  d[0][0] = 0;
+
+  dbg(len);
+  For1(i, 1, len) {
+    For1(j, 0, i) {
       int cnt = m[b[i]];
+
       if (j >= cnt) {
         ckmin(d[i][j], d[i - 1][j - cnt]);
       }
-      ckmin(d[i][j], d[i - 1][j + 1] + 1);
+
+      ckmin(d[i][j], d[i - 1][j - 1] + 1);
+      dbg(i, j, d[i][j]);
     }
   }
 
-  For1(i, 0, n / 2) { ckmin(ans, d[len][i]); }
-  cout << ans << '\n';
+  cout << d[len][0] << '\n';
 }
 
 int main(void) {

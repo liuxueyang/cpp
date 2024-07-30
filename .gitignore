@@ -1,7 +1,6 @@
 *.xcodeproj/
 *.exe
 *~
-*.in
 input.txt
 .cph/
 *.bin
