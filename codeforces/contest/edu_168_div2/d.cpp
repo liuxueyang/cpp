@@ -1,4 +1,4 @@
-// Date: Mon Jul 29 23:46:47 2024
+// Date: Tue Jul 30 23:36:28 2024
 
 #include <cassert>
 #include <climits>
@@ -11,7 +11,9 @@
 #include <functional>
 #include <iomanip>
 #include <iostream>
+#include <iterator>
 #include <map>
+#include <numeric>
 #include <queue>
 #include <set>
 #include <sstream>
@@ -51,6 +53,7 @@ const ull Pr = 131;
 #define has(a, x) (a.find(x) != a.end())
 #define nemp(a) (!a.empty())
 #define all(a) (a).begin(), (a).end()
+#define all1(a, len) (a + 1), (a + 1 + len)
 #define SZ(a) int((a).size())
 #define NL cout << '\n';
 
@@ -71,6 +74,33 @@ template <typename t> ostream &operator<<(ostream &out, vector<t> &vec) {
       out << ' ';
   }
   return out;
+}
+
+template <typename ForwardIterator>
+void Inputr(ForwardIterator begin, ForwardIterator end) {
+  ForwardIterator it = begin;
+  while (it != end) {
+    cin >> *it;
+    it++;
+  }
+}
+
+template <typename ForwardIterator>
+void Outputr(ForwardIterator begin, ForwardIterator end) {
+  ForwardIterator it = begin;
+  while (it != end) {
+    if (it != begin)
+      cout << ' ';
+    cout << *it;
+    it++;
+  }
+  NL;
+}
+
+template <typename T, typename ForwardIterator>
+void Outputr1(ForwardIterator begin, ForwardIterator end) {
+  copy(begin, end, ostream_iterator<T>(cout, " "));
+  NL;
 }
 
 // int128 input and output
@@ -113,40 +143,55 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
-const int N = 5100;
-int n, a[N], b[N], d[N][N];
+const int N = 200100;
+int n, m, idx, h[N], a[N], mi[N];
+int e[N], ne[N];
 
-// TODO:
+void Init() {
+  idx = 0;
+  memset(h, -1, sizeof h);
+  memset(mi, 0x3f, sizeof mi);
+}
+
+void Add(int a, int b) { e[idx] = b, ne[idx] = h[a], h[a] = idx++; }
+
+int dfs(int u) {
+  int mie = INF, mx = -1;
+  ForE(i, u) {
+    int v = e[i];
+    int tmp = dfs(v);
+    ckmax(mx, tmp);
+    ckmin(mie, tmp);
+  }
+  if (u == 1) {
+    return a[u] + mie;
+  }
+  if (mie == INF)
+    return a[u];
+  if (mie == 0)
+    return 0;
+  // dbg(u, a[u], cur);
+  int mid = mie;
+  if (a[u] < mid)
+    return (mid + a[u]) / 2;
+  else
+    return mid;
+}
+
 void solve() {
+  Init();
+
   cin >> n;
 
-  map<int, int> m;
-  For1(i, 1, n) {
-    cin >> a[i];
-    m[a[i]]++;
+  For1(i, 1, n) cin >> a[i];
+  For1(i, 2, n) {
+    int u;
+    cin >> u;
+    Add(u, i);
   }
 
-  int len = 0;
-  for (auto &[x, _] : m)
-    b[++len] = x;
-
-  memset(d, 0x3f, sizeof d);
-
-  For1(j, 0, len) d[0][j] = 0;
-
-  For1(i, 1, len) {
-    For1(j, 1, i) {
-      int cnt = m[b[i]];
-
-      if (j + cnt <= i) {
-        ckmin(d[i][j], d[i - 1][j + cnt]);
-      }
-
-      ckmin(d[i][j], d[i - 1][j - 1] + 1);
-    }
-  }
-
-  cout << d[len][0] << '\n';
+  int res = dfs(1);
+  cout << res << '\n';
 }
 
 int main(void) {

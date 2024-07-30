@@ -1,4 +1,4 @@
-// Date: Mon Jul 29 23:46:47 2024
+// Date: Tue Jul 30 23:13:17 2024
 
 #include <cassert>
 #include <climits>
@@ -11,7 +11,9 @@
 #include <functional>
 #include <iomanip>
 #include <iostream>
+#include <iterator>
 #include <map>
+#include <numeric>
 #include <queue>
 #include <set>
 #include <sstream>
@@ -51,6 +53,7 @@ const ull Pr = 131;
 #define has(a, x) (a.find(x) != a.end())
 #define nemp(a) (!a.empty())
 #define all(a) (a).begin(), (a).end()
+#define all1(a, len) (a + 1), (a + 1 + len)
 #define SZ(a) int((a).size())
 #define NL cout << '\n';
 
@@ -71,6 +74,33 @@ template <typename t> ostream &operator<<(ostream &out, vector<t> &vec) {
       out << ' ';
   }
   return out;
+}
+
+template <typename ForwardIterator>
+void Inputr(ForwardIterator begin, ForwardIterator end) {
+  ForwardIterator it = begin;
+  while (it != end) {
+    cin >> *it;
+    it++;
+  }
+}
+
+template <typename ForwardIterator>
+void Outputr(ForwardIterator begin, ForwardIterator end) {
+  ForwardIterator it = begin;
+  while (it != end) {
+    if (it != begin)
+      cout << ' ';
+    cout << *it;
+    it++;
+  }
+  NL;
+}
+
+template <typename T, typename ForwardIterator>
+void Outputr1(ForwardIterator begin, ForwardIterator end) {
+  copy(begin, end, ostream_iterator<T>(cout, " "));
+  NL;
 }
 
 // int128 input and output
@@ -113,45 +143,52 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
-const int N = 5100;
-int n, a[N], b[N], d[N][N];
+const int N = 200100;
+int n;
+string s;
+int a[N];
 
-// TODO:
 void solve() {
-  cin >> n;
-
-  map<int, int> m;
+  cin >> n >> s;
+  s = " " + s;
   For1(i, 1, n) {
-    cin >> a[i];
-    m[a[i]]++;
+    if (s[i] == '(')
+      a[i] = 1;
+    else if (s[i] == ')')
+      a[i] = -1;
+    else
+      a[i] = 0;
+  }
+  int cur{};
+  For1(i, 1, n) {
+    if (a[i] == 0) {
+      if (cur == 0) {
+        a[i] = 1;
+      } else {
+        a[i] = -1;
+      }
+    }
+    cur += a[i];
   }
 
-  int len = 0;
-  for (auto &[x, _] : m)
-    b[++len] = x;
-
-  memset(d, 0x3f, sizeof d);
-
-  For1(j, 0, len) d[0][j] = 0;
-
-  For1(i, 1, len) {
-    For1(j, 1, i) {
-      int cnt = m[b[i]];
-
-      if (j + cnt <= i) {
-        ckmin(d[i][j], d[i - 1][j + cnt]);
-      }
-
-      ckmin(d[i][j], d[i - 1][j - 1] + 1);
+  // dbgr(a + 1, a + 1 + n);
+  ll ans{};
+  stack<int> stk;
+  For1(i, 1, n) {
+    if (a[i] == 1)
+      stk.push(i);
+    else {
+      int x = stk.top();
+      ans += i - x;
+      stk.pop();
     }
   }
-
-  cout << d[len][0] << '\n';
+  cout << ans << '\n';
 }
 
 int main(void) {
 #ifdef _DEBUG
-  freopen("d.in", "r", stdin);
+  freopen("c.in", "r", stdin);
 #endif
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
