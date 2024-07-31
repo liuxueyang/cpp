@@ -144,21 +144,176 @@ ostream &operator<<(ostream &os, const lll &v) {
 #endif
 
 const int N = 200100;
-int n, q, a[N], d[N][800];
+int n, q, a[N];
 
-// TODO:
+struct tag {
+  ll val;
+  tag() : val(0) {}
+  tag(ll x) : val(x) {}
+};
+
+struct info {
+  ll val;
+  info() {}
+  info(ll x) : val(x) {}
+};
+
+tag operator+(const tag &l, const tag &r) { return tag(l.val + r.val); }
+
+info operator+(const info &l, const tag &t) { return info(l.val + t.val); }
+
+info operator+(const info &l, const info &r) { return info(max(l.val, r.val)); }
+
+struct SegmentTree {
+  struct node {
+    info val;
+    tag t;
+  };
+
+  int n;
+  vector<node> seg;
+  vector<int> a;
+
+  SegmentTree(int n_, vector<int> a_) : n(n_), a(a_) {
+    seg = vector<node>(n * 4 + 10);
+  }
+
+  void set_tag(int id, tag t) {
+    seg[id].val = seg[id].val + t;
+    seg[id].t = seg[id].t + t;
+  }
+
+  void push_down(int id) {
+    tag t = seg[id].t;
+    if (t.val != 0) {
+      seg[id].t = tag(0);
+
+      int left = id * 2, right = left + 1;
+      set_tag(left, t);
+      set_tag(right, t);
+    }
+  }
+
+  void update(int id) {
+    int left = id * 2, right = left + 1;
+    seg[id].val = seg[left].val + seg[right].val;
+  }
+
+  void build(int id, int l, int r) {
+    if (l == r) {
+      seg[id].val = info(a[l]);
+      return;
+    }
+
+    int left = id * 2, right = left + 1, mid = (l + r) / 2;
+    build(left, l, mid);
+    build(right, mid + 1, r);
+    update(id);
+  }
+
+  void change(int id, int l, int r, int pos, int x) {
+    if (l == r) {
+      seg[id].val = info(x);
+      return;
+    }
+
+    int left = id * 2, right = left + 1, mid = (l + r) / 2;
+    if (pos <= mid)
+      change(left, l, mid, pos, x);
+    else
+      change(right, mid + 1, r, pos, x);
+
+    update(id);
+  }
+
+  info query(int id, int l, int r, int ql, int qr) {
+    if (ql == l && qr == r) {
+      return seg[id].val;
+    }
+
+    push_down(id);
+
+    int left = id * 2, right = left + 1, mid = (l + r) / 2;
+
+    if (qr <= mid)
+      return query(left, l, mid, ql, qr);
+    if (ql >= mid + 1)
+      return query(right, mid + 1, r, ql, qr);
+
+    return query(left, l, mid, ql, mid) + query(right, mid + 1, r, mid + 1, qr);
+  }
+
+  void modify(int id, int l, int r, int ql, int qr, tag t) {
+    if (ql == l && qr == r) {
+      set_tag(id, t);
+      return;
+    }
+
+    push_down(id);
+
+    int left = id * 2, right = left + 1, mid = (l + r) / 2;
+    if (qr <= mid)
+      modify(left, l, mid, ql, qr, t);
+    else if (ql >= mid + 1)
+      modify(right, mid + 1, r, ql, qr, t);
+    else {
+      modify(left, l, mid, ql, mid, t);
+      modify(right, mid + 1, r, mid + 1, qr, t);
+    }
+
+    update(id);
+  }
+};
+
 void solve() {
   cin >> n >> q;
   Inputr(a + 1, a + 1 + n);
 
-  memset(d, 0, sizeof d);
+  vector<PII> que(q);
+  map<int, VI> mque;
+  map<PII, bool> res;
+  int mxi = -1;
 
-  For1(i, 1, n) {
-    For1(j, 1, n / j) {
-      d[i][j] = d[i][j - 1];
-      if (d[i - 1][j] / j <= a[i])
-        d[i][j]++;
+  For(i, 0, q) {
+    int i1, x;
+    cin >> i1 >> x;
+    ckmax(mxi, i1);
+    que[i] = {i1, x};
+    mque[i1].pb(x);
+  }
+
+  const int M = 1800;
+  VI ak(M + 1, 0);
+  SegmentTree tr(M, ak);
+  tr.build(1, 1, M);
+
+  For1(i, 1, mxi) {
+    int lk = 1, rk = M, midk;
+    while (lk < rk) {
+      midk = (lk + rk) / 2;
+      auto ti = tr.query(1, 1, M, midk, midk);
+      int tmp = ti.val / midk + 1;
+      if (tmp <= a[i]) {
+        rk = midk;
+      } else {
+        lk = midk + 1;
+      }
     }
+
+    dbg(i, a[i], rk);
+    tr.modify(1, 1, M, rk, M, tag(1));
+
+    for (auto k1 : mque[i]) {
+      if (k1 >= rk) {
+        res[{i, k1}] = true;
+      } else {
+        res[{i, k1}] = false;
+      }
+    }
+  }
+
+  for (auto &[i, k] : que) {
+    cout << (res[{i, k}] ? "YES" : "NO") << '\n';
   }
 }
 
@@ -171,7 +326,7 @@ int main(void) {
   cout.tie(NULL);
 
   int T = 1;
-  cin >> T;
+  // cin >> T;
 
   while (T--) {
     solve();

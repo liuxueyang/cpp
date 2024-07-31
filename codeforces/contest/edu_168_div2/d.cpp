@@ -156,11 +156,10 @@ void Init() {
 void Add(int a, int b) { e[idx] = b, ne[idx] = h[a], h[a] = idx++; }
 
 int dfs(int u) {
-  int mie = INF, mx = -1;
+  int mie = INF;
   ForE(i, u) {
     int v = e[i];
     int tmp = dfs(v);
-    ckmax(mx, tmp);
     ckmin(mie, tmp);
   }
   if (u == 1) {
@@ -170,12 +169,10 @@ int dfs(int u) {
     return a[u];
   if (mie == 0)
     return 0;
-  // dbg(u, a[u], cur);
-  int mid = mie;
-  if (a[u] < mid)
-    return (mid + a[u]) / 2;
+  if (a[u] < mie)
+    return (mie + a[u]) / 2;
   else
-    return mid;
+    return mie;
 }
 
 void solve() {
