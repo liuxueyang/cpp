@@ -310,6 +310,11 @@ void solve() {
         res[{i, k1}] = false;
       }
     }
+
+    For1(j, 1, 8) {
+      auto ti = tr.query(1, 1, M, j, j);
+      dbg(j, ti.val);
+    }
   }
 
   for (auto &[i, k] : que) {
