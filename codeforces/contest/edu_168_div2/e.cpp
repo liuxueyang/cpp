@@ -272,26 +272,26 @@ void solve() {
   vector<PII> que(q);
   map<int, VI> mque;
   map<PII, bool> res;
-  int mxi = -1;
+  int mxi = -1, mxk = -1;
 
   For(i, 0, q) {
     int i1, x;
     cin >> i1 >> x;
     ckmax(mxi, i1);
+    ckmax(mxk, x);
     que[i] = {i1, x};
     mque[i1].pb(x);
   }
 
-  const int M = 1800;
-  VI ak(M + 1, 0);
-  SegmentTree tr(M, ak);
-  tr.build(1, 1, M);
+  VI ak(mxk + 1, 0);
+  SegmentTree tr(mxk, ak);
+  tr.build(1, 1, mxk);
 
   For1(i, 1, mxi) {
-    int lk = 1, rk = M, midk;
+    int lk = 1, rk = mxk, midk;
     while (lk < rk) {
       midk = (lk + rk) / 2;
-      auto ti = tr.query(1, 1, M, midk, midk);
+      auto ti = tr.query(1, 1, mxk, midk, midk);
       int tmp = ti.val / midk + 1;
       if (tmp <= a[i]) {
         rk = midk;
@@ -300,8 +300,7 @@ void solve() {
       }
     }
 
-    dbg(i, a[i], rk);
-    tr.modify(1, 1, M, rk, M, tag(1));
+    tr.modify(1, 1, mxk, rk, mxk, tag(1));
 
     for (auto k1 : mque[i]) {
       if (k1 >= rk) {
@@ -310,15 +309,10 @@ void solve() {
         res[{i, k1}] = false;
       }
     }
-
-    For1(j, 1, 8) {
-      auto ti = tr.query(1, 1, M, j, j);
-      dbg(j, ti.val);
-    }
   }
 
-  for (auto &[i, k] : que) {
-    cout << (res[{i, k}] ? "YES" : "NO") << '\n';
+  for (auto &p : que) {
+    cout << (res[p] ? "YES" : "NO") << '\n';
   }
 }
 
