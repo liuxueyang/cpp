@@ -149,7 +149,7 @@ void solve() {
       if (j)
         ckmin(d[i][j], d[i - 1][j - 1] + 1);
       else
-        ckmin(d[i][j], d[i - 1][j] + 1);
+        ckmin(d[i][j], d[i - 1][0] + 1);
     }
   }
 
