@@ -283,6 +283,8 @@ void solve() {
     mque[i1].pb(x);
   }
 
+  mxk += 10;
+
   VI ak(mxk + 1, 0);
   SegmentTree tr(mxk, ak);
   tr.build(1, 1, mxk);
