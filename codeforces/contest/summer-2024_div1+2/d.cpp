@@ -116,38 +116,40 @@ ostream &operator<<(ostream &os, const lll &v) {
 const int N = 5100;
 int n, a[N], b[N], d[N][N], c[N];
 
-// TODO:
 void solve() {
   cin >> n;
 
-  memset(c, 0, sizeof c);
-  For1(i, 1, n) {
-    cin >> a[i];
-    c[a[i]]++;
-  }
+  For1(i, 1, n) { cin >> a[i]; }
+  sort(a + 1, a + 1 + n);
 
   int len = 0;
-  For1(i, 1, 5000) {
-    if (c[i]) {
-      b[++len] = i;
+
+  For1(i, 1, n) {
+    if (a[i] != a[i - 1]) {
+      b[++len] = a[i];
+      c[a[i]] = 1;
+    } else {
+      c[a[i]]++;
     }
   }
 
-  memset(d, 0x3f, sizeof d);
-
+  For1(i, 0, len) {
+    For1(j, 0, len) { d[i][j] = INF; }
+  }
   d[0][0] = 0;
-  d[0][c[b[1]]] = 1;
 
   For1(i, 1, len) {
     For1(j, 0, i) {
       int cnt = c[b[i]];
 
       if (j + cnt <= i) {
+        ckmin(d[i][j], d[i - 1][j + cnt]);
       }
-      ckmin(d[i][j], d[i - 1][min(j + cnt, 5000)]);
 
       if (j)
         ckmin(d[i][j], d[i - 1][j - 1] + 1);
+      else
+        ckmin(d[i][j], d[i - 1][j] + 1);
     }
   }
 
