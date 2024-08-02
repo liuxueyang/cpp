@@ -146,22 +146,38 @@ ostream &operator<<(ostream &os, const lll &v) {
 const int N = 1000100;
 
 int n, m, a[N], b[N], c[N];
-PII d[N], d1[N];
+int best[N], d[N];
 
 void solve() {
-  cin >> n >> m;
+  while (cin >> n >> m) {
+    Inputr(a + 1, a + 1 + n);
+    Inputr(b + 1, b + 1 + n);
+    Inputr(c + 1, c + 1 + m);
 
-  Inputr(a + 1, a + 1 + n);
-  Inputr(b + 1, b + 1 + n);
-  For1(i, 1, n) { d[i] = {a[i] - b[i], a[i]}; }
-  sort(d + 1, d + 1 + n);
-  Inputr(c + 1, c + 1 + m);
-  int idx = 1;
-  d1[1] = d[1];
-  For1(i, 2, n) {
-    if (d[i].f1 == d[i - 1].f1)
-      continue;
-    d1[++idx] = d[i];
+    int mx = *max_element(a + 1, a + 1 + n);
+    fill(best, best + 1 + mx, mx + 1);
+    For1(i, 1, n) { ckmin(best[a[i]], a[i] - b[i]); }
+    For1(i, 1, mx) { ckmin(best[i], best[i - 1]); }
+
+    fill(d, d + 1 + mx, 0);
+    For1(i, 1, mx) {
+      if (i >= best[i])
+        d[i] = d[i - best[i]] + 1;
+    }
+
+    ll ans{};
+    For1(i, 1, m) {
+      int j = c[i];
+      if (j > mx) {
+        int cnt = (j - mx + best[mx] - 1) / best[mx];
+        j -= ll(cnt) * best[mx];
+        ans += cnt;
+      }
+
+      ans += d[j];
+    }
+
+    cout << ans * 2 << '\n';
   }
 }
 
@@ -174,7 +190,7 @@ int main(void) {
   cout.tie(NULL);
 
   int T = 1;
-  cin >> T;
+  // cin >> T;
 
   while (T--) {
     solve();
