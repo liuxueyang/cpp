@@ -112,35 +112,30 @@ void Outputr1(ForwardIterator begin, ForwardIterator end) {
 #define dbgr(x...)
 #endif
 
-// TODO:
 void solve() {
   int n;
   while (cin >> n) {
-    VI a(n + 1, 0);
+    VI a(n + 1, 0), p(n + 1, 0);
+    vector<VI> w(35, VI(2, 0));
     ll sum{};
     For1(i, 1, n) {
       cin >> a[i];
       sum += a[i];
+      p[i] = p[i - 1] ^ a[i];
     }
 
     ll ans = 0;
 
+    For1(k, 0, 30) { w[k][0]++; }
+
     For1(k, 0, 30) {
-      int c0{0}, c1{0}, x{0};
-
-      For1(i, 0, n) {
-        int tmp = (a[i] >> k) & 1;
-        x = x ^ tmp;
-
-        if (x) {
-          ans += c0 * (1 << k);
-          c1++;
-        } else {
-          ans += c1 * (1 << k);
-          c0++;
-        }
+      For1(i, 1, n) {
+        int j = (p[i] >> k) & 1;
+        w[k][j]++;
       }
     }
+
+    For1(k, 0, 30) { ans += ll(w[k][0]) * w[k][1] * (1 << k); }
 
     cout << ans - sum << '\n';
   }
