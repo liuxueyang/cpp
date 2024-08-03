@@ -1,4 +1,4 @@
-// Date: Sat Aug  3 20:10:20 2024
+// Date: Sat Aug  3 21:16:29 2024
 
 #include <cassert>
 #include <climits>
@@ -112,42 +112,43 @@ void Outputr1(ForwardIterator begin, ForwardIterator end) {
 #define dbgr(x...)
 #endif
 
+// TODO:
 void solve() {
-  ll n, m;
-  while (cin >> n >> m) {
-    vector<ll> a(n);
-    For(i, 0, n) { cin >> a[i]; }
-
-    ll sum = accumulate(all(a), 0LL);
-
-    if (m >= sum) {
-      cout << "infinite\n";
-      continue;
+  int n;
+  while (cin >> n) {
+    VI a(n + 1, 0);
+    ll sum{};
+    For1(i, 1, n) {
+      cin >> a[i];
+      sum += a[i];
     }
 
-    auto check = [&](ll x) {
-      ll sum{};
-      for (auto i : a) {
-        sum += min(i, x);
+    ll ans = 0;
+
+    For1(k, 0, 30) {
+      int c0{0}, c1{0}, x{0};
+
+      For1(i, 0, n) {
+        int tmp = (a[i] >> k) & 1;
+        x = x ^ tmp;
+
+        if (x) {
+          ans += c0 * (1 << k);
+          c1++;
+        } else {
+          ans += c1 * (1 << k);
+          c0++;
+        }
       }
-      return sum <= m;
-    };
-
-    ll l = 0, r = m, mid;
-    while (l < r) {
-      mid = (l + r + 1) / 2;
-      if (check(mid))
-        l = mid;
-      else
-        r = mid - 1;
     }
-    cout << l << '\n';
+
+    cout << ans - sum << '\n';
   }
 }
 
 int main(void) {
 #ifdef _DEBUG
-  freopen("c.in", "r", stdin);
+  freopen("e.in", "r", stdin);
 #endif
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
