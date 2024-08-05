@@ -146,51 +146,56 @@ ostream &operator<<(ostream &os, const lll &v) {
 const int N = 200100;
 int a[N];
 int n, k;
+int b[N * 2];
 
-bool check(ll x) {
-  For1(i, 1, n) {
-    int m = (x - a[i]) / (k * 2);
-    ll st1 = (m) * 2LL * k + a[i], en1 = st1 + k - 1;
-    if (!(x >= st1 && x <= en1)) {
-      dbg(x, st1, en1, i, a[i], m);
-      return false;
-    }
-  }
-  return true;
-}
-
-// TODO:
 void solve() {
   cin >> n >> k;
 
   Inputr(a + 1, a + 1 + n);
   sort(a + 1, a + 1 + n);
 
-  ll l = a[n], r = l + k - 1, mid;
-  // while (l < r) {
-  //   mid = (l + r + 1) / 2;
-  //   // dbg(l, r, mid);
-  //   if (check(mid))
-  //     l = mid;
-  //   else
-  //     r = mid - 1;
-  // }
+  memset(b, 0, sizeof b);
+  int k2 = 2 * k;
 
-  // r = l;
-  while (l < r) {
-    mid = (l + r) / 2;
-    // dbg(l, r, mid);
-    if (check(mid))
-      r = mid;
-    else
-      l = mid + 1;
+  For1(i, 1, n) {
+    int l = a[i] % k2, r = (a[i] + k) % k2;
+    if (r < l) {
+      b[l]++, b[k2]--, b[0]++, b[r]--;
+    } else {
+      b[l]++, b[r]--;
+    }
   }
 
-  // dbg(r);
-  if (check(l))
-    cout << r << '\n';
-  else
+  For(i, 1, k2) { b[i] = b[i] + b[i - 1]; }
+
+  int st = a[n] % k2, pos = -1, cur = st;
+  bool ok = false;
+  while (cur < k2) {
+    if (b[cur] == n) {
+      ok = true;
+      pos = cur;
+      break;
+    }
+    cur++;
+  }
+
+  if (!ok) {
+    cur = 0;
+    while (cur < st) {
+      if (b[cur] == n) {
+        ok = true;
+        pos = cur;
+        break;
+      }
+      cur++;
+    }
+  }
+
+  if (ok) {
+    cout << (k2 + pos - st) % k2 + a[n] << '\n';
+  } else {
     cout << "-1\n";
+  }
 }
 
 int main(void) {
