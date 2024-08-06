@@ -1,4 +1,4 @@
-// Date: Tue Aug  6 21:50:24 2024
+// Date: Tue Aug  6 22:21:26 2024
 
 #include <cassert>
 #include <climits>
@@ -143,36 +143,45 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
+const int N = 200100;
+
+int n, a[N], c[N], h;
+
+bool check(ll x) {
+  ll sum{};
+  For1(i, 1, n) {
+    ll cnt = (x - 1) / c[i] + 1;
+    if (cnt >= h)
+      return true;
+
+    ll dam = cnt * a[i];
+    sum += dam;
+  }
+  dbg(x, sum, h);
+  return sum >= h;
+}
+
 void solve() {
-  VI a(3);
-  ll k;
+  cin >> h >> n;
 
-  Inputr(all(a));
-  cin >> k;
+  Inputr(all1(a, n));
+  Inputr(all1(c, n));
 
-  sort(all(a));
-  ll ans{};
-
-  For1(i, 1, a[0]) {
-    For1(j, i, a[1]) {
-      ll tmp = 1LL * i * j;
-      if (tmp > k || k % tmp)
-        continue;
-
-      ll rem = k / tmp;
-      if (rem > a[2])
-        continue;
-
-      ckmax(ans, (a[0] - i + 1) * 1LL * (a[1] - j + 1) * (a[2] - rem + 1));
-    }
+  ll l = 1, r = 1e18, mid;
+  while (l < r) {
+    mid = (l + r) / 2;
+    if (check(mid))
+      r = mid;
+    else
+      l = mid + 1;
   }
 
-  cout << ans << '\n';
+  cout << r << '\n';
 }
 
 int main(void) {
 #ifdef _DEBUG
-  freopen("e.in", "r", stdin);
+  freopen("f.in", "r", stdin);
 #endif
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
