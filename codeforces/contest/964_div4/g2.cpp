@@ -144,12 +144,12 @@ ostream &operator<<(ostream &os, const lll &v) {
 #endif
 
 void solve() {
-  int l = 1, r = 1000, lmid, rmid;
+  int l = 1, r = 999, lmid, rmid;
   int res, a, b;
 
-  while (l < r) {
+  while (l + 1 < r) {
     lmid = l + (r - l) / 3;
-    rmid = r - (r - l) / 3;
+    rmid = l + 2 * (r - l) / 3;
 
     a = lmid, b = rmid;
     cout << "? " << a << " " << b << endl;
@@ -157,16 +157,16 @@ void solve() {
     cin >> res;
 
     if (res == a * b) {
-      l = b + 1;
+      l = b;
     } else if (res == a * b + a) {
-      l = a + 1;
+      l = a;
       r = b;
     } else {
       r = a;
     }
   }
 
-  cout << "! " << l << ' ' << l << endl;
+  cout << "! " << r << endl;
 }
 
 int main(void) {
