@@ -186,21 +186,34 @@ struct RevMod {
   }
 };
 
+struct Combination {
+  int n, p;
+  VI a, b;
+
+  Combination(int n_, int p_) : n(n_), p(p_) {
+    a = VI(n + 1);
+
+    a[0] = 1;
+    For1(i, 1, n) { a[i] = (1LL * a[i - 1] * i) % p; }
+
+    RevMod rv(a, p);
+    b = rv.get();
+  }
+
+  int C(int n1, int m1) {
+    if (m1 > n1)
+      return 0;
+    if (m1 == 0 || m1 == n1)
+      return 1 % p;
+
+    int ans = a[n1] % p;
+    ans = 1LL * ans * ((1LL * b[m1] * b[n1 - m1]) % p) % p;
+    return ans;
+  }
+};
+
 const int N = 200100;
-VI a(N, 0), b(N, 0);
-
-int C(int x, int y, int p) {
-  if (y > x)
-    return 0;
-
-  if (y == 0 || x == y)
-    return 1 % p;
-
-  int ans = a[x] % p;
-  ans = 1LL * ans * ((1LL * b[y] * b[x - y]) % p) % p;
-
-  return ans;
-}
+Combination comb(N, MOD);
 
 void solve() {
   int n, k;
@@ -219,7 +232,7 @@ void solve() {
   int ans{};
 
   For1(i, 0, tot) {
-    int tmp = 1LL * C(x0, i, MOD) * C(x1, k - i, MOD) % MOD;
+    int tmp = 1LL * comb.C(x0, i) * comb.C(x1, k - i) % MOD;
     ans = (ans + tmp) % MOD;
   }
 
@@ -236,12 +249,6 @@ int main(void) {
 
   int T = 1;
   cin >> T;
-
-  a[0] = 1;
-  For(i, 1, N) { a[i] = (1LL * a[i - 1] * i) % MOD; }
-
-  RevMod rv(a, MOD);
-  b = rv.get();
 
   while (T--) {
     solve();
