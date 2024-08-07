@@ -147,34 +147,26 @@ void solve() {
   int l = 1, r = 1000, lmid, rmid;
   int res, a, b;
 
-  while (l + 2 < r) {
+  while (l < r) {
     lmid = l + (r - l) / 3;
     rmid = r - (r - l) / 3;
 
     a = lmid, b = rmid;
     cout << "? " << a << " " << b << endl;
-    dbg(l, r, a, b);
 
     cin >> res;
 
     if (res == a * b) {
       l = b + 1;
     } else if (res == a * b + a) {
+      l = a + 1;
       r = b;
     } else {
       r = a;
     }
   }
 
-  cout << "? " << l << ' ' << l << endl;
-  dbg(l, r);
-  cin >> res;
-
-  if (res == l * l) {
-    cout << "! " << r << endl;
-  } else {
-    cout << "! " << l << endl;
-  }
+  cout << "! " << l << ' ' << l << endl;
 }
 
 int main(void) {
