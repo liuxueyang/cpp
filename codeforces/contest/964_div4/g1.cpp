@@ -143,10 +143,6 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
-// bool check(int mid) {
-
-// }
-
 void solve() {
   int l = 1, r = 1000, mid;
 

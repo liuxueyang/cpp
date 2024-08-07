@@ -143,21 +143,18 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
-// bool check(int mid) {
-
-// }
-
 void solve() {
   int l = 1, r = 1000, lmid, rmid;
+  int res, a, b;
 
-  while (l < r) {
+  while (l + 2 < r) {
     lmid = l + (r - l) / 3;
     rmid = r - (r - l) / 3;
 
-    int a = lmid, b = rmid;
+    a = lmid, b = rmid;
     cout << "? " << a << " " << b << endl;
+    dbg(l, r, a, b);
 
-    int res;
     cin >> res;
 
     if (res == a * b) {
@@ -169,13 +166,20 @@ void solve() {
     }
   }
 
+  cout << "? " << l << ' ' << l << endl;
   dbg(l, r);
-  cout << "! " << l << endl;
+  cin >> res;
+
+  if (res == l * l) {
+    cout << "! " << r << endl;
+  } else {
+    cout << "! " << l << endl;
+  }
 }
 
 int main(void) {
 #ifdef _DEBUG
-  freopen("g1.in", "r", stdin);
+  freopen("g2.in", "r", stdin);
 #endif
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
