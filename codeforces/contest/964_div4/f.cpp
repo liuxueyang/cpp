@@ -144,9 +144,7 @@ ostream &operator<<(ostream &os, const lll &v) {
 #endif
 
 ll qmod(ll x, ll y, ll m) {
-  ll ans = 1;
-  if (y == 0)
-    return 1 % m;
+  ll ans = 1 % m;
 
   while (y) {
     if (y & 1)
