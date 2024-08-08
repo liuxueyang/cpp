@@ -1,4 +1,4 @@
-// Date: Wed Aug  7 00:03:33 2024
+// Date: Thu Aug  8 06:51:46 2024
 
 #include <cassert>
 #include <climits>
@@ -143,35 +143,58 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
+const int N = 10100;
+double a[N][3];
+int n;
+
+double f(int idx, double x) {
+  double cur = 1;
+  auto &v = a[idx];
+
+  double ans{};
+  Rof(i, 0, 3) {
+    ans += cur * v[i];
+    cur = cur * x;
+  }
+  return ans;
+}
+
+double check(double x) {
+  double ans = -INFL;
+
+  For1(i, 1, n) {
+    double tmp = f(i, x);
+    ckmax(ans, tmp);
+  }
+  return ans;
+}
+
 void solve() {
-  int l = 1, r = 1000, lmid, rmid;
-  int res, a, b;
+  cin >> n;
+  For1(i, 1, n) {
+    For(j, 0, 3) { cin >> a[i][j]; }
+  }
 
-  while (l + 1 < r) {
-    lmid = l + (r - l) / 3;
-    rmid = l + 2 * (r - l) / 3;
+  double l = 0, r = 1000, lmid, rmid, delt;
+  while (abs(l - r) > 1e-10) {
+    delt = abs(l - r) / 3;
+    lmid = l + delt;
+    rmid = l + 2 * delt;
 
-    a = lmid, b = rmid;
-    cout << "? " << a << " " << b << endl;
-
-    cin >> res;
-
-    if (res == a * b) {
-      l = b;
-    } else if (res == a * b + a) {
-      l = a;
-      r = b;
+    if (check(lmid) < check(rmid)) {
+      r = rmid;
     } else {
-      r = a;
+      l = lmid;
     }
   }
 
-  cout << "! " << r << endl;
+  cout << setprecision(4) << fixed;
+  cout << check(lmid) << '\n';
 }
 
 int main(void) {
 #ifdef _DEBUG
-  freopen("g2.in", "r", stdin);
+  freopen("1883.in", "r", stdin);
 #endif
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
