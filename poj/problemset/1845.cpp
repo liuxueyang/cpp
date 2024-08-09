@@ -134,7 +134,6 @@ struct RevMod {
 
   RevMod(VI &a_, int p_) : a(a_), n(SZ(a)), p(p_) {
     d = VI(n, 0);
-    // dbg(n, a);
 
     d[0] = a[0] % p;
     For(i, 1, n) { d[i] = (1LL * a[i] * d[i - 1]) % p; }
@@ -198,8 +197,6 @@ void solve() {
     }
 
     map<ll, int> pf = prime_facto(a);
-    // if (pf.empty())
-    //   pf[a] = 1;
 
     const int p = 9901;
 
@@ -208,6 +205,8 @@ void solve() {
 
     for (map<ll, int>::iterator it = pf.begin(); it != pf.end(); it++) {
       int x = it->f1 - 1;
+      if (it->f1 % p == 0) continue;
+
       if (gcd(x, p) == 1) {
         prs.pb(it->f1 - 1);
       } else {
@@ -231,6 +230,9 @@ void solve() {
       ll pi = it->f1;
       ll tmp = 1;
 
+      if (pi % p == 0)
+        continue;
+
       if (has(p2, pi)) {
         tmp = (it->f2 + 1) % p;
       } else {
@@ -253,6 +255,7 @@ int main(void) {
   cout.tie(NULL);
 
   int T = 1;
+  cnt = 0;
   get_primes(1e5);
 
   while (T--) {
