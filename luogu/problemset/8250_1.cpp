@@ -166,20 +166,15 @@ void solve() {
     For(k, 0, len) {
       int u1 = quei[k].f1, id = quei[k].f2;
 
-      // if (k && u1 == quei[k - 1].f1) {
-      //   ans[id] -= lst_cnt;
-      //   continue;
-      // }
-      // TODO: bug
-      if (has(com, PII(u, u1))) {
-        ans[id] -= com[{u, u1}];
-        // assert(com[PII(u, u1)];
+      if (k && u1 == quei[k - 1].f1) {
+        ans[id] -= lst_cnt;
         continue;
       }
-      // if (has(com, PII(u1, u))) {
-      //   ans[id] -= com[{u1, u}];
-      //   continue;
-      // }
+      if (has(com, PII(u, u1))) {
+        ans[id] -= com[{u, u1}];
+        lst_cnt = com[{u, u1}];
+        continue;
+      }
 
       int cnt = 0;
       if (col[u1] == u)
