@@ -116,6 +116,7 @@ const int N = 200100, M = 1400100;
 
 int n, m, q, idx, h[N], d[N], col[N];
 int e[M], ne[M];
+vector<vector<PII>> gque(N + 1);
 
 void Init() {
   idx = 0;
@@ -136,83 +137,53 @@ void solve() {
     d[u]++, d[v]++;
   }
 
-  int D = m / sqrt(q) + 1;
-
-  vector<PII> que;
-  map<PII, int> res;
-  map<int, set<int>> big;
   VI ans(q, 0);
 
   For(i, 0, q) {
     int u, v;
     cin >> u >> v;
-    que.pb({u, v});
 
     ans[i] = d[u];
 
     if (d[u] < d[v])
       swap(u, v);
-    if (d[u] >= D)
-      big[u].insert(v);
+
+    gque[u].pb({v, i});
   }
 
-  set<int> vis;
+  For1(u, 1, n) {
+    auto &quei = gque[u];
+    sort(all(quei));
 
-  for (auto &[u, ed] : big) {
-    ForE(i, u) {
-      int v = e[i];
+    ForE(j, u) {
+      int v = e[j];
       col[v] = u;
     }
 
-    for (auto v : ed) {
-      if (has(vis, v))
+    int len = SZ(quei), lst_cnt = 0;
+    For(k, 0, len) {
+      int u1 = quei[k].f1, id = quei[k].f2;
+
+      if (k && u1 == quei[k - 1].f1) {
+        ans[id] -= lst_cnt;
         continue;
+      }
 
       int cnt = 0;
-      if (col[v] == u)
+      if (col[u1] == u)
         cnt++;
-      ForE(i, v) {
-        int v1 = e[i];
+      ForE(i1, u1) {
+        int v1 = e[i1];
         if (col[v1] == u)
           cnt++;
       }
 
-      res[{u, v}] = cnt;
+      lst_cnt = cnt;
+      ans[id] -= cnt;
     }
-    vis.insert(u);
   }
 
-  for (auto &[u, v] : que) {
-    if (has(res, PII(u, v)) || has(res, PII(v, u)))
-      continue;
-
-    ForE(i, u) {
-      int v1 = e[i];
-      col[v1] = u;
-    }
-
-    int cnt = 0;
-    if (col[v] == u)
-      cnt++;
-
-    ForE(i, v) {
-      int v1 = e[i];
-      if (col[v1] == u)
-        cnt++;
-    }
-
-    res[{u, v}] = cnt;
-  }
-
-  For(i, 0, q) {
-    int u = que[i].f1, v = que[i].f2;
-    if (has(res, PII(u, v))) {
-      ans[i] -= res[{u, v}];
-    } else {
-      ans[i] -= res[{v, u}];
-    }
-    cout << ans[i] << '\n';
-  }
+  For(i, 0, q) { cout << ans[i] << '\n'; }
 }
 
 int main(void) {
