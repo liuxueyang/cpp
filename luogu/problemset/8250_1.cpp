@@ -151,6 +151,8 @@ void solve() {
     gque[u].pb({v, i});
   }
 
+  map<PII, int> com;
+
   For1(u, 1, n) {
     auto &quei = gque[u];
     sort(all(quei));
@@ -168,6 +170,14 @@ void solve() {
         ans[id] -= lst_cnt;
         continue;
       }
+      if (has(com, PII(u, u1))) {
+        ans[id] -= com[{u, u1}];
+        continue;
+      }
+      if (has(com, PII(u1, u))) {
+        ans[id] -= com[{u1, u}];
+        continue;
+      }
 
       int cnt = 0;
       if (col[u1] == u)
@@ -180,6 +190,7 @@ void solve() {
 
       lst_cnt = cnt;
       ans[id] -= cnt;
+      com[{u, u1}] = com[{u1, u}] = cnt;
     }
   }
 
