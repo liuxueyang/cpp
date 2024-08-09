@@ -170,14 +170,16 @@ void solve() {
         ans[id] -= lst_cnt;
         continue;
       }
+      // TODO: bug
       if (has(com, PII(u, u1))) {
         ans[id] -= com[{u, u1}];
+        assert(com[PII(u, u1)] == com[PII(u1, u)]);
         continue;
       }
-      if (has(com, PII(u1, u))) {
-        ans[id] -= com[{u1, u}];
-        continue;
-      }
+      // if (has(com, PII(u1, u))) {
+      //   ans[id] -= com[{u1, u}];
+      //   continue;
+      // }
 
       int cnt = 0;
       if (col[u1] == u)
