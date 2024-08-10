@@ -170,6 +170,8 @@ void solve() {
     //   col[v] = u;
     // }
 
+    map<PII, int> com;
+
     int len = SZ(quei), lst_cnt = 0;
     For(k, 0, len) {
       int u1 = quei[k].f1, id = quei[k].f2;
@@ -178,12 +180,12 @@ void solve() {
         ans[id] -= lst_cnt;
         continue;
       }
-      // if (has(com, PII(u, u1))) {
-      //   ans[id] -= com[{u, u1}];
-      //   NOTE: This is the bug!!! We should set lst_cnt if we use com to cache
-      //   lst_cnt = com[{u, u1}];
-      //   continue;
-      // }
+      if (has(com, PII(u, u1))) {
+        ans[id] -= com[{u, u1}];
+        // NOTE: This is the bug!!! We should set lst_cnt if we use com to cache
+        lst_cnt = com[{u, u1}];
+        continue;
+      }
 
       int cnt = 0;
       if (col[u1] == u)
@@ -201,7 +203,7 @@ void solve() {
 
       lst_cnt = cnt;
       ans[id] -= cnt;
-      // com[{u, u1}] = com[{u1, u}] = cnt;
+      com[{u, u1}] = com[{u1, u}] = cnt;
     }
   }
 
