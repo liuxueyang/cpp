@@ -173,7 +173,7 @@ PBL check(ll x) {
     }
   }
 
-  dbg(x, cnt, cnt1, n, n1);
+  // dbg(x, cnt, cnt1, n, n1);
 
   if (cnt >= cnt1) {
     // if (a[n].f2)
@@ -202,6 +202,11 @@ void solve() {
 
   dbg(l);
   cout << check(l).f2 << '\n';
+  ll ans = check(l).f2;
+
+  // another case
+
+  cout << ans << '\n';
 }
 
 int main(void) {
