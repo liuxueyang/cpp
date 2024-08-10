@@ -143,16 +143,46 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
-ll qmi(ll a, ll b, ll c) {
-  ll res = 1 % c;
-  while (b) {
-    if (b & 1)
-      res = res * a % c;
-    a = a * a % c;
-    b >>= 1;
+ll qmod(ll x, ll y, ll m) {
+  ll ans = 1 % m;
+
+  while (y) {
+    if (y & 1)
+      ans = ans * x % m;
+    y >>= 1;
+    x = x * x % m;
   }
-  return res;
+  return ans;
 }
+
+ll rev_mod(ll x, ll m) { return qmod(x, m - 2, m); }
+
+struct RevMod {
+  VI a, d;
+  int n, p;
+
+  RevMod(VI &a_, int p_) : a(a_), n(SZ(a)), p(p_) {
+    d = VI(n, 0);
+
+    d[0] = a[0] % p;
+    For(i, 1, n) { d[i] = (1LL * a[i] * d[i - 1]) % p; }
+  }
+
+  VI get() {
+    VI ans(n, 0);
+    int cur = rev_mod(d[n - 1], p);
+
+    Rof(i, 0, n) {
+      if (i)
+        ans[i] = (1LL * cur * d[i - 1]) % p;
+      else
+        ans[i] = cur % p;
+
+      cur = 1LL * cur * a[i] % p;
+    }
+    return ans;
+  }
+};
 
 void solve() {
   ll l, r, k, ans = 1;
@@ -166,14 +196,15 @@ void solve() {
   VI cnt{0, 10, 5, 4, 3, 2, 2, 2, 2, 2};
   int k1 = cnt[k];
 
-  ll t1 = qmi(k1 - 1, l, MOD), t2 = qmi(k1, r - l - 1, MOD);
-  dbg(k1, t1, t2);
-  ans = t1 * t2 % MOD;
+  ans = k1 - 1;
+  int p = r - (l + 1);
+  ll t1 = qmod(k1, l, MOD), t2 = (qmod(k1, p + 1, MOD) - 1 + MOD) % MOD,
+     t3 = rev_mod(k1 - 1, MOD);
+  dbg(k1, t1, t2, t3);
 
-  if (l) {
-    ll t3 = qmi(k1, l - 1, MOD);
-    ans = ans * t3 % MOD;
-  }
+  ans = ans * t1 % MOD;
+  ans = ans * t2 % MOD;
+  ans = ans * t3 % MOD;
 
   cout << ans << '\n';
 }
