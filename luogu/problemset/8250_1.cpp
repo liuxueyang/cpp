@@ -133,8 +133,8 @@ void solve() {
 
   For1(i, 1, m) {
     int u, v;
-    scanf("%d%d", &u, &v);
-    // cin >> u >> v;
+    // scanf("%d%d", &u, &v);
+    cin >> u >> v;
     // Add(u, v), Add(v, u);
     d[u]++, d[v]++;
     ver[u].pb(v), ver[v].pb(u);
@@ -144,8 +144,8 @@ void solve() {
 
   For(i, 0, q) {
     int u, v;
-    scanf("%d%d", &u, &v);
-    // cin >> u >> v;
+    // scanf("%d%d", &u, &v);
+    cin >> u >> v;
 
     ans[i] = d[u];
 
@@ -205,8 +205,8 @@ void solve() {
   }
 
   For(i, 0, q) {
-    printf("%d\n", ans[i]);
-    // cout << ans[i] << '\n';
+    // printf("%d\n", ans[i]);
+    cout << ans[i] << '\n';
   }
 }
 
@@ -214,9 +214,9 @@ int main(void) {
 #ifdef _DEBUG
   freopen("8250.in", "r", stdin);
 #endif
-  // std::ios::sync_with_stdio(false);
-  // cin.tie(NULL);
-  // cout.tie(NULL);
+  std::ios::sync_with_stdio(false);
+  cin.tie(NULL);
+  cout.tie(NULL);
 
   int T = 1;
 
