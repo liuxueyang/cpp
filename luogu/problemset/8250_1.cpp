@@ -180,6 +180,7 @@ void solve() {
       }
       // if (has(com, PII(u, u1))) {
       //   ans[id] -= com[{u, u1}];
+      //   NOTE: This is the bug!!! We should set lst_cnt if we use com to cache
       //   lst_cnt = com[{u, u1}];
       //   continue;
       // }
