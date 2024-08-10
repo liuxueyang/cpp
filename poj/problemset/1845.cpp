@@ -106,10 +106,10 @@ void Outputr1(ForwardIterator begin, ForwardIterator end) {
 #ifdef _DEBUG
 #include "debug.h"
 #else
-// #define dbg(x...)
-// #define dbgi(x)
-// #define dbgln()
-// #define dbgr(x...)
+#define dbg(x...)
+#define dbgi(x)
+#define dbgln()
+#define dbgr(x...)
 #endif
 
 ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
@@ -129,18 +129,18 @@ ll qmod(ll x, ll y, ll m) {
 ll rev_mod(ll x, ll m) { return qmod(x, m - 2, m); }
 
 struct RevMod {
-  vector<ll> a, d;
+  VI a, d;
   int n, p;
 
-  RevMod(vector<ll> &a_, int p_) : a(a_), n(SZ(a)), p(p_) {
-    d = vector<ll>(n, 0);
+  RevMod(VI &a_, int p_) : a(a_), n(SZ(a)), p(p_) {
+    d = VI(n, 0);
 
     d[0] = a[0] % p;
     For(i, 1, n) { d[i] = (1LL * a[i] * d[i - 1]) % p; }
   }
 
-  vector<ll> get() {
-    vector<ll> ans(n, 0);
+  VI get() {
+    VI ans(n, 0);
     int cur = rev_mod(d[n - 1], p);
 
     Rof(i, 0, n) {
@@ -169,7 +169,7 @@ map<ll, int> prime_facto(ll n) {
   return res;
 }
 
-const int N = 1000010;
+const int N = 100010;
 int primes[N], cnt;
 bool st[N];
 
@@ -198,43 +198,47 @@ void solve() {
 
     map<ll, int> pf = prime_facto(a);
 
-    const ll p = 9901;
+    const int p = 9901;
 
-    // vector<ll> prs;
-    // set<ll> p2;
+    VI prs;
+    set<int> p2;
 
-    // for (map<ll, int>::iterator it = pf.begin(); it != pf.end(); it++) {
-    //   ll x = it->f1 - 1;
+    for (map<ll, int>::iterator it = pf.begin(); it != pf.end(); it++) {
+      int x = it->f1 - 1;
+      if (it->f1 % p == 0)
+        continue;
 
-    //   if (gcd(x, p) == 1) {
-    //     prs.pb(x);
-    //   } else {
-    //     p2.insert(it->f1);
-    //   }
-    // }
+      if (gcd(x, p) == 1) {
+        prs.pb(it->f1 - 1);
+      } else {
+        p2.insert(it->f1);
+      }
+    }
 
-    // map<ll, ll> rv;
+    map<int, int> rv;
 
-    // if (nemp(prs)) {
-    //   // RevMod rm = RevMod(prs, p);
-    //   // VI rms = rm.get();
-    //   int len = SZ(prs);
-    //   For(i, 0, len) { rv[prs[i]] = rev_mod(prs[i], p); }
-    // }
+    if (nemp(prs)) {
+      RevMod rm = RevMod(prs, p);
+      VI rms = rm.get();
+      int len = SZ(prs);
+      For(i, 0, len) { rv[prs[i]] = rms[i]; }
+    }
 
     ll ans = 1;
 
     for (map<ll, int>::iterator it = pf.begin(); it != pf.end(); it++) {
+      ll cnt = 1LL * it->f2 * b + 1;
       ll pi = it->f1;
       ll tmp = 1;
 
-      if (gcd(pi - 1, p) == 1) {
-        ll cnt = 1LL * it->f2 * b + 1;
-        ll rv = rev_mod(pi - 1, p) % p;
-        tmp = tmp * rv % p;
-        tmp = tmp * (qmod(pi, cnt, p) + p - 1) % p;
+      if (pi % p == 0)
+        continue;
+
+      if (has(p2, pi)) {
+        tmp = (it->f2 * b % p + 1) % p;
       } else {
-        tmp = (it->f2 * b + 1) % p;
+        tmp = (qmod(pi, cnt, p) - 1 + p) % p;
+        tmp = tmp * rv[pi - 1] % p;
       }
       ans = ans * tmp % p;
     }
