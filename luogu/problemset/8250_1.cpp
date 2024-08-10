@@ -117,6 +117,7 @@ const int N = 200100, M = 1400100;
 int n, m, q, idx, h[N], d[N], col[N];
 int e[M], ne[M];
 vector<vector<PII>> gque(N + 1);
+VI ver[N];
 
 void Init() {
   idx = 0;
@@ -127,21 +128,24 @@ void Init() {
 void Add(int a, int b) { e[idx] = b, ne[idx] = h[a], h[a] = idx++; }
 
 void solve() {
-  Init();
+  // Init();
   cin >> n >> m >> q;
 
   For1(i, 1, m) {
     int u, v;
-    cin >> u >> v;
-    Add(u, v), Add(v, u);
+    scanf("%d%d", &u, &v);
+    // cin >> u >> v;
+    // Add(u, v), Add(v, u);
     d[u]++, d[v]++;
+    ver[u].pb(v), ver[v].pb(u);
   }
 
   VI ans(q, 0);
 
   For(i, 0, q) {
     int u, v;
-    cin >> u >> v;
+    scanf("%d%d", &u, &v);
+    // cin >> u >> v;
 
     ans[i] = d[u];
 
@@ -151,16 +155,20 @@ void solve() {
     gque[u].pb({v, i});
   }
 
-  map<PII, int> com;
+  // map<PII, int> com;
 
   For1(u, 1, n) {
     auto &quei = gque[u];
     sort(all(quei));
 
-    ForE(j, u) {
-      int v = e[j];
+    for (auto v : ver[u]) {
+
       col[v] = u;
     }
+    // ForE(j, u) {
+    //   int v = e[j];
+    //   col[v] = u;
+    // }
 
     int len = SZ(quei), lst_cnt = 0;
     For(k, 0, len) {
@@ -170,37 +178,45 @@ void solve() {
         ans[id] -= lst_cnt;
         continue;
       }
-      if (has(com, PII(u, u1))) {
-        ans[id] -= com[{u, u1}];
-        lst_cnt = com[{u, u1}];
-        continue;
-      }
+      // if (has(com, PII(u, u1))) {
+      //   ans[id] -= com[{u, u1}];
+      //   lst_cnt = com[{u, u1}];
+      //   continue;
+      // }
 
       int cnt = 0;
       if (col[u1] == u)
         cnt++;
-      ForE(i1, u1) {
-        int v1 = e[i1];
+
+      for (auto v1 : ver[u1]) {
         if (col[v1] == u)
           cnt++;
       }
+      // ForE(i1, u1) {
+      //   int v1 = e[i1];
+      //   if (col[v1] == u)
+      //     cnt++;
+      // }
 
       lst_cnt = cnt;
       ans[id] -= cnt;
-      com[{u, u1}] = com[{u1, u}] = cnt;
+      // com[{u, u1}] = com[{u1, u}] = cnt;
     }
   }
 
-  For(i, 0, q) { cout << ans[i] << '\n'; }
+  For(i, 0, q) {
+    printf("%d\n", ans[i]);
+    // cout << ans[i] << '\n';
+  }
 }
 
 int main(void) {
 #ifdef _DEBUG
   freopen("8250.in", "r", stdin);
 #endif
-  std::ios::sync_with_stdio(false);
-  cin.tie(NULL);
-  cout.tie(NULL);
+  // std::ios::sync_with_stdio(false);
+  // cin.tie(NULL);
+  // cout.tie(NULL);
 
   int T = 1;
 
