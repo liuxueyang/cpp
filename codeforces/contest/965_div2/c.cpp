@@ -151,7 +151,7 @@ using PBL = pair<bool, ll>;
 PBL check(ll x) {
   ll k1 = k;
   int n1 = n - 1;
-  ll cnt{}, cnt1{(n1) / 2 + 1};
+  ll cnt{}, cnt1{n1 / 2 + 1};
 
   Rof1(i, 1, n - 1) {
     if (a[i].f2) {
@@ -173,12 +173,7 @@ PBL check(ll x) {
     }
   }
 
-  // dbg(x, cnt, cnt1, n, n1);
-
   if (cnt >= cnt1) {
-    // if (a[n].f2)
-    //   return PBL(true, x + max(a[n].f1, x));
-    // else
     return PBL(true, x + a[n].f1);
   }
 
@@ -200,11 +195,47 @@ void solve() {
       r = mid - 1;
   }
 
-  dbg(l);
-  cout << check(l).f2 << '\n';
   ll ans = check(l).f2;
 
-  // another case
+  if (n & 1) {
+    int mid = (n + 1) / 2;
+    ll tmp = 0;
+    For1(i, 1, n) {
+      if (i >= mid) {
+        if (a[i].f2) {
+          ckmax(tmp, a[i].f1 + k + a[mid - 1].f1);
+        } else {
+          ckmax(tmp, a[i].f1 + a[mid - 1].f1);
+        }
+      } else {
+        if (a[i].f2) {
+          ckmax(tmp, a[i].f1 + k + a[mid].f1);
+        } else {
+          ckmax(tmp, a[i].f1 + a[mid].f1);
+        }
+      }
+    }
+    ckmax(ans, tmp);
+  } else {
+    int mid = (n + 1) / 2;
+    ll tmp = 0;
+    For1(i, 1, n) {
+      if (i <= mid) {
+        if (a[i].f2) {
+          ckmax(tmp, a[i].f1 + k + a[mid + 1].f1);
+        } else {
+          ckmax(tmp, a[i].f1 + a[mid + 1].f1);
+        }
+      } else {
+        if (a[i].f2) {
+          ckmax(tmp, a[i].f1 + k + a[mid].f1);
+        } else {
+          ckmax(tmp, a[i].f1 + a[mid].f1);
+        }
+      }
+    }
+    ckmax(ans, tmp);
+  }
 
   cout << ans << '\n';
 }
