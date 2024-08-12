@@ -112,10 +112,14 @@ void Outputr1(ForwardIterator begin, ForwardIterator end) {
 #define dbgr(x...)
 #endif
 
+const int N = 500100;
 int n, m, s;
+
+namespace LCA {
 vector<VI> edge;
 vector<VI> f;
 VI dep, father;
+int n;
 
 void dfs(int x, int fa) {
   dep[x] = dep[fa] + 1;
@@ -153,30 +157,31 @@ int lca(int x, int y) {
   }
   return f[x][0];
 }
+} // namespace LCA
 
-const int N = 500100;
 void solve() {
   cin >> n >> m >> s;
 
-  edge = vector<VI>(N + 10);
-  dep = VI(N + 10, 0);
+  LCA::n = n;
+  LCA::edge = vector<VI>(N + 10);
+  LCA::dep = VI(N + 10, 0);
 
-  f = vector<VI>(N + 10, VI(100, 0));
-  father = VI(N + 10, 0);
+  LCA::f = vector<VI>(N + 10, VI(100, 0));
+  LCA::father = VI(N + 10, 0);
 
   For(i, 0, n - 1) {
     int u, v;
     cin >> u >> v;
-    edge[u].pb(v);
-    edge[v].pb(u);
+    LCA::edge[u].pb(v);
+    LCA::edge[v].pb(u);
   }
 
-  dep[s] = 1;
-  dfs(s, 0);
+  LCA::dep[s] = 1;
+  LCA::dfs(s, 0);
   For(i, 0, m) {
     int u, v;
     cin >> u >> v;
-    cout << lca(u, v) << '\n';
+    cout << LCA::lca(u, v) << '\n';
   }
 }
 
