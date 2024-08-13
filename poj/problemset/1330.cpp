@@ -63,11 +63,13 @@ template <class T> bool ckmax(T &a, const T &b) { return a < b ? a = b, 1 : 0; }
 #define dbgr(x...)
 #endif
 
-namespace LCA {
-vector<VI> edge;
-vector<VI> f;
-VI dep, father;
+const int N = 10100, M = 100;
+VI edge[N];
+int f[N][M];
+int dep[N], father[N];
 int n;
+
+namespace LCA {
 
 void dfs(int x, int fa) {
   dep[x] = dep[fa] + 1;
@@ -108,25 +110,25 @@ int lca(int x, int y) {
 } // namespace LCA
 
 void solve() {
-  cin >> LCA::n;
-  LCA::edge = vector<VI>(LCA::n + 100);
-  LCA::dep = VI(LCA::n + 100, 0);
-  LCA::f = vector<VI>(LCA::n + 100, VI(32, 0));
-  LCA::father = VI(LCA::n + 100, 0);
+  cin >> n;
+  For1(i, 1, n) { edge[i].clear(); }
+  memset(dep, 0, sizeof dep);
+  memset(f, 0, sizeof f);
+  memset(father, 0, sizeof father);
 
-  For1(i, 1, LCA::n - 1) {
+  For1(i, 1, n - 1) {
     int u, v;
     cin >> u >> v;
-    LCA::edge[u].pb(v);
-    LCA::father[v] = u;
+    edge[u].pb(v);
+    father[v] = u;
   }
 
   int s = 1;
-  while (LCA::father[s] != 0) {
-    s = LCA::father[s];
+  while (father[s] != 0) {
+    s = father[s];
   }
 
-  LCA::dep[s] = 1;
+  dep[s] = 1;
   LCA::dfs(s, 0);
   int u, v;
   cin >> u >> v;
