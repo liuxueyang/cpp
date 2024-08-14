@@ -163,9 +163,7 @@ void solve() {
     For1(j, 1, m) {
       b[i][j] = b[i - 1][j] + b[i][j - 1] - b[i - 1][j - 1] + a[i][j];
       rb.pb(b[i][j]);
-      // dbgi(b[i][j]);
     }
-    // dbgln();
   }
   sort(all(rb), greater<ll>());
 
@@ -178,14 +176,7 @@ void solve() {
 
   ll ans{};
 
-  // dbg(SZ(rb));
-  // dbgr(all(rb));
-  // dbgr(all(go));
-
-  For(i, 0, w) {
-    // dbg(i, go[i], rb[i]);
-    ans += go[i] * 1LL * rb[i];
-  }
+  For(i, 0, w) { ans += go[i] * 1LL * rb[i]; }
   cout << ans << '\n';
 }
 
