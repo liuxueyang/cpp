@@ -147,11 +147,18 @@ void solve() {
   int n, k;
   cin >> n >> k;
 
+  int tot{};
   vector<PII> a(n);
   For(i, 0, n) {
     int x, y;
     cin >> x >> y;
     a[i] = PII(x, y);
+    tot += x + y;
+  }
+
+  if (tot < k) {
+    cout << "-1\n";
+    return;
   }
 
   vector<VI> c(n, VI(k + 1, INF));
@@ -165,20 +172,15 @@ void solve() {
         int tmp = a[i].f2 * x1 + a[i].f1 * x2 - x1 * x2;
         ckmin(c[i][j], tmp);
       }
-      dbg(i, j, c[i][j]);
     }
   }
 
   VI d(k + 1, INF);
   d[0] = 0;
 
-  For1(i, 1, k) {
-    For1(x, 0, i) {
-      For(j, 0, n) {
-        if (a[j].f1 + a[j].f2 < x)
-          continue;
-        ckmin(d[i], d[i - x] + c[j][x]);
-      }
+  For(j, 0, n) {
+    Rof1(i, 1, k) {
+      For1(x, 0, i) { ckmin(d[i], d[i - x] + c[j][x]); }
     }
   }
 
