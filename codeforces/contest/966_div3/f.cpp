@@ -143,7 +143,6 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
-// TODO:
 void solve() {
   int n, k;
   cin >> n >> k;
@@ -152,49 +151,38 @@ void solve() {
   For(i, 0, n) {
     int x, y;
     cin >> x >> y;
-    if (x > y)
-      swap(x, y);
     a[i] = PII(x, y);
   }
-  sort(all(a));
 
-  int tot{};
-  for (auto &[x, y] : a) {
-    if (x != y) {
-      tot += abs(x - y);
-      tot += 2 * min(x, y);
-    } else {
-      tot += 2 * x;
+  vector<VI> c(n, VI(k + 1, INF));
+
+  For(i, 0, n) {
+    c[i][0] = 0;
+
+    For1(j, 1, min(k, a[i].f1 + a[i].f2)) {
+      For1(x1, 0, min(a[i].f1, j)) {
+        int x2 = j - x1;
+        int tmp = a[i].f2 * x1 + a[i].f1 * x2 - x1 * x2;
+        ckmin(c[i][j], tmp);
+      }
+      dbg(i, j, c[i][j]);
     }
   }
-  if (tot < k) {
-    cout << "-1\n";
-    return;
-  }
 
-  ll ans{};
+  VI d(k + 1, INF);
+  d[0] = 0;
 
-  for (auto &[x, y] : a) {
-    dbg(x, y);
-    if (k >= x + y) {
-      k -= (x + y);
-      ans += x * y;
-    } else {
-      while ((x || y) && (k > 0)) {
-        if (x > y)
-          swap(x, y);
-        k--;
-        ans += x;
-        y--;
-        dbg(x, y, k, ans);
+  For1(i, 1, k) {
+    For1(x, 0, i) {
+      For(j, 0, n) {
+        if (a[j].f1 + a[j].f2 < x)
+          continue;
+        ckmin(d[i], d[i - x] + c[j][x]);
       }
     }
-    dbg(x, y, k, ans);
-    if (k <= 0)
-      break;
   }
 
-  cout << ans << '\n';
+  cout << d[k] << '\n';
 }
 
 int main(void) {
