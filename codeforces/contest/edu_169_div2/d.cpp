@@ -157,6 +157,10 @@ void solve() {
   }
   For(i, 0, n) { m[a[i]].pb(i); }
 
+  for (auto &[x, y] : m) {
+    sort(all(y));
+  }
+
   while (q--) {
     int l, r;
     cin >> l >> r;
