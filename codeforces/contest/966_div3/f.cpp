@@ -175,37 +175,21 @@ void solve() {
   ll ans{};
 
   for (auto &[x, y] : a) {
-    dbg(x, y, k, ans);
-    if (x != y) {
-      int g = y - x;
-      if (k >= g) {
-        k -= g;
-        ans += g * x;
-      } else {
-        ans += k * x;
-        break;
-      }
-    }
-
-    dbg(ans, k);
-    while (x > 1 && k > 0) {
-      k--;
-      ans += x;
-
-      x--;
-      if (k > 0) {
-        ans += x;
+    dbg(x, y);
+    if (k >= x + y) {
+      k -= (x + y);
+      ans += x * y;
+    } else {
+      while ((x || y) && (k > 0)) {
+        if (x > y)
+          swap(x, y);
         k--;
-      }
-    }
-    if (x == 1) {
-      if (k > 0) {
-        k -= 2;
-        ans++;
+        ans += x;
+        y--;
+        dbg(x, y, k, ans);
       }
     }
     dbg(x, y, k, ans);
-
     if (k <= 0)
       break;
   }
