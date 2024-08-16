@@ -157,6 +157,7 @@ int primes[N], f[N], cnt;
 bool st[N];
 
 void get_primes(int n) {
+  memset(f, 0, sizeof f);
   st[0] = st[1] = true;
   f[1] = 1;
 
@@ -209,12 +210,14 @@ void solve() {
   int n;
   cin >> n;
 
-  int ans{};
+  ll ans{};
 
   For1(i, 1, n) {
     int x;
     cin >> x;
-    dbg(x, prime::f[x]);
+    if (x % 2) {
+      dbg(x, prime::f[x]);
+    }
     ans ^= prime::f[x];
   }
 
