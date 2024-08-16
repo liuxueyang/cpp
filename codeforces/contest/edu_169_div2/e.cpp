@@ -205,6 +205,7 @@ int sg(int x) {
 }
 
 void solve() {
+  // print the first 200 values for sg function to find pattern
   int n;
   cin >> n;
 
