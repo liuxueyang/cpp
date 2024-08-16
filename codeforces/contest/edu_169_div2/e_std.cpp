@@ -33,6 +33,12 @@ void solve() {
   for (int i = 1; i <= n; i++)
     cin >> a[i], xr ^= sg[a[i]];
 
+  for (int i = 1; i <= n; i++) {
+    if (a[i] % 2) {
+      cerr << a[i] << ' ' << sg[a[i]] << '\n';
+    }
+  }
+
   if (xr == 0)
     cout << "Bob" << endl;
   else
@@ -43,6 +49,8 @@ signed main() {
   cin.tie(0);
   cout.tie(0);
   ios::sync_with_stdio(0);
+
+  freopen("e.in", "r", stdin);
 
   int dt;
   memset(sg, 0x3f, sizeof sg);

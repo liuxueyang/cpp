@@ -157,8 +157,9 @@ int primes[N], f[N], cnt;
 bool st[N];
 
 void get_primes(int n) {
-  memset(f, 0, sizeof f);
+  memset(f, 0x3f, sizeof f);
   st[0] = st[1] = true;
+  f[0] = 0;
   f[1] = 1;
 
   for (int i = 2; i <= n; ++i) {
@@ -174,7 +175,7 @@ void get_primes(int n) {
         if (i == 2)
           f[j] = 0;
         else
-          f[j] = cnt;
+          ckmin(f[j], cnt);
 
         st[j] = true;
       }
