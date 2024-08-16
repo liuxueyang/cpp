@@ -151,6 +151,37 @@ ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
 
 void Init() { memset(f, -1, sizeof f); }
 
+namespace prime {
+const int N = 10000010;
+int primes[N], f[N], cnt;
+bool st[N];
+
+void get_primes(int n) {
+  st[0] = st[1] = true;
+  f[1] = 1;
+
+  for (int i = 2; i <= n; ++i) {
+    if (!st[i]) {
+      primes[++cnt] = i;
+
+      if (i == 2)
+        f[i] = 0;
+      else
+        f[i] = cnt;
+
+      for (ll j = ll(i) * i; j <= n; j += i) {
+        if (i == 2)
+          f[j] = 0;
+        else
+          f[j] = cnt;
+
+        st[j] = true;
+      }
+    }
+  }
+}
+} // namespace prime
+
 int sg(int x) {
   if (f[x] != -1)
     return f[x];
@@ -174,10 +205,19 @@ int sg(int x) {
 }
 
 void solve() {
-  Init();
-  sg(200);
+  int n;
+  cin >> n;
 
-  For1(i, 1, 200) { dbg(i, f[i]); }
+  int ans{};
+
+  For1(i, 1, n) {
+    int x;
+    cin >> x;
+    dbg(x, prime::f[x]);
+    ans ^= prime::f[x];
+  }
+
+  cout << (ans ? "Alice" : "Bob") << '\n';
 }
 
 int main(void) {
@@ -189,6 +229,8 @@ int main(void) {
   cout.tie(NULL);
 
   int T = 1;
+  prime::get_primes(1e7);
+
   cin >> T;
 
   while (T--) {
