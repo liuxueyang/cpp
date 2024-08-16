@@ -143,7 +143,28 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
+string cans = "BGRY";
+
+bool check(string &s, string &t) {
+  for (auto x : s) {
+    if (t.find(x) != string::npos)
+      return true;
+  }
+  return false;
+}
+
 void solve() {
+  vector<string> can;
+  int lenc = SZ(cans);
+  For(i, 0, lenc) {
+    For(j, i + 1, lenc) {
+      string tmp{};
+      tmp += cans[i], tmp += cans[j];
+      sort(all(tmp));
+      can.pb(tmp);
+    }
+  }
+
   int n, q;
   cin >> n >> q;
 
@@ -165,6 +186,7 @@ void solve() {
     int l, r;
     cin >> l >> r;
     l--, r--;
+
     if (l > r)
       swap(l, r);
     if (l == r) {
@@ -175,12 +197,11 @@ void solve() {
     string s1 = a[l], s2 = a[r];
     dbg(s1, s2);
     bool ok = false;
-    for (auto x1 : s1) {
-      if (s2[0] == x1 || s2[1] == x1) {
-        ok = true;
-        break;
-      }
+
+    if (check(s1, s2)) {
+      ok = true;
     }
+
     int ans{INF};
     if (ok) {
       ans = abs(l - r);
@@ -189,56 +210,54 @@ void solve() {
     }
 
     dbg(l, r, ans);
-    for (auto x1 : s1) {
-      for (auto x2 : s2) {
-        string tmp{};
-        tmp += x1, tmp += x2;
-        sort(all(tmp));
+    ok = false;
 
-        if (!has(m, tmp))
-          continue;
+    for (auto s : can) {
+      string tmp{s};
+      sort(all(tmp));
 
-        auto &v = m[tmp];
-        int len = SZ(v);
-        int l1 = 0, r1 = len - 1, mid;
-        while (l1 < r1) {
-          mid = (l1 + r1) / 2;
-          if (v[mid] > l)
-            r1 = mid;
-          else
-            l1 = mid + 1;
-        }
-        if (len && r1 < len && l1 >= 0 && r1 >= 0 && l1 < len && v[r1] > l &&
-            v[r1] < r) {
-          ans = abs(l - r);
-        }
+      dbg(tmp);
 
-        l1 = r + 1, r1 = len - 1;
-        while (l1 < r1) {
-          mid = (l1 + r1) / 2;
-          if (v[mid] > r)
-            r1 = mid;
-          else
-            l1 = mid + 1;
-        }
-        if (len && r1 < len && r1 >= 0 && v[r1] > r) {
-          dbg(l, r, v[r1]);
-          ckmin(ans, abs(l - r) + (v[r1] - r) * 2);
-        }
+      if (!has(m, tmp))
+        continue;
 
-        l1 = 0, r1 = l - 1;
-        while (l1 < r1) {
-          mid = (l1 + r1 + 1) / 2;
-          if (v[mid] < l)
-            l1 = mid;
-          else
-            r1 = mid - 1;
-        }
-        if (len && l1 >= 0 && l1 < len && v[l1] < l) {
-          ckmin(ans, abs(l - r) + (l - v[l1]) * 2);
+      if (!(check(tmp, s1) && check(tmp, s2)))
+        continue;
+
+      auto &v = m[tmp];
+
+      auto it = upper_bound(all(v), l);
+      if (it != v.end() && *it > l) {
+        if (*it < r) {
+          ans = r - l;
+          ok = true;
+          break;
+        } else if (*it > r) {
+          ckmin(ans, r - l + 2 * (*it - r));
         }
       }
+
+      it = upper_bound(all(v), r);
+      if (it != v.end() && *it > r) {
+        ckmin(ans, r - l + 2 * (*it - r));
+      }
+
+      int len = SZ(v);
+      int l1 = 0, r1 = len - 1, mid;
+
+      l1 = 0, r1 = len - 1;
+      while (l1 < r1) {
+        mid = (l1 + r1 + 1) / 2;
+        if (v[mid] < l)
+          l1 = mid;
+        else
+          r1 = mid - 1;
+      }
+      if (len && l1 >= 0 && l1 < len && v[l1] < l) {
+        ckmin(ans, abs(l - r) + (l - v[l1]) * 2);
+      }
     }
+
     cout << (ans == INF ? -1 : ans) << '\n';
   }
 }
