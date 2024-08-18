@@ -119,28 +119,24 @@ ll p[N], d[N];
 void solve() {
   while (cin >> n >> M) {
     For1(i, 1, n) { cin >> a[i]; }
-    int n1 = n + n - 1;
-    For1(i, 1, n - 1) { a[i + n] = a[i]; }
+    int n1 = n + n;
+    For1(i, 1, n) { a[i + n] = a[i]; }
 
     p[0] = 0;
-    For1(i, 1, n1) { p[i] = p[i - 1] + a[i]; }
+    For1(i, 1, n1) { p[i] = (p[i - 1] + a[i]) % M; }
 
     ll ans{};
     map<ll, ll> m;
-    m[0] = 1;
-    For1(i, 1, n1) {
-      ll x = p[i] % M;
-      dbg(i, p[i], x, m[x]);
-      ans += m[x];
 
-      if (i < n) {
-        m[x]++;
-      } else {
-        // dbg(i, n);
-        ll y = p[i - n] % M;
-        m[y]--;
-      }
+    For1(i, 1, n) { m[p[i]]++; }
+
+    For1(i, n + 1, n1) {
+      m[p[i - n]]--;
+
+      ans += m[p[i]];
+      m[p[i]]++;
     }
+
     cout << ans << '\n';
   }
 }
