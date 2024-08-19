@@ -133,7 +133,21 @@ struct info {
 
 tag operator+(const tag &l, const tag &r) { return tag(l.val + r.val); }
 
-info operator+(const info &l, const tag &_) { return info(l.sum, l.mx); }
+info operator+(const info &l, const tag &t) {
+  info ans = l;
+  if (ans.mx == 1) {
+    return ans;
+  } else if (ans.mx == ans.sum) {
+    int cnt = t.val;
+    ll y = ans.sum;
+    while (y > 1 && cnt--) {
+      y = sqrtl(y);
+    }
+
+    ans = info(y, y);
+  }
+  return ans;
+}
 
 info operator+(const info &l, const info &r) {
   return info(l.sum + r.sum, max(l.mx, r.mx));
@@ -204,28 +218,11 @@ struct SegmentTree {
   info query(int id, int l, int r, int ql, int qr) {
     int left = id * 2, right = left + 1, mid = (l + r) / 2;
 
-    dbg(l, r, ql, qr);
-
     if (ql == l && qr == r) {
-      if (seg[id].t.val == 0)
-        return seg[id].val;
-      else if (l == r) {
-        ll x = seg[id].val.sum;
-        int cnt = seg[id].t.val;
-
-        while (x != 1 && cnt--) {
-          x = sqrt(x);
-        }
-
-        seg[id].t = tag();
-        seg[id].val = info(x, x);
+      if (seg[id].t.val == 0 || l == r) {
+        // dbg(ql, qr, seg[id].val.sum);
         return seg[id].val;
       }
-      // else if (seg[id].val.mx == 1) {
-      //   seg[id].t = tag();
-      //   update(id);
-      //   return seg[id].val;
-      // }
     }
 
     push_down(id);
@@ -293,10 +290,10 @@ void solve() {
     }
   }
 
-  For1(i, 1, n) {
-    auto ans = tr.query(1, 1, n, i, i);
-    dbg(i, ans.sum);
-  }
+  // For1(i, 1, n) {
+  //   auto ans = tr.query(1, 1, n, i, i);
+  //   dbg(i, ans.sum);
+  // }
 }
 
 int main(void) {
