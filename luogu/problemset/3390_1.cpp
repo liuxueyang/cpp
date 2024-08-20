@@ -1,4 +1,4 @@
-// Date: Tue Aug 20 12:00:30 2024
+// Date: Tue Aug 20 11:12:41 2024
 
 #include <cassert>
 #include <climits>
@@ -112,76 +112,87 @@ void Outputr1(ForwardIterator begin, ForwardIterator end) {
 #define dbgr(x...)
 #endif
 
-using VL = vector<ll>;
+template <class T> struct Matrix {
+  using VT = vector<T>;
+  using VTT = vector<VT>;
 
-vector<vector<ll>> multi(vector<vector<ll>> &l, vector<vector<ll>> &r, ll mo) {
-  int n = SZ(l), m = SZ(r[0]), k = SZ(l[0]);
-  vector<vector<ll>> ans(n, vector<ll>(m));
+  VTT a;
+  int n, m;
+  ll mod;
 
-  For(i, 0, n) {
-    For(j, 0, m) {
-      For(t, 0, k) {
-        ll x = l[i][t] % mo, y = r[t][j] % mo;
-        ll z = (x * y) % mo;
+  Matrix(int n_, int m_, ll mod_) : n(n_), m(m_), mod(mod_) {
+    a = VTT(n, VT(m, 0));
+  }
+  Matrix(VTT &a_, ll mod_) : a(a_), n(SZ(a)), m(SZ(a[0])), mod(mod_) {}
 
-        ans[i][j] = (ans[i][j] + z) % mo;
-      }
+  void one() {
+    For(i, 0, n) {
+      For(j, 0, m) { a[i][j] = (i == j); }
     }
   }
 
-  return ans;
-}
+  Matrix<T> operator*(const Matrix &rh) const {
+    int n2 = rh.n, m2 = rh.m;
+    assert(m == n2);
 
-ll qmi(ll a, ll b, ll c) {
-  ll res = 1 % c;
-  while (b) {
-    if (b & 1)
-      res = res * a % c;
-    a = a * a % c;
-    b >>= 1;
-  }
-  return res;
-}
+    Matrix<T> ans(n, m2, mod);
 
-vector<vector<ll>> matrix_qmod(vector<vector<ll>> a, ll b, ll c) {
-  int n = SZ(a);
-  vector<vector<ll>> ans(n, vector<ll>(n));
+    For(i, 0, n) {
+      For(j, 0, m2) {
+        For(k, 0, m) {
+          T x = (a[i][k] * rh.a[k][j]) % mod;
+          ans.a[i][j] = (ans.a[i][j] + x) % mod;
+        }
+      }
+    }
 
-  For(i, 0, n) { ans[i][i] = 1; }
-
-  while (b) {
-    if (b & 1)
-      ans = multi(ans, a, c);
-    a = multi(a, a, c);
-    b >>= 1;
+    return ans;
   }
 
-  return ans;
+  Matrix<T> operator^(ll k) const {
+    assert(n == m);
+    Matrix<T> ans(n, n, mod);
+    ans.one();
+    Matrix<T> a = *this;
+
+    while (k) {
+      if (k & 1)
+        ans = ans * a;
+      a = a * a;
+      k >>= 1;
+    }
+    return ans;
+  }
+};
+
+template <class T> ostream &operator<<(ostream &out, Matrix<T> &mat) {
+  For(i, 0, mat.n) {
+    For(j, 0, mat.m) { out << mat.a[i][j] << " \n"[j == mat.m]; }
+    cout << '\n';
+  }
+  return out;
+}
+
+template <class T> istream &operator>>(istream &in, Matrix<T> &mat) {
+  For(i, 0, mat.n) { For(j, 0, mat.m) in >> mat.a[i][j]; }
+  return in;
 }
 
 void solve() {
+  int n;
   ll k;
-  while (cin >> k) {
-    vector<vector<ll>> d{
-        {0, 1, 0, 0, 0},  {0, 0, 1, 0, 0}, {0, 0, 0, 1, 0},
-        {0, 1, -1, 2, 3}, {0, 0, 0, 0, 1},
-    };
+  cin >> n >> k;
 
-    auto d1 = matrix_qmod(d, k, MOD1);
-    vector<ll> a0{1, 5, 12, 23, 1};
-    ll ans{};
+  Matrix<ll> mat(n, n, MOD);
+  cin >> mat;
 
-    For(i, 0, 5) { ans = (ans + a0[i] * d1[0][i] % MOD1) % MOD1; }
-    ans = (ans + MOD1) % MOD1;
-
-    cout << ans << '\n';
-  }
+  auto ans = mat ^ k;
+  cout << ans;
 }
 
 int main(void) {
 #ifdef _DEBUG
-  freopen("matrix.in", "r", stdin);
-  freopen("matrix.out", "w", stdout);
+  freopen("3390.in", "r", stdin);
 #endif
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
