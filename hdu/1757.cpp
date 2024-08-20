@@ -190,7 +190,7 @@ void solve() {
 
     Matrix<ll> mat(10, 10, mo);
     For(i, 0, 9) { mat.a[i][i + 1] = 1; }
-    For(j, 0, 10) mat.a[9][j] = a[j];
+    For(j, 0, 10) mat.a[9][j] = a[9 - j];
 
     // cerr << mat;
 
