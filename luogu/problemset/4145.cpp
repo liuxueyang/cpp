@@ -245,9 +245,13 @@ struct SegmentTree {
     // dbg(l, r, ql, qr);
 
     if (ql == l && qr == r) {
-      if (seg[id].val.mx != 1)
+      if (seg[id].val.mx == 1)
+        return;
+
+      if (l == r) {
         set_tag(id, t);
-      return;
+        return;
+      }
     }
 
     push_down(id);
