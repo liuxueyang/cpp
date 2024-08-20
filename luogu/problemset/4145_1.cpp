@@ -220,7 +220,6 @@ struct SegmentTree {
 
     if (ql == l && qr == r) {
       if (seg[id].t.val == 0 || l == r) {
-        // dbg(ql, qr, seg[id].val.sum);
         return seg[id].val;
       }
     }
@@ -243,7 +242,7 @@ struct SegmentTree {
 
   void modify(int id, int l, int r, int ql, int qr, tag t) {
     if (ql == l && qr == r) {
-      if (seg[id].val.mx == 1)
+      if (seg[id].val.mx <= 1)
         return;
 
       if (l == r) {
@@ -284,18 +283,13 @@ void solve() {
     if (l > r)
       swap(l, r);
 
-    if (op == 0) {
+    if (op == 2) {
       tr.modify(1, 1, n, l, r, tag(true));
     } else if (op == 1) {
       info ans = tr.query(1, 1, n, l, r);
       cout << ans.sum << '\n';
     }
   }
-
-  // For1(i, 1, n) {
-  //   auto ans = tr.query(1, 1, n, i, i);
-  //   dbg(i, ans.sum);
-  // }
 }
 
 int main(void) {
