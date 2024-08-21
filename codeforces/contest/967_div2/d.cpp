@@ -245,12 +245,12 @@ struct SegmentTree {
   }
 };
 
+// TODO:
 void solve() {
   int n;
   cin >> n;
 
   set<int> s;
-  map<int, int> m;
   map<int, int> m1;
   map<int, VI> poses;
 
@@ -259,7 +259,6 @@ void solve() {
     cin >> a[i];
     s.insert(a[i]);
 
-    ckmax(m[a[i]], i);
     poses[a[i]].pb(i);
   }
 
@@ -280,30 +279,29 @@ void solve() {
   cout << len << '\n';
   tr.build(1, 1, n);
 
-  stack<int> stk1, stk2;
   VI ans(n + 1);
-  set<int> used;
-  int pre = 1;
+  // int pre = 1;
 
   For1(j, 1, len) {
     int rem = len - j;
     int pos = m1[rem];
+    dbg(j, pos);
 
-    if (j & 1) {
-      auto in = tr.query(1, 1, n, pre, pos - 1);
-      int val = in.mx;
-      ans[j] = val;
-      auto &ve = poses[val];
-      int po = *lower_bound(all(ve), val);
-      pre = po + 1;
-    } else {
-      auto in = tr.query(1, 1, n, pre, pos - 1);
-      int val = in.mi;
-      ans[j] = val;
-      auto &ve = poses[val];
-      int po = *lower_bound(all(ve), val);
-      pre = po + 1;
-    }
+    // if (j & 1) {
+    //   auto in = tr.query(1, 1, n, pre, pos - 1);
+    //   int val = in.mx;
+    //   ans[j] = val;
+    //   auto &ve = poses[val];
+    //   int po = *lower_bound(all(ve), val);
+    //   pre = po + 1;
+    // } else {
+    //   auto in = tr.query(1, 1, n, pre, pos - 1);
+    //   int val = in.mi;
+    //   ans[j] = val;
+    //   auto &ve = poses[val];
+    //   int po = *lower_bound(all(ve), val);
+    //   pre = po + 1;
+    // }
   }
 
   cout << ans << '\n';
