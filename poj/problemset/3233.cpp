@@ -126,7 +126,7 @@ template <class T> struct Matrix {
   }
 
   Matrix<T> operator+(const Matrix<T> &rh) const {
-    dbg(n, rh.n, m, rh.m);
+    // dbg(n, rh.n, m, rh.m);
     assert(n == rh.n && m == rh.m);
 
     Matrix<T> ans(n, m, mod);
@@ -142,18 +142,6 @@ template <class T> struct Matrix {
     assert(n == m);
     Matrix<T> ans(n, n, mod);
 
-    Matrix<int> E(n, n, mod), zero(n, n, mod);
-    E.E(), zero.zero();
-
-    For(i, 0, n) {
-      For(j, 0, n) {
-        if (i == j)
-          ans.a[i][j] = E;
-        else {
-          ans.a[i][j] = zero;
-        }
-      }
-    }
     Matrix<T> a = *this;
 
     while (k) {
@@ -162,6 +150,64 @@ template <class T> struct Matrix {
       a = a * a;
       k >>= 1;
     }
+    return ans;
+  }
+};
+
+typedef Matrix<int> MI;
+typedef vector<MI> VMI;
+
+struct NestedMatrix {
+  int n, m;
+  ll mod;
+  int n1, m1;
+  vector<VMI> a;
+
+  NestedMatrix(int n_, int m_, ll mod_, int n1_, int m1_)
+      : n(n_), m(m_), mod(mod_), n1(n1_), m1(m1_),
+        a(n, vector<MI>(m, Matrix<int>(n1_, m1_, mod_))) {}
+
+  NestedMatrix operator*(NestedMatrix &rh) const {
+    int n2 = rh.n, m2 = rh.m;
+    assert(m == n2);
+
+    NestedMatrix ans(n, m2, mod, n1, m1);
+    For(i, 0, n) {
+      For(j, 0, m2) {
+        For(k, 0, m) {
+          Matrix<int> x = (a[i][k] * rh.a[k][j]) % mod;
+          ans.a[i][j] = (ans.a[i][j] + x) % mod;
+        }
+      }
+    }
+
+    return ans;
+  }
+
+  NestedMatrix operator^(ll k) const {
+    assert(n == m);
+    NestedMatrix ans(n, m, mod, n1, m1);
+
+    Matrix<int> E(n, m, mod), zero(n, m, mod);
+    E.E(), zero.zero();
+
+    For(i, 0, n) For(j, 0, m) {
+      if (i == j)
+        ans.a[i][j] = E;
+      else {
+        ans.a[i][j] = zero;
+      }
+    }
+
+    NestedMatrix x = *this;
+    while (k) {
+      // dbg(k);
+      if (k & 1)
+        ans = ans * x;
+      x = x * x;
+      k >>= 1;
+    }
+
     return ans;
   }
 };
@@ -179,39 +225,44 @@ template <class T> istream &operator>>(istream &in, Matrix<T> &mat) {
   return in;
 }
 
-typedef Matrix<int> MI;
-
 void solve() {
   int n, k, m;
   cin >> n >> k >> m;
 
-  dbg(n, k, m);
+  // dbg(n, k, m);
   Matrix<int> mat(n, n, m);
   cin >> mat;
-  cout << mat;
+  // cout << mat;
 
   MI E(n, n, m), zero(n, n, m);
   E.E(), zero.zero();
 
-  Matrix<MI> base(2, 2, m);
+  NestedMatrix base(2, 2, m, n, n);
   base.a[0][0] = E;
   base.a[0][1] = mat;
   base.a[1][0] = zero;
   base.a[1][1] = mat;
 
-  cout << base;
+  // cout << base;
 
-  Matrix<MI> d(n, n, m);
+  NestedMatrix d(2, 2, m, n, n);
   d = base ^ k;
-  // Matrix<MI> start(2, 1, m);
-  // start.a[0][0] = zero;
-  // start.a[1][0] = E;
 
-  // Matrix<MI> res = d * start;
+  // For(i, 0, 2) {
+  //   For(j, 0, 2) {
+  //     dbg(i, j);
+  //     cout << d.a[i][j];
+  //   }
+  // }
 
-  // MI ans = res.a[0][0];
+  NestedMatrix start(2, 1, m, n, n);
+  start.a[0][0] = zero;
+  start.a[1][0] = E;
 
-  // cout << ans << '\n';
+  NestedMatrix res = d * start;
+  MI ans = res.a[0][0];
+
+  cout << ans;
 }
 
 int main(void) {
