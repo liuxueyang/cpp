@@ -1,4 +1,4 @@
-// Date: Tue Aug 20 22:01:37 2024
+// Date: Wed Aug 21 22:08:51 2024
 
 #include <cassert>
 #include <climits>
@@ -11,11 +11,8 @@
 #include <functional>
 #include <iomanip>
 #include <iostream>
-#include <iterator>
 #include <map>
-#include <numeric>
 #include <queue>
-#include <random>
 #include <set>
 #include <sstream>
 #include <stack>
@@ -25,21 +22,17 @@
 
 using namespace std;
 
+const int INF = 0x3f3f3f3f, MOD = 1e9 + 7;
+const double eps = 1e-8;
+const int dir[8][2] = {
+    {0, 1}, {0, -1}, {1, 0}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1},
+};
+
 typedef long long ll;
 typedef unsigned long long ull;
 typedef vector<int> VI;
 typedef pair<int, int> PII;
 typedef pair<ll, ll> PLL;
-template <class T> using pq = priority_queue<T>;
-template <class T> using pqg = priority_queue<T, vector<T>, greater<T>>;
-
-const int INF = 0x3f3f3f3f, MOD = 1e9 + 7, MOD1 = 998244353;
-const ll INFL = 0x3f3f3f3f3f3f3f3f;
-const double eps = 1e-8;
-const int dir[8][2] = {
-    {0, 1}, {0, -1}, {1, 0}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1},
-};
-mt19937_64 _m_gen64;
 
 const ull Pr = 131;
 
@@ -53,57 +46,13 @@ const ull Pr = 131;
 #define f2 second
 #define pb push_back
 #define has(a, x) (a.find(x) != a.end())
-#define nemp(a) (!a.empty())
+#define nonempty(a) (!a.empty())
 #define all(a) (a).begin(), (a).end()
-#define all1(a, len) (a + 1), (a + 1 + len)
 #define SZ(a) int((a).size())
 #define NL cout << '\n';
 
 template <class T> bool ckmin(T &a, const T &b) { return b < a ? a = b, 1 : 0; }
 template <class T> bool ckmax(T &a, const T &b) { return a < b ? a = b, 1 : 0; }
-
-template <typename t> istream &operator>>(istream &in, vector<t> &vec) {
-  for (t &x : vec)
-    in >> x;
-  return in;
-}
-
-template <typename t> ostream &operator<<(ostream &out, vector<t> &vec) {
-  int n = SZ(vec);
-  For(i, 0, n) {
-    out << vec[i];
-    if (i < n - 1)
-      out << ' ';
-  }
-  return out;
-}
-
-template <typename ForwardIterator>
-void Inputr(ForwardIterator begin, ForwardIterator end) {
-  ForwardIterator it = begin;
-  while (it != end) {
-    cin >> *it;
-    it++;
-  }
-}
-
-template <typename ForwardIterator>
-void Outputr(ForwardIterator begin, ForwardIterator end) {
-  ForwardIterator it = begin;
-  while (it != end) {
-    if (it != begin)
-      cout << ' ';
-    cout << *it;
-    it++;
-  }
-  NL;
-}
-
-template <typename T, typename ForwardIterator>
-void Outputr1(ForwardIterator begin, ForwardIterator end) {
-  copy(begin, end, ostream_iterator<T>(cout, " "));
-  NL;
-}
 
 #ifdef _DEBUG
 #include "debug.h"
@@ -115,25 +64,28 @@ void Outputr1(ForwardIterator begin, ForwardIterator end) {
 #endif
 
 template <class T> struct Matrix {
-  using VT = vector<T>;
-  using VTT = vector<VT>;
+  typedef vector<T> VT;
+  typedef vector<VT> VTT;
 
   VTT a;
   int n, m;
   ll mod;
 
+  Matrix() : n(0), m(0) {}
   Matrix(int n_, int m_, ll mod_) : n(n_), m(m_), mod(mod_) {
-    a = VTT(n, VT(m, 0));
+    a = VTT(n, VT(m));
   }
   Matrix(VTT &a_, ll mod_) : a(a_), n(SZ(a)), m(SZ(a[0])), mod(mod_) {}
 
-  void one() {
+  void E() {
     For(i, 0, n) {
       For(j, 0, m) { a[i][j] = (i == j); }
     }
   }
 
-  Matrix<T> operator*(const Matrix &rh) const {
+  void zero() { a = vector<VT>(n, VT(m, 0)); }
+
+  Matrix<T> operator*(const Matrix<T> &rh) const {
     int n2 = rh.n, m2 = rh.m;
     assert(m == n2);
 
@@ -151,10 +103,57 @@ template <class T> struct Matrix {
     return ans;
   }
 
+  Matrix<T> operator%(const T x) const {
+    Matrix<T> ans(n, m, x);
+
+    For(i, 0, n) {
+      For(j, 0, m) { ans.a[i][j] = (a[i][j] + x) % x; }
+    }
+
+    return ans;
+  }
+
+  Matrix<T> operator-(const Matrix<T> &rh) const {
+    assert(n == rh.n && m == rh.m);
+
+    Matrix<T> ans(n, m, mod);
+
+    For(i, 0, n) {
+      For(j, 0, m) { ans.a[i][j] = a[i][j] - rh.a[i][j]; }
+    }
+
+    return ans;
+  }
+
+  Matrix<T> operator+(const Matrix<T> &rh) const {
+    dbg(n, rh.n, m, rh.m);
+    assert(n == rh.n && m == rh.m);
+
+    Matrix<T> ans(n, m, mod);
+
+    For(i, 0, n) {
+      For(j, 0, m) { ans.a[i][j] = a[i][j] + rh.a[i][j]; }
+    }
+
+    return ans;
+  }
+
   Matrix<T> operator^(ll k) const {
     assert(n == m);
     Matrix<T> ans(n, n, mod);
-    ans.one();
+
+    Matrix<int> E(n, n, mod), zero(n, n, mod);
+    E.E(), zero.zero();
+
+    For(i, 0, n) {
+      For(j, 0, n) {
+        if (i == j)
+          ans.a[i][j] = E;
+        else {
+          ans.a[i][j] = zero;
+        }
+      }
+    }
     Matrix<T> a = *this;
 
     while (k) {
@@ -180,35 +179,48 @@ template <class T> istream &operator>>(istream &in, Matrix<T> &mat) {
   return in;
 }
 
+typedef Matrix<int> MI;
+
 void solve() {
-  ll k, mo;
-  while (cin >> k >> mo) {
-    vector<ll> a(10);
-    For(i, 0, 10) cin >> a[i];
+  int n, k, m;
+  cin >> n >> k >> m;
 
-    Matrix<ll> mat(10, 10, mo);
-    For(i, 0, 9) { mat.a[i][i + 1] = 1; }
-    For(j, 0, 10) mat.a[9][j] = a[9 - j];
+  dbg(n, k, m);
+  Matrix<int> mat(n, n, m);
+  cin >> mat;
+  cout << mat;
 
-    auto ans = mat ^ k;
+  MI E(n, n, m), zero(n, n, m);
+  E.E(), zero.zero();
 
-    ll res{};
-    For(i, 0, 10) {
-      ll x = ans.a[0][i] * i % mo;
-      res = (res + x) % mo;
-    }
-    cout << res << '\n';
-  }
+  Matrix<MI> base(2, 2, m);
+  base.a[0][0] = E;
+  base.a[0][1] = mat;
+  base.a[1][0] = zero;
+  base.a[1][1] = mat;
+
+  cout << base;
+
+  Matrix<MI> d(n, n, m);
+  d = base ^ k;
+  // Matrix<MI> start(2, 1, m);
+  // start.a[0][0] = zero;
+  // start.a[1][0] = E;
+
+  // Matrix<MI> res = d * start;
+
+  // MI ans = res.a[0][0];
+
+  // cout << ans << '\n';
 }
 
 int main(void) {
 #ifdef _DEBUG
-  freopen("1757.in", "r", stdin);
+  freopen("3233.in", "r", stdin);
 #endif
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
   cout.tie(NULL);
-  _m_gen64.seed(Pr);
 
   int T = 1;
 
