@@ -126,7 +126,6 @@ template <class T> struct Matrix {
   }
 
   Matrix<T> operator+(const Matrix<T> &rh) const {
-    // dbg(n, rh.n, m, rh.m);
     assert(n == rh.n && m == rh.m);
 
     Matrix<T> ans(n, m, mod);
@@ -201,7 +200,6 @@ struct NestedMatrix {
 
     NestedMatrix x = *this;
     while (k) {
-      // dbg(k);
       if (k & 1)
         ans = ans * x;
       x = x * x;
@@ -229,10 +227,8 @@ void solve() {
   int n, k, m;
   cin >> n >> k >> m;
 
-  // dbg(n, k, m);
   Matrix<int> mat(n, n, m);
   cin >> mat;
-  // cout << mat;
 
   MI E(n, n, m), zero(n, n, m);
   E.E(), zero.zero();
@@ -243,17 +239,8 @@ void solve() {
   base.a[1][0] = zero;
   base.a[1][1] = mat;
 
-  // cout << base;
-
   NestedMatrix d(2, 2, m, n, n);
   d = base ^ k;
-
-  // For(i, 0, 2) {
-  //   For(j, 0, 2) {
-  //     dbg(i, j);
-  //     cout << d.a[i][j];
-  //   }
-  // }
 
   NestedMatrix start(2, 1, m, n, n);
   start.a[0][0] = zero;
