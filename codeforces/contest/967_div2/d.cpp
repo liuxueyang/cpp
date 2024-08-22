@@ -245,66 +245,80 @@ struct SegmentTree {
   }
 };
 
-// TODO:
 void solve() {
   int n;
   cin >> n;
 
-  set<int> s;
-  map<int, int> m1;
-  map<int, VI> poses;
+  VI a(n + 1, 0);
+  For1(i, 1, n) cin >> a[i];
 
-  VI a(n + 10, INF);
-  For1(i, 1, n) {
-    cin >> a[i];
-    s.insert(a[i]);
+  map<int, int> l;
+  For1(i, 1, n) l[a[i]] = i;
+  int len = SZ(l);
+  VI b(len + 1, -1);
 
-    poses[a[i]].pb(i);
+  pqg<int> ls;
+  for (auto &[_, p] : l) {
+    dbg(p);
+    ls.push(p);
   }
 
-  for (auto &[x, v] : poses) {
-    sort(all(v));
+  pq<PII> odd;
+  pqg<PII> even;
+  set<int> used;
+
+  int pos = ls.top();
+  For1(i, 1, pos) {
+    odd.push({a[i], i});
+    even.push({a[i], i});
   }
 
-  SegmentTree tr(n, a);
-
-  set<int> s1;
-  Rof1(i, 1, n) {
-    s1.insert(a[i]);
-    int len = SZ(s1);
-    ckmax(m1[len], i);
-  }
-
-  int len = SZ(s);
-  cout << len << '\n';
-  tr.build(1, 1, n);
-
-  VI ans(n + 1);
-  // int pre = 1;
-
+  int cur = 1;
   For1(j, 1, len) {
-    int rem = len - j;
-    int pos = m1[rem];
-    dbg(j, pos);
+    int x, pos;
+    PII t;
 
-    // if (j & 1) {
-    //   auto in = tr.query(1, 1, n, pre, pos - 1);
-    //   int val = in.mx;
-    //   ans[j] = val;
-    //   auto &ve = poses[val];
-    //   int po = *lower_bound(all(ve), val);
-    //   pre = po + 1;
-    // } else {
-    //   auto in = tr.query(1, 1, n, pre, pos - 1);
-    //   int val = in.mi;
-    //   ans[j] = val;
-    //   auto &ve = poses[val];
-    //   int po = *lower_bound(all(ve), val);
-    //   pre = po + 1;
-    // }
+    if (j & 1) {
+      dbg(SZ(ls));
+      t = odd.top();
+      odd.pop();
+    } else {
+      t = even.top();
+      even.pop();
+    }
+
+    x = t.f1, pos = t.f2;
+    b[j] = x;
+    cur = pos + 1;
+    used.insert(x);
+
+    while (nemp(ls) && has(used, a[ls.top()])) {
+      int pre = ls.top();
+      dbg(pre, a[pre]);
+      ls.pop();
+
+      int now = ls.top();
+      dbg(pre + 1, now);
+
+      For1(i, pre + 1, now) {
+        dbg(i, a[i]);
+        odd.push({a[i], i});
+        even.push({a[i], i});
+      }
+    }
+
+    while (nemp(odd) && (odd.top().f2 < cur || has(used, a[odd.top().f1]))) {
+      dbg("pop", odd.top(), cur);
+      odd.pop();
+    }
+    while (nemp(even) && (even.top().f2 < cur || has(used, a[even.top().f1]))) {
+      dbg("pop", even.top(), cur);
+      even.pop();
+    }
   }
 
-  cout << ans << '\n';
+  cout << len << '\n';
+  For1(i, 1, len) cout << b[i] << " \n"[i == len];
 }
 
 int main(void) {
