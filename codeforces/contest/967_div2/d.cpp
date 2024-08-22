@@ -259,17 +259,16 @@ void solve() {
 
   pqg<int> ls;
   for (auto &[_, p] : l) {
-    dbg(p);
     ls.push(p);
   }
 
-  pq<PII> odd;
+  pqg<PII> odd;
   pqg<PII> even;
   set<int> used;
 
   int pos = ls.top();
   For1(i, 1, pos) {
-    odd.push({a[i], i});
+    odd.push({-a[i], i});
     even.push({a[i], i});
   }
 
@@ -279,40 +278,39 @@ void solve() {
     PII t;
 
     if (j & 1) {
-      dbg(SZ(ls));
       t = odd.top();
       odd.pop();
+      x = -t.f1;
     } else {
       t = even.top();
       even.pop();
+      x = t.f1;
     }
 
-    x = t.f1, pos = t.f2;
+    pos = t.f2;
     b[j] = x;
     cur = pos + 1;
     used.insert(x);
 
     while (nemp(ls) && has(used, a[ls.top()])) {
       int pre = ls.top();
-      dbg(pre, a[pre]);
       ls.pop();
 
-      int now = ls.top();
-      dbg(pre + 1, now);
+      if (nemp(ls)) {
+        int now = ls.top();
 
-      For1(i, pre + 1, now) {
-        dbg(i, a[i]);
-        odd.push({a[i], i});
-        even.push({a[i], i});
+        For1(i, pre + 1, now) {
+          odd.push({-a[i], i});
+          even.push({a[i], i});
+        }
       }
     }
 
-    while (nemp(odd) && (odd.top().f2 < cur || has(used, a[odd.top().f1]))) {
-      dbg("pop", odd.top(), cur);
+    while (nemp(odd) && (odd.top().f2 < cur || has(used, -odd.top().f1))) {
+      auto t = odd.top();
       odd.pop();
     }
-    while (nemp(even) && (even.top().f2 < cur || has(used, a[even.top().f1]))) {
-      dbg("pop", even.top(), cur);
+    while (nemp(even) && (even.top().f2 < cur || has(used, even.top().f1))) {
       even.pop();
     }
   }
