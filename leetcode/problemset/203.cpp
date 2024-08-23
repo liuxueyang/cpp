@@ -138,16 +138,14 @@ public:
         p3 = p2;
         p2 = p2->next;
         delete p3;
-      }
-
-      if (p2 && p2->val != val) {
+      } else {
         p1->next = p2;
         p1 = p2;
-      }
-
-      if (p2)
         p2 = p2->next;
+      }
     }
+
+    p1->next = NULL;
 
     LNP res = ro->next;
     delete ro;
