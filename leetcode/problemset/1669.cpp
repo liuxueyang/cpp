@@ -136,22 +136,20 @@ public:
       p2 = p2->next;
 
     LNP p3{list2};
-    LNP p4{list2->next};
-    while (p4) {
+    while (p3->next)
       p3 = p3->next;
-      p4 = p4->next;
-    }
 
-    LNP p5 = p1->next;
+    LNP st = p1->next;
+    LNP en = p2;
+
     p1->next = list2;
     p3->next = p2->next;
 
-    while (p5 != p2) {
-      p3 = p5;
-      p5 = p5->next;
-      delete p3;
+    while (st != en) {
+      p3 = st;
+      st = st->next;
     }
-    delete p2;
+    delete en;
 
     LNP res = ro->next;
     delete ro;
