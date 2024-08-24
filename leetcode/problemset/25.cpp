@@ -134,12 +134,29 @@ public:
 
     while (st) {
       en = st;
-      cnt = 1;
-      while (cnt < k && en->next) {
+      // cnt = 0;
+      // while (cnt < k - 1 && en->next) {
+      //   en = en->next;
+      //   cnt++;
+      // }
+      // if (cnt < k - 1)
+      //   break;
+
+      // cnt = 1;
+      // while (cnt < k && en->next) {
+      //   en = en->next;
+      //   cnt++;
+      // }
+      // if (cnt < k)
+      //   break;
+
+      cnt = k - 1;
+      while (cnt && en) {
         en = en->next;
-        cnt++;
+        cnt--;
       }
-      if (cnt < k)
+
+      if (cnt || !en)
         break;
 
       LNP p1{p0};
@@ -173,6 +190,17 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
+  LNP ro{new LN(1, NULL)};
+  LNP p{ro};
+  int i = 2;
+
+  while (i <= 5) {
+    p->next = new LN(i, NULL);
+    p = p->next;
+    i++;
+  }
+
+  a.reverseKGroup(ro, 2);
 
   return 0;
 }
