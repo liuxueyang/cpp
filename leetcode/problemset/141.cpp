@@ -1,4 +1,4 @@
-// Date: Sun Aug 25 14:57:03 2024
+// Date: Sun Aug 25 22:11:23 2024
 
 #include <cassert>
 #include <climits>
@@ -111,74 +111,32 @@ struct TreeNode {
 };
 #endif
 // End of LeetCode
-void print_list(LNP ro) {
-  while (ro) {
-    cerr << ro->val << ' ';
-    ro = ro->next;
-  }
-  cerr << '\n';
-}
 
 /**
  * Definition for singly-linked list.
  * struct ListNode {
  *     int val;
  *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
 class Solution {
 public:
-  LNP reverse_list(LNP head) {
+  bool hasCycle(ListNode *head) {
     if (!head)
-      return head;
+      return false;
 
-    LNP p1{};
-    LNP p2{head};
-
-    while (p2) {
-      LNP p3 = p2->next;
-      p2->next = p1;
-      p1 = p2;
-      p2 = p3;
-    }
-
-    return p1;
-  }
-
-  void reorderList(ListNode *head) {
-    LNP ro{new LN(0, head)};
-    LNP p1{ro};
-    LNP p2{ro};
+    LNP p1{head};
+    LNP p2{head->next};
 
     while (p2 && p2->next) {
-      p1 = p1->next;
       p2 = p2->next->next;
+      p1 = p1->next;
+
+      if (p1 == p2)
+        return true;
     }
-
-    bool odd = (p2 == NULL);
-
-    LNP right = reverse_list(p1->next);
-    p1->next = NULL;
-
-    p2 = head;
-    LNP p3 = right;
-    while (p3) {
-      LNP p2_ = p2->next;
-      LNP p3_ = p3->next;
-
-      p2->next = p3;
-      p3->next = p2_;
-      p2 = p2_;
-      p3 = p3_;
-    }
-
-    if (odd) {
-      p2->next = p1;
-      p1->next = NULL;
-    }
+    return false;
   }
 };
 
@@ -191,19 +149,6 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
-  LNP ro{new LN(1, NULL)};
-  int i = 2;
-  LNP p1 = ro;
-  while (i <= 4) {
-    p1->next = new LN(i, NULL);
-    p1 = p1->next;
-    i++;
-  }
-  print_list(ro);
-
-  a.reorderList(ro);
-
-  // print_list(ro);
 
   return 0;
 }
