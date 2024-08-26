@@ -1,4 +1,4 @@
-// Date: Mon Aug 26 12:39:40 2024
+// Date: Mon Aug 26 14:25:06 2024
 
 #include <cassert>
 #include <climits>
@@ -109,14 +109,6 @@ struct TreeNode {
   TreeNode(int x, TreeNode *left, TreeNode *right)
       : val(x), left(left), right(right) {}
 };
-
-void print_list(LNP head) {
-  while (head) {
-    cerr << head->val << ' ';
-    head = head->next;
-  }
-  cerr << '\n';
-}
 #endif
 // End of LeetCode
 
@@ -132,47 +124,23 @@ void print_list(LNP head) {
  */
 class Solution {
 public:
-  int get_length(LNP head) {
+  int numComponents(ListNode *head, vector<int> &nums) {
+    set<int> s(all(nums));
+    LNP p{head};
+    bool ok{false};
     int ans{};
-    while (head) {
-      head = head->next;
-      ans++;
-    }
-    return ans;
-  }
 
-  vector<ListNode *> splitListToParts(ListNode *head, int k) {
-    int n = get_length(head), len = n / k, rem = n % k, cnt{};
-    LNP ro{new LN(0, head)};
-    LNP pre{ro};
-    vector<LNP> ans(k, nullptr);
-    LNP lst{new LN(0, nullptr)};
-    LNP cur{lst};
-
-    For(i, 0, k) {
-      cnt = len;
-      if (rem) {
-        rem--, cnt++;
+    while (p) {
+      if (has(s, p->val)) {
+        if (!ok) {
+          ok = true;
+          ans++;
+        }
+      } else {
+        ok = false;
       }
-
-      LNP back_pre = pre;
-      cur = lst;
-      while (cnt-- && pre->next) {
-        cur->next = pre->next;
-
-        pre = pre->next;
-        cur = cur->next;
-      }
-
-      back_pre->next = pre->next;
-      cur->next = nullptr;
-      pre = back_pre;
-
-      ans[i] = lst->next;
+      p = p->next;
     }
-
-    delete lst;
-    delete ro;
 
     return ans;
   }
@@ -187,15 +155,6 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
-  LNP ro{new LN(0, nullptr)};
-  LNP p{ro};
-
-  For1(i, 1, 3) {
-    p->next = new LN(i, nullptr);
-    p = p->next;
-  }
-
-  a.splitListToParts(ro->next, 5);
 
   return 0;
 }
