@@ -112,29 +112,10 @@ struct TreeNode {
 #endif
 // End of LeetCode
 
+// TODO:
 class Solution {
 public:
-  bool circularArrayLoop(vector<int> &a) {
-    int n = SZ(a);
-    int cur = 0;
-    int ne = 0;
-
-    For(i, 0, n) {
-      int tag = a[i] + INF;
-
-      cur = i;
-      bool sign = a[i] > INF;
-
-      while (true) {
-        int ne = ((cur + a[cur] % n) + n) % n;
-
-        if (ne == cur)
-          break;
-      }
-    }
-
-    return false;
-  }
+  bool circularArrayLoop(vector<int> &a) {}
 };
 
 #ifdef _DEBUG
@@ -146,6 +127,17 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
+  VI v{2, -1, 1, 2, 2};
+  auto res = a.circularArrayLoop(v);
+  dbg(res);
+
+  v = VI{-1, -2, -3, -4, -5, 6};
+  res = a.circularArrayLoop(v);
+  dbg(res);
+
+  v = VI{1, -1, 5, 1, 4};
+  res = a.circularArrayLoop(v);
+  dbg(res);
 
   return 0;
 }
