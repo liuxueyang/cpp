@@ -1,4 +1,4 @@
-// Date: Tue Aug 27 13:30:02 2024
+// Date: Tue Aug 27 13:41:05 2024
 
 #include <cassert>
 #include <climits>
@@ -126,11 +126,12 @@ struct TreeNode {
  */
 class Solution {
 public:
-  vector<int> postorderTraversal(TreeNode *root) {
+  vector<int> inorderTraversal(TreeNode *root) {
+    VI ans;
     using PPI = pair<TNP, int>;
     stack<PPI> stk;
+
     stk.push({root, 1});
-    VI ans;
 
     while (nemp(stk)) {
       auto [p, stat] = stk.top();
@@ -138,10 +139,17 @@ public:
 
       if (!p)
         continue;
+
       if (stat == 1) {
+        if (p->right) {
+          stk.push({p->right, 1});
+        }
+
         stk.push({p, 2});
-        stk.push({p->right, 1});
-        stk.push({p->left, 1});
+
+        if (p->left) {
+          stk.push({p->left, 1});
+        }
       } else {
         ans.pb(p->val);
       }
@@ -160,6 +168,13 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
+  TNP root{nullptr};
+  auto res = a.inorderTraversal(root);
+  dbg(res);
+
+  root = new TN(1, nullptr, new TN(2, new TN(3), nullptr));
+  res = a.inorderTraversal(root);
+  dbg(res);
 
   return 0;
 }
