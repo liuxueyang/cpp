@@ -1,4 +1,4 @@
-// Date: Tue Aug 27 16:38:54 2024
+// Date: Tue Aug 27 16:49:31 2024
 
 #include <cassert>
 #include <climits>
@@ -126,36 +126,14 @@ struct TreeNode {
  */
 class Solution {
 public:
-  int ans;
-  int x;
-
-  void dfs(TNP root) {
+  int dfs(TNP root) {
     if (!root)
-      return;
-
-    int v = root->val;
+      return 0;
     auto left = root->left, right = root->right;
-
-    if (v != x) {
-      if (ans == -1)
-        ans = v;
-      else
-        ckmin(ans, v);
-      return;
-    }
-
-    dfs(left);
-    dfs(right);
+    int vl = dfs(left) + 1, vr = dfs(right) + 1;
+    return max(vl, vr);
   }
-
-  int findSecondMinimumValue(TreeNode *root) {
-    ans = -1;
-    x = root->val;
-
-    dfs(root);
-
-    return ans;
-  }
+  int maxDepth(TreeNode *root) { return dfs(root); }
 };
 
 #ifdef _DEBUG
