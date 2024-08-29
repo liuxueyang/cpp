@@ -134,6 +134,7 @@ public:
   bool dfs(TNP root, int &idx) {
     if (!root || idx == n)
       return true;
+
     auto [val, l, r] = *root;
     if (!ok)
       return false;
@@ -146,11 +147,7 @@ public:
         bool rb = true;
         if (r)
           rb = dfs(r, ++idx);
-        if (lb && rb) {
-          return true;
-        } else {
-          return ok = false;
-        }
+        return ok = lb && rb;
       } else if (r && r->val == a[idx + 1]) {
         if (l)
           ans.pb(val);
@@ -159,11 +156,7 @@ public:
         bool lb{true};
         if (l)
           lb = dfs(l, ++idx);
-        if (lb && rb) {
-          return true;
-        } else {
-          return ok = false;
-        }
+        return lb && rb;
       } else if (!l && !r)
         return true;
       else
