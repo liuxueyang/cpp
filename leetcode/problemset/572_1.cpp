@@ -1,4 +1,4 @@
-// Date: Fri Aug 30 05:31:26 2024
+// Date: Fri Aug 30 14:36:27 2024
 
 #include <cassert>
 #include <climits>
@@ -127,36 +127,52 @@ struct TreeNode {
  */
 class Solution {
 public:
-  array<int, 3> ans{};
-  int x;
+  int target;
+  using PBI = pair<bool, int>;
 
-  array<int, 3> dfs(TNP root) {
+  int get_height(TNP root) {
     if (!root)
-      return {0, 0, 0};
-
+      return 0;
     auto [_, l, r] = *root;
-    int ansl = dfs(l)[0], ansr = dfs(r)[0];
-
-    array<int, 3> res{ansl + ansr + 1, ansl, ansr};
-    if (_ == x) {
-      ans = res;
-    }
-
-    return res;
+    int hl = get_height(l), hr = get_height(r);
+    return 1 + max(hl, hr);
   }
 
-  bool btreeGameWinningMove(TreeNode *root, int n, int x_) {
-    auto [_, l, r] = *root;
-    x = x_;
-    ans = {};
-    auto [sum, suml, sumr] = dfs(root);
+  bool equal(TNP t1, TNP t2) {
+    if (!t1 || !t2)
+      return t1 == t2;
+    if (t1->val == t2->val) {
+      return equal(t1->left, t2->left) && equal(t1->right, t2->right);
+    } else
+      return false;
+  }
 
-    if (_ == x) {
-      return suml != sumr;
-    } else {
-      auto [c, cl, cr] = ans;
-      return cl > sum - cl || cr > sum - cr || sum - c > c;
+  PBI dfs(TNP root, TNP subRoot) {
+    if (!root)
+      return {root == subRoot, 0};
+    auto [_, l, r] = *root;
+
+    auto [resl, hl] = dfs(l, subRoot);
+    if (resl)
+      return {true, hl};
+
+    auto [resr, hr] = dfs(r, subRoot);
+    if (resr)
+      return {true, hr};
+
+    int h = 1 + max(hl, hr);
+
+    if (h == target) {
+      if (equal(root, subRoot))
+        return {true, h};
     }
+    return {false, h};
+  }
+
+  bool isSubtree(TreeNode *root, TreeNode *subRoot) {
+    target = get_height(subRoot);
+    auto [res, h] = dfs(root, subRoot);
+    return res;
   }
 };
 

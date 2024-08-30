@@ -1,4 +1,4 @@
-// Date: Fri Aug 30 05:31:26 2024
+// Date: Fri Aug 30 09:59:48 2024
 
 #include <cassert>
 #include <climits>
@@ -127,36 +127,29 @@ struct TreeNode {
  */
 class Solution {
 public:
-  array<int, 3> ans{};
-  int x;
+  bool equal(TNP t1, TNP t2) {
+    if (!t1 || !t2)
+      return t1 == t2;
 
-  array<int, 3> dfs(TNP root) {
-    if (!root)
-      return {0, 0, 0};
+    auto [val1, l1, r1] = *t1;
+    auto [val2, l2, r2] = *t2;
+    if (val1 != val2)
+      return false;
 
-    auto [_, l, r] = *root;
-    int ansl = dfs(l)[0], ansr = dfs(r)[0];
-
-    array<int, 3> res{ansl + ansr + 1, ansl, ansr};
-    if (_ == x) {
-      ans = res;
-    }
-
-    return res;
+    return equal(l1, l2) && equal(r1, r2);
   }
 
-  bool btreeGameWinningMove(TreeNode *root, int n, int x_) {
-    auto [_, l, r] = *root;
-    x = x_;
-    ans = {};
-    auto [sum, suml, sumr] = dfs(root);
+  bool isSubtree(TreeNode *root, TreeNode *subRoot) {
+    if (!root || !subRoot)
+      return root == subRoot;
 
-    if (_ == x) {
-      return suml != sumr;
-    } else {
-      auto [c, cl, cr] = ans;
-      return cl > sum - cl || cr > sum - cr || sum - c > c;
+    auto [val, l, r] = *root;
+    if (val == subRoot->val) {
+      if (equal(l, subRoot->left) && equal(r, subRoot->right))
+        return true;
     }
+
+    return isSubtree(l, subRoot) || isSubtree(r, subRoot);
   }
 };
 
