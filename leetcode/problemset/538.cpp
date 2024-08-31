@@ -109,6 +109,41 @@ struct TreeNode {
   TreeNode(int x, TreeNode *left, TreeNode *right)
       : val(x), left(left), right(right) {}
 };
+
+#define null NULL
+
+TNP BuildLCTree(VI a) {
+  TNP root{};
+  int n = SZ(a);
+  if (!n)
+    return root;
+  vector<TNP> b(n + 1, nullptr);
+
+  For(i, 0, n) {
+    int j = i + 1;
+    TNP cur{new TN(a[i])};
+    if (j == 1) {
+      root = cur;
+    } else {
+      int p = j / 2;
+      TNP pp = b[p];
+      if (j & 1)
+        pp->right = cur;
+      else
+        pp->left = cur;
+    }
+    b[j] = cur;
+  }
+  return root;
+}
+
+void PrePrintLCTree(TNP root) {
+  if (!root)
+    return;
+  dbgi(root->val);
+  PrePrintLCTree(root->left);
+  PrePrintLCTree(root->right);
+}
 #endif
 // End of LeetCode
 
@@ -135,15 +170,14 @@ public:
     auto [val, l, r] = *root;
     dfs(r);
 
-    // int prev{};
-    // auto it = m.lower_bound(val);
+    int pre{};
+    auto it = m.lower_bound(val);
 
-    // if (it != m.end()) {
-    //   prev = it->f2;
-    // }
-    //
-    // TODO: Is it a UB??
-    root->val += m.lower_bound(val)->f2;
+    if (it != m.end()) {
+      pre = it->f2;
+    }
+    // root->val += m.lower_bound(val)->f2;
+    root->val += pre;
     m[val] = root->val;
     dfs(l);
   }
@@ -164,6 +198,14 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
+  VI ve{4, 1, 6, 0, 2, 5, 7, null, null, null, 3, null, null, null, 8};
+  dbg(ve);
+  TNP root = BuildLCTree(ve);
+  PrePrintLCTree(root);
+  dbgln();
+  TNP res = a.convertBST(root);
+  PrePrintLCTree(res);
+  dbgln();
 
   return 0;
 }
