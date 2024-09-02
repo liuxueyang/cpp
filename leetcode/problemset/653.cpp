@@ -1,4 +1,4 @@
-// Date: Mon Sep  2 17:31:21 2024
+// Date: Mon Sep  2 19:09:07 2024
 
 #include <cassert>
 #include <climits>
@@ -127,92 +127,22 @@ struct TreeNode {
  */
 class Solution {
 public:
-  int dfs1(TNP root, int x) {
-    if (!root || ok)
-      return -INF;
+  set<int> s;
 
-    auto [val, l, r] = *root;
-
-    if (val == x) {
-      ok = true;
-      return val;
-    } else if (val <= x) {
-      int d1 = dfs1(r, x);
-      return max(d1, val);
-    } else
-      return dfs1(l, x);
-  }
-
-  int dfs2(TNP root, int x) {
-    if (!root || ok)
-      return INF;
-
-    auto [val, l, r] = *root;
-
-    if (val == x) {
-      ok = true;
-      return val;
-    } else if (val > x) {
-      int d1 = dfs2(l, x);
-      return min(d1, val);
-    } else
-      return dfs2(r, x);
-  }
-  bool ok{};
-
-  void dfs(TNP root, VI &ve) {
+  bool findTarget(TreeNode *root, int k) {
     if (!root)
-      return;
+      return false;
 
     auto [val, l, r] = *root;
+    if (findTarget(l, k))
+      return true;
 
-    dfs(l, ve);
-    ve.pb(val);
-    dfs(r, ve);
-  }
+    int rem = k - val;
+    if (has(s, rem))
+      return true;
+    s.insert(val);
 
-  int find_min(VI &a, int x) {
-    int l = 0, r = SZ(a) - 1, mid;
-    while (l < r) {
-      mid = (l + r + 1) / 2;
-      if (a[mid] <= x)
-        l = mid;
-      else
-        r = mid - 1;
-    }
-
-    if (a[l] <= x)
-      return a[l];
-    else
-      return -1;
-  }
-
-  int find_max(VI &a, int x) {
-    int l = 0, r = SZ(a) - 1, mid;
-    while (l < r) {
-      mid = (l + r) / 2;
-      if (a[mid] >= x)
-        r = mid;
-      else
-        l = mid + 1;
-    }
-
-    return a[r] >= x ? a[r] : -1;
-  }
-
-  vector<vector<int>> closestNodes(TreeNode *root, vector<int> &queries) {
-    int n = SZ(queries);
-    vector<VI> ans(n, VI(2, 0));
-    VI a;
-    dfs(root, a);
-
-    For(i, 0, n) {
-      int x = queries[i];
-      ans[i][0] = find_min(a, x);
-      ans[i][1] = find_max(a, x);
-    }
-
-    return ans;
+    return findTarget(r, k);
   }
 };
 
