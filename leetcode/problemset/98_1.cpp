@@ -1,4 +1,4 @@
-// Date: Sun Sep  1 21:55:06 2024
+// Date: Mon Sep  2 10:42:25 2024
 
 #include <cassert>
 #include <climits>
@@ -8,6 +8,7 @@
 #include <cstring>
 
 #include <algorithm>
+#include <array>
 #include <functional>
 #include <iomanip>
 #include <iostream>
@@ -126,52 +127,20 @@ struct TreeNode {
  */
 class Solution {
 public:
-  int ok{-1};
-
   PLL dfs(TNP root) {
-    if (!root || ok != -1)
-      return {-INFL, INFL};
+    if (!root)
+      return {INFL, -INFL};
 
     auto [val, l, r] = *root;
+    auto [mi1, mx1] = dfs(l);
+    auto [mi2, mx2] = dfs(r);
 
-    if (!l && !r)
-      return {val, val};
-    else if (l && r) {
-      auto [mxl, mil] = dfs(l);
-      auto [mxr, mir] = dfs(r);
-
-      if (val <= mxl || val >= mir) {
-        ok = 0;
-        return {};
-      }
-      return {mxr, mil};
-    } else if (l) {
-      auto [mxl, mil] = dfs(l);
-      if (val <= mxl) {
-        ok = 0;
-        return {};
-      }
-      return {val, mil};
-    } else if (r) {
-      auto [mxr, mir] = dfs(r);
-      if (val >= mir) {
-        ok = 0;
-        return {};
-      }
-      return {mxr, val};
-    } else
-      return {};
-
-    return {};
+    if (val <= mx1 || val >= mi2)
+      return {-INFL, INFL};
+    return {min(mi1, ll(val)), max(mx2, ll(val))};
   }
 
-  bool isValidBST(TreeNode *root) {
-    dfs(root);
-    if (ok == 0)
-      return false;
-    else
-      return true;
-  }
+  bool isValidBST(TreeNode *root) { return dfs(root).f2 != INFL; }
 };
 
 #ifdef _DEBUG
@@ -182,17 +151,7 @@ int main(void) {
   cout.tie(NULL);
   _m_gen64.seed(Pr);
 
-  int minx = -(1 << 31), mxv = (1 << 31) - 1;
-  dbg(minx, mxv);
-
-  int macro_max = INT_MAX, macro_min = INT_MIN;
-  dbg(macro_min, macro_max);
-
-  long macro_lmax = LONG_MAX, macro_lmin = LONG_MIN;
-  dbg(macro_lmin, macro_lmax);
-
-  long res = log10(macro_lmax);
-  dbg(res);
+  Solution a;
 
   return 0;
 }
