@@ -19,6 +19,14 @@ void __print(const char *x) { cerr << '\"' << x << '\"'; }
 void __print(const string &x) { cerr << '\"' << x << '\"'; }
 void __print(bool x) { cerr << (x ? "true" : "false"); }
 
+#ifndef _WIN64
+#define begin_color "\e[91m"
+#define end_color "\e[39m"
+#else
+#define begin_color ""
+#define end_color ""
+#endif
+
 template <typename T, typename V> void __print(const pair<T, V> &x) {
   cerr << '{';
   __print(x.first);
@@ -43,7 +51,7 @@ template <typename T, typename... V> void _print(T t, V... v) {
 
 template <typename ForwardIterator>
 void dbgr(ForwardIterator begin, ForwardIterator end) {
-  cerr << "\e[91m" << "[";
+  cerr << begin_color << "[";
   ForwardIterator it = begin;
   while (it != end) {
     if (it != begin)
@@ -51,14 +59,14 @@ void dbgr(ForwardIterator begin, ForwardIterator end) {
     __print(*it);
     it++;
   }
-  cerr << "]\e[39m\n";
+  cerr << "]" << end_color << '\n';
 }
 
 #define dbg(x...)                                                              \
-  cerr << "\e[91m" << __func__ << ":" << __LINE__ << " [" << #x << "] = [";    \
+  cerr << begin_color << __func__ << ":" << __LINE__ << " [" << #x << "] = ["; \
   _print(x);                                                                   \
-  cerr << "\e[39m";
-#define dbgi(x) cerr << "\e[91m" << x << ' ' << "\e[39m";
+  cerr << end_color;
+#define dbgi(x) cerr << begin_color << x << ' ' << end_color;
 #define dbgln() cerr << '\n';
 
 #endif // DEBUG_H_

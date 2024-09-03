@@ -1,14 +1,11 @@
-// Date: Tue Sep  3 16:33:00 2024
-
+#include <algorithm>
+#include <array>
 #include <cassert>
 #include <climits>
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-
-#include <algorithm>
-#include <array>
 #include <functional>
 #include <iomanip>
 #include <iostream>
@@ -29,8 +26,10 @@ typedef unsigned long long ull;
 typedef vector<int> VI;
 typedef pair<int, int> PII;
 typedef pair<ll, ll> PLL;
-template <class T> using pq = priority_queue<T>;
-template <class T> using pqg = priority_queue<T, vector<T>, greater<T>>;
+template <class T>
+using pq = priority_queue<T>;
+template <class T>
+using pqg = priority_queue<T, vector<T>, greater<T>>;
 
 const int INF = 0x3f3f3f3f, MOD = 1e9 + 7, MOD1 = 998'244'353;
 const ll INFL = 0x3f3f3f3f'3f3f3f3f;
@@ -58,21 +57,27 @@ const ull Pr = 131;
 #define SZ(a) int((a).size())
 #define NL cout << '\n';
 
-template <class T> bool ckmin(T &a, const T &b) { return b < a ? a = b, 1 : 0; }
-template <class T> bool ckmax(T &a, const T &b) { return a < b ? a = b, 1 : 0; }
+template <class T>
+bool ckmin(T &a, const T &b) {
+  return b < a ? a = b, 1 : 0;
+}
+template <class T>
+bool ckmax(T &a, const T &b) {
+  return a < b ? a = b, 1 : 0;
+}
 
-template <typename t> istream &operator>>(istream &in, vector<t> &vec) {
-  for (t &x : vec)
-    in >> x;
+template <typename t>
+istream &operator>>(istream &in, vector<t> &vec) {
+  for (t &x : vec) in >> x;
   return in;
 }
 
-template <typename t> ostream &operator<<(ostream &out, vector<t> &vec) {
+template <typename t>
+ostream &operator<<(ostream &out, vector<t> &vec) {
   int n = SZ(vec);
   For(i, 0, n) {
     out << vec[i];
-    if (i < n - 1)
-      out << ' ';
+    if (i < n - 1) out << ' ';
   }
   return out;
 }
@@ -126,27 +131,34 @@ struct TreeNode {
  * };
  */
 class Solution {
-public:
-  TNP prev{};
+ public:
+  VI a;
+  int n;
 
-  void dfs(TNP root, int x) {
-    if (!root)
-      return;
+  TNP dfs(int l, int r) {
+    if (l > r) return nullptr;
 
-    if (root->val > x)
-      prev = root;
-    dfs(root->right, x);
+    if (l == r) {
+      return new TN(a[l]);
+    }
+
+    int val = a[l];
+    int idx = r + 1;
+    For1(i, l + 1, r) {
+      if (a[i] > val) {
+        idx = i;
+        break;
+      }
+    }
+
+    return new TN(val, dfs(l + 1, idx - 1), dfs(idx, r));
   }
 
-  TreeNode *insertIntoMaxTree(TreeNode *root, int val) {
-    dfs(root, val);
+  TreeNode *bstFromPreorder(vector<int> &preorder) {
+    a = preorder;
+    n = SZ(a);
 
-    if (!prev) {
-      return new TN(val, root, nullptr);
-    } else {
-      prev->right = new TN(val, prev->right, nullptr);
-      return root;
-    }
+    return dfs(0, n - 1);
   }
 };
 
@@ -159,7 +171,6 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
-  dbg("Hello World!");
 
   return 0;
 }
