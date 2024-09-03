@@ -1,4 +1,4 @@
-// Date: Tue Sep  3 08:50:01 2024
+// Date: Tue Sep  3 15:09:07 2024
 
 #include <cassert>
 #include <climits>
@@ -8,6 +8,7 @@
 #include <cstring>
 
 #include <algorithm>
+#include <array>
 #include <functional>
 #include <iomanip>
 #include <iostream>
@@ -109,40 +110,6 @@ struct TreeNode {
   TreeNode(int x, TreeNode *left, TreeNode *right)
       : val(x), left(left), right(right) {}
 };
-#define null NULL
-
-TNP BuildLCTree(VI a) {
-  TNP root{};
-  int n = SZ(a);
-  if (!n)
-    return root;
-  vector<TNP> b(n + 1, nullptr);
-
-  For(i, 0, n) {
-    int j = i + 1;
-    TNP cur{new TN(a[i])};
-    if (j == 1) {
-      root = cur;
-    } else {
-      int p = j / 2;
-      TNP pp = b[p];
-      if (j & 1)
-        pp->right = cur;
-      else
-        pp->left = cur;
-    }
-    b[j] = cur;
-  }
-  return root;
-}
-
-void PrePrintLCTree(TNP root) {
-  if (!root)
-    return;
-  dbgi(root->val);
-  PrePrintLCTree(root->left);
-  PrePrintLCTree(root->right);
-}
 #endif
 // End of LeetCode
 
@@ -160,28 +127,34 @@ void PrePrintLCTree(TNP root) {
  */
 class Solution {
 public:
-  static const int N = 1100;
-  int n{};
-  int a[N];
+  TreeNode *constructMaximumBinaryTree(vector<int> &nums) {
+    stack<TNP> stk;
+    TNP root{};
+    TNP prev{};
+    int n = SZ(nums);
 
-  TNP build(int l, int r) {
-    if (l > r)
-      return nullptr;
+    root = new TN(nums[0]);
+    stk.push(root);
 
-    int idx = l;
-    For1(i, l, r) {
-      if (a[i] > a[idx])
-        idx = i;
+    For(i, 1, n) {
+      prev = nullptr;
+
+      while (nemp(stk) && nums[i] > stk.top()->val) {
+        prev = stk.top();
+        stk.pop();
+      }
+
+      if (nemp(stk)) {
+        TNP tmp = new TN(nums[i], prev, nullptr);
+        stk.top()->right = tmp;
+        stk.push(tmp);
+      } else {
+        root = new TN(nums[i], prev, nullptr);
+        stk.push(root);
+      }
     }
 
-    return new TN(a[idx], build(l, idx - 1), build(idx + 1, r));
-  }
-
-  TreeNode *constructMaximumBinaryTree(vector<int> &nums) {
-    n = SZ(nums);
-    For(i, 0, n) a[i] = nums[i];
-
-    return build(0, n - 1);
+    return root;
   }
 };
 
@@ -194,9 +167,6 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
-  VI ve{3, 2, 1, 6, 0, 5};
-  TNP res = a.constructMaximumBinaryTree(ve);
-  PrePrintLCTree(res);
 
   return 0;
 }
