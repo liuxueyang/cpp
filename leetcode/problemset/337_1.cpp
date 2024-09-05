@@ -1,11 +1,19 @@
-#include <algorithm>
-#include <array>
+/*
+ * @lc app=leetcode.cn id=337 lang=cpp
+ *
+ * [337] 打家劫舍 III
+ */
+
+// @lc code=start
 #include <cassert>
 #include <climits>
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+
+#include <algorithm>
+#include <array>
 #include <functional>
 #include <iomanip>
 #include <iostream>
@@ -107,44 +115,8 @@ struct TreeNode {
   TreeNode(int x, TreeNode *left, TreeNode *right)
       : val(x), left(left), right(right) {}
 };
-
-#define null NULL
-
-TNP BuildLCTree(VI a) {
-  TNP root{};
-  int n = SZ(a);
-  if (!n)
-    return root;
-  vector<TNP> b(n + 1, nullptr);
-
-  For(i, 0, n) {
-    int j = i + 1;
-    TNP cur{new TN(a[i])};
-    if (j == 1) {
-      root = cur;
-    } else {
-      int p = j / 2;
-      TNP pp = b[p];
-      if (j & 1)
-        pp->right = cur;
-      else
-        pp->left = cur;
-    }
-    b[j] = cur;
-  }
-  return root;
-}
-
-void PrePrintLCTree(TNP root) {
-  if (!root)
-    return;
-  dbgi(root->val);
-  PrePrintLCTree(root->left);
-  PrePrintLCTree(root->right);
-}
 #endif
 // End of LeetCode
-
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -159,70 +131,24 @@ void PrePrintLCTree(TNP root) {
  */
 class Solution {
 public:
-  map<PII, int> m;
-  int idx{}, n{};
-  VI a;
+  PII dfs(TNP root) {
+    if (!root)
+      return {0, 0};
+    auto [val, l, r] = *root;
 
-  TNP build(int cur) {
-    if (idx >= n)
-      return nullptr;
+    auto [x1, x2] = dfs(l);
+    auto [y1, y2] = dfs(r);
 
-    int d = m[{a[idx], idx}];
-    if (cur > d)
-      return nullptr;
+    PII ans;
+    ans.f1 = val + x2 + y2;
+    ans.f2 = max(x1, x2) + max(y1, y2);
 
-    return new TN(a[idx++], build(cur + 1), build(cur + 1));
+    return ans;
   }
 
-  TreeNode *recoverFromPreorder(string traversal) {
-    int d{}, cur{};
-    bool ok{};
-    m = {}, idx = {}, n = {}, a = {};
-
-    for (auto x : traversal) {
-      if (isdigit(x)) {
-        cur = cur * 10 + (x - '0');
-        ok = true;
-      } else {
-        if (ok) {
-          m[{cur, SZ(a)}] = d;
-          a.pb(cur);
-          d = cur = 0;
-          ok = false;
-        }
-        d++;
-      }
-    }
-    m[{cur, SZ(a)}] = d;
-    a.pb(cur);
-    n = SZ(a);
-
-    return build(0);
+  int rob(TreeNode *root) {
+    auto [x1, x2] = dfs(root);
+    return max(x1, x2);
   }
 };
-
-#ifdef _DEBUG
-
-int main(void) {
-  std::ios::sync_with_stdio(false);
-  cin.tie(NULL);
-  cout.tie(NULL);
-  _m_gen64.seed(Pr);
-
-  Solution a;
-  string s = "1-2--3--4-5--6--7";
-  auto res = a.recoverFromPreorder(s);
-  PrePrintLCTree(res);
-
-  s = "3";
-  res = a.recoverFromPreorder(s);
-  PrePrintLCTree(res);
-
-  s = "4-4--8---5-7--7";
-  res = a.recoverFromPreorder(s);
-  PrePrintLCTree(res);
-
-  return 0;
-}
-
-#endif
+// @lc code=end
