@@ -153,9 +153,6 @@ void PrePrintLCTree(TNP root) {
 
 class Solution {
  public:
-  static const int N = 10100;
-  int stk[N];
-
   bool isValidSerialization(string preorder) {
     VI a;
     int cur{};
@@ -172,13 +169,28 @@ class Solution {
     }
     a.pb(cur);
 
-    int top = 0;
-    for (auto x : a) {
-      while (top >= 2 && stk[top] == -1 && stk[top - 1] != -1) top -= 2;
-      stk[++top] = x;
-    }
+    int inc{}, outc{}, n{SZ(a)};
 
-    return top == 1 && stk[1] == -1;
+    For(i, 0, n) {
+      if (i == 0) {
+        if (a[i] != -1) {
+          outc += 2;
+        } else {
+          if (n > 1) return false;
+        }
+      } else {
+        if (a[i] == -1) {
+          inc++;
+        } else {
+          inc++;
+          outc += 2;
+        }
+
+        if (outc < inc) return false;
+        if (outc == inc && i != n - 1) return false;
+      }
+    }
+    return inc == outc;
   }
 };
 
