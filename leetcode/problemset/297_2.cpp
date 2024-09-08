@@ -1,11 +1,14 @@
-#include <algorithm>
-#include <array>
+// Date: Sun Sep  8 19:37:17 2024
+
 #include <cassert>
 #include <climits>
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+
+#include <algorithm>
+#include <array>
 #include <functional>
 #include <iomanip>
 #include <iostream>
@@ -107,6 +110,34 @@ struct TreeNode {
   TreeNode(int x, TreeNode *left, TreeNode *right)
       : val(x), left(left), right(right) {}
 };
+#endif
+
+#define null NULL
+
+TNP BuildLCTree(VI a) {
+  TNP root{};
+  int n = SZ(a);
+  if (!n)
+    return root;
+  vector<TNP> b(n + 1, nullptr);
+
+  For(i, 0, n) {
+    int j = i + 1;
+    TNP cur{new TN(a[i])};
+    if (j == 1) {
+      root = cur;
+    } else {
+      int p = j / 2;
+      TNP pp = b[p];
+      if (j & 1)
+        pp->right = cur;
+      else
+        pp->left = cur;
+    }
+    b[j] = cur;
+  }
+  return root;
+}
 
 void PrePrintLCTree(TNP root) {
   if (!root)
@@ -115,102 +146,6 @@ void PrePrintLCTree(TNP root) {
   PrePrintLCTree(root->left);
   PrePrintLCTree(root->right);
 }
-
-class LCCodec {
-public:
-  // Encodes a tree to a single string.
-  string serialize(TreeNode *root) {
-    if (!root)
-      return "";
-
-    vector<TNP> a;
-    a.pb(root);
-    string ans;
-
-    while (nemp(a)) {
-      vector<TNP> b;
-
-      string tmp;
-      for (auto x : a) {
-        if (nemp(ans)) {
-          ans += ',';
-        }
-
-        if (x)
-          ans += to_string(x->val);
-        else
-          ans += "null";
-      }
-
-      bool ok{false};
-      for (auto x : a) {
-        if (x) {
-          b.pb(x->left);
-          b.pb(x->right);
-
-          if (x->left || x->right) {
-            ok = true;
-          }
-        }
-      }
-
-      if (ok)
-        a = std::move(b);
-      else
-        a = {};
-    }
-
-    return ans;
-  }
-
-  // Decodes your encoded data to tree.
-  TreeNode *deserialize(string data) {
-    vector<TNP> a;
-    int n = SZ(data);
-    vector<string> b;
-
-    if (!n)
-      return nullptr;
-
-    string t;
-    for (auto x : data) {
-      if (x == ',') {
-        b.pb(t);
-        t = "";
-      } else
-        t += x;
-    }
-    b.pb(t);
-
-    for (auto x : b) {
-      if (x == "null")
-        a.pb(nullptr);
-      else
-        a.pb(new TN(stoi(x)));
-    }
-
-    int m = SZ(a);
-    int i = 0, j = 1;
-
-    while (i < m) {
-      while (i < m && !a[i])
-        ++i;
-      if (i >= n)
-        break;
-
-      if (j < m)
-        a[i]->left = a[j++];
-      if (j < m)
-        a[i]->right = a[j++];
-      ++i;
-    }
-
-    return a[0];
-  }
-};
-
-#endif
-
 // End of LeetCode
 
 /**
@@ -224,94 +159,49 @@ public:
  */
 class Codec {
 public:
+  queue<string> q;
   // Encodes a tree to a single string.
   string serialize(TreeNode *root) {
     if (!root)
-      return "";
+      return "null";
 
-    vector<TNP> a;
-    a.pb(root);
-    string ans;
+    auto [val, l, r] = *root;
+    string res = to_string(val) + ",";
+    res += serialize(l) + ",";
+    res += serialize(r);
+    return res;
+  }
 
-    while (nemp(a)) {
-      vector<TNP> b;
+  TNP build() {
+    auto t = q.front();
+    q.pop();
 
-      string tmp;
-      for (auto x : a) {
-        if (nemp(ans)) {
-          ans += ',';
-        }
+    if (t == "null")
+      return nullptr;
 
-        if (x)
-          ans += to_string(x->val);
-        else
-          ans += "null";
-      }
-
-      bool ok{false};
-      for (auto x : a) {
-        if (x) {
-          b.pb(x->left);
-          b.pb(x->right);
-
-          if (x->left || x->right) {
-            ok = true;
-          }
-        }
-      }
-
-      if (ok)
-        a = std::move(b);
-      else
-        a = {};
-    }
-
-    return ans;
+    int val = stoi(t);
+    TNP root = new TN(val);
+    root->left = build();
+    root->right = build();
+    return root;
   }
 
   // Decodes your encoded data to tree.
   TreeNode *deserialize(string data) {
-    vector<TNP> a;
-    int n = SZ(data);
-    vector<string> b;
+    string cur;
+    q = {};
 
-    if (!n)
-      return nullptr;
-
-    string t;
     for (auto x : data) {
       if (x == ',') {
-        b.pb(t);
-        t = "";
-      } else
-        t += x;
+        q.push(cur);
+        cur = "";
+      } else {
+        cur += x;
+      }
     }
-    b.pb(t);
+    q.push(cur);
 
-    for (auto x : b) {
-      if (x == "null")
-        a.pb(nullptr);
-      else
-        a.pb(new TN(stoi(x)));
-    }
-
-    int m = SZ(a);
-    int i = 0, j = 1;
-
-    while (i < m) {
-      while (i < m && !a[i])
-        ++i;
-      if (i >= n)
-        break;
-
-      if (j < m)
-        a[i]->left = a[j++];
-      if (j < m)
-        a[i]->right = a[j++];
-      ++i;
-    }
-
-    return a[0];
+    return build();
   }
 };
 
@@ -327,15 +217,7 @@ int main(void) {
   cout.tie(NULL);
   _m_gen64.seed(Pr);
 
-  Codec t;
-  string s = "1,2,3,null,null,4,5";
-
-  TNP root = t.deserialize(s);
-  PrePrintLCTree(root);
-  dbgln();
-
-  string s2 = t.serialize(root);
-  dbg(s2);
+  // Solution a;
 
   return 0;
 }
