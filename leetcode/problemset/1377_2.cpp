@@ -1,11 +1,14 @@
-#include <algorithm>
-#include <array>
+// Date: Fri Sep 13 16:21:13 2024
+
 #include <cassert>
 #include <climits>
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+
+#include <algorithm>
+#include <array>
 #include <functional>
 #include <iomanip>
 #include <iostream>
@@ -208,71 +211,49 @@ public:
     return a[0];
   }
 };
-#endif
 
+#endif
 // End of LeetCode
 
 class Solution {
 public:
   vector<VI> g;
-  VI vis, ts;
-  vector<double> d;
-  int t;
+  int target;
+  double ans;
 
-  void dfs(int x, int fa, int cur, double ph) {
-    if (vis[x] || cur > t)
-      return;
-
-    vis[x] = 1;
-    d[x] = ph;
-    ts[x] = cur;
-
-    int sz = SZ(g[x]);
-
-    if (x == 1) {
-      ph /= sz;
-    } else {
-      if (sz != 1)
-        ph /= (sz - 1);
+  bool dfs(int x, int fa, int rem, double p) {
+    if (target == x) {
+      if (rem == 0 || SZ(g[x]) == 1) {
+        ans = p;
+        return true;
+      }
+      return false;
     }
+
+    if (rem <= 0)
+      return false;
 
     for (auto y : g[x]) {
       if (y == fa)
         continue;
-      dfs(y, x, cur + 1, ph);
+      if (dfs(y, x, rem - 1, p / (SZ(g[x]) - 1)))
+        return true;
     }
+    return false;
   }
 
-  double frogPosition(int n, vector<vector<int>> &edges, int t_, int target) {
-    if (SZ(edges) == 0) {
-      if (target == 1)
-        return 1;
-      else
-        return 0;
-    }
-
+  double frogPosition(int n, vector<vector<int>> &edges, int t, int target_) {
     g = vector<VI>(n + 1);
-    vis = ts = VI(n + 1);
-    d = vector<double>(n + 1);
-    t = t_;
+    g[1].pb(0);
+    target = target_;
 
     for (auto &v : edges) {
       int x = v[0], y = v[1];
       g[x].pb(y), g[y].pb(x);
     }
 
-    dfs(1, -1, 0, 1);
-
-    if (ts[target] == t)
-      return d[target];
-    else if (ts[target] > t)
-      return 0;
-    else {
-      if (target != 1 && SZ(g[target]) == 1)
-        return d[target];
-      else
-        return 0;
-    }
+    dfs(1, 0, t, 1);
+    return ans;
   }
 };
 
