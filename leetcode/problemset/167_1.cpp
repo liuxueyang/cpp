@@ -220,19 +220,31 @@ public:
   vector<int> twoSum(vector<int> &numbers, int target) {
     int n{SZ(numbers)}, i{-1}, j{-1};
 
+    for (auto &x : numbers) {
+      x += 1000;
+    }
+    target += 1000 * 2;
+
     int l = 0, r = n - 1, mid;
     while (l < r) {
       mid = (l + r) / 2;
-      if (numbers[mid] >= target / 2)
+      if (numbers[mid] > target / 2)
         r = mid;
       else
         l = mid + 1;
     }
 
-    if (numbers[r] >= target / 2) {
-      i = r, j = i + 1;
+    if (numbers[r] > target / 2) {
+      j = r, i = j - 1;
     } else {
-      return {};
+      if (numbers[r] + numbers[r - 1] == target)
+        return VI{n - 1, n};
+      else
+        return {};
+    }
+
+    if (i - 1 >= 0 && numbers[i - 1] + numbers[i] == target) {
+      return VI{i, i + 1};
     }
 
     auto check = [&](int idx) { return idx >= 0 && idx < n; };
@@ -258,6 +270,11 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
+  VI ve{-1, 0};
+  int t = -1;
+
+  auto res = a.twoSum(ve, t);
+  dbg(res);
 
   return 0;
 }
