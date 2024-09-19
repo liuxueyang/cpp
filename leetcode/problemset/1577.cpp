@@ -219,17 +219,16 @@ class Solution {
     int ans{};
 
     auto solve = [](VI &nums1, VI &nums2) {
-      int n{SZ(nums1)}, m{SZ(nums2)}, res{};
+      int n{SZ(nums1)}, res{};
 
       sort(all(nums1));
       sort(all(nums2));
 
       for (auto t1 : nums2) {
         ll t = 1ll * t1 * t1;
-        dbg(t);
 
         for (int i = 0, j = n - 1; i < j;) {
-          ll tmp = nums1[i] * nums1[j];
+          ll tmp = 1ll * nums1[i] * nums1[j];
           if (tmp > t)
             --j;
           else if (tmp < t)
@@ -238,29 +237,23 @@ class Solution {
             if (nums1[i] == nums1[j]) {
               int len = j - i + 1;
               res += len * (len - 1) / 2;
-              dbg(len, res);
               break;
             }
 
-            dbg(nums1[i], nums1[j]);
-            int j1 = j;
-
             int cntj{1};
-            --j;
-            while (i < j && nums1[j + 1] == nums1[j]) {
+            while (nums1[j - 1] == nums1[j]) {
               cntj++;
               --j;
             }
 
             int cnti{1};
-            ++i;
-            if (i < j1 && nums1[i - 1] == nums1[i]) {
+            while (nums1[i + 1] == nums1[i]) {
               cnti++;
               ++i;
             }
 
             res += cnti * cntj;
-            dbg(cnti, cntj, i, j);
+            --j;
           }
         }
       }
@@ -290,8 +283,18 @@ int main(void) {
   // auto res = a.numTriplets(ve1, ve2);
   // dbg(res);
 
-  ve1 = VI{4, 1, 4, 1, 12};
-  ve2 = VI{3, 2, 5, 4};
+  // ve1 = VI{4, 1, 4, 1, 12};
+  // ve2 = VI{3, 2, 5, 4};
+  // res = a.numTriplets(ve1, ve2);
+  // dbg(res);
+
+  // ve1 = VI{4, 5, 7, 1, 3, 6, 4, 1, 4, 5, 1};
+  // ve2 = VI{6, 4, 7, 1, 5, 4, 2, 1, 5, 2};
+  // res = a.numTriplets(ve1, ve2);
+  // dbg(res);
+
+  ve1 = VI{1, 1, 1, 4, 4};
+  ve2 = VI{2};
   res = a.numTriplets(ve1, ve2);
   dbg(res);
 
