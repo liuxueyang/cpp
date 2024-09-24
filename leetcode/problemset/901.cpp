@@ -212,35 +212,32 @@ public:
 #endif
 
 // End of LeetCode
-class Solution {
+class StockSpanner {
 public:
-  int carFleet(int target, vector<int>& p, vector<int>& v) {
-    int n {SZ(p)}, ans {};
-    vector<double> b(n);
+  stack<PII> stk;
 
-    vector<PII> a(n);
+  StockSpanner() {
+    stk = {};
+  }
 
-    For(i, 0, n) {
-      a[i] = {p[i], v[i]};
-    }
-    sort(all(a));
-
-    for (auto &x : a) x.f1 = target - x.f1;
-    For(i, 0, n) {
-      b[i] = 1.0 * a[i].f1 / a[i].f2;
+  int next(int x) {
+    int ans {1};
+    while (nemp(stk) && stk.top().f1 <= x) {
+      ans += stk.top().f2;
+      stk.pop();
     }
 
-    stack<double> stk;
+    stk.push({x, ans});
 
-    Rof(i, 0, n) {
-      if (nemp(stk) && b[i] <= b[stk.top()]) continue;
-      stk.push(i);
-    }
-
-    ans = SZ(stk);
     return ans;
   }
 };
+
+/**
+ * Your StockSpanner object will be instantiated and called as such:
+ * StockSpanner* obj = new StockSpanner();
+ * int param_1 = obj->next(price);
+ */
 
 #ifdef _DEBUG
 
@@ -250,12 +247,7 @@ int main(void) {
   cout.tie(NULL);
   _m_gen64.seed(Pr);
 
-  Solution a;
-  VI ve {10,8,0,5,3}, ve2 {2,4,1,1,3};
-  int ta = 12;
-
-  auto res = a.carFleet(ta, ve, ve2);
-  dbg(res);
+  // Solution a;
 
   return 0;
 }
