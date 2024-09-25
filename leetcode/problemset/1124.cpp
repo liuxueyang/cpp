@@ -36,7 +36,7 @@ const int INF = 0x3f3f3f3f, MOD = 1e9 + 7, MOD1 = 998'244'353;
 const ll INFL = 0x3f3f3f3f'3f3f3f3f;
 const double eps = 1e-8;
 const int dir[8][2] = {
-  {0, 1}, {0, -1}, {1, 0}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1},
+    {0, 1}, {0, -1}, {1, 0}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1},
 };
 mt19937_64 _m_gen64;
 
@@ -53,7 +53,7 @@ const ull Pr = 131;
 #define pb push_back
 #define has(a, x) (a.find(x) != a.end())
 #define nemp(a) (!a.empty())
-#define all(a) (a).begin(),(a).end()
+#define all(a) (a).begin(), (a).end()
 #define all1(a, len) (a + 1), (a + 1 + len)
 #define SZ(a) int((a).size())
 #define NL cout << '\n';
@@ -108,7 +108,7 @@ struct TreeNode {
   TreeNode() : val(0), left(nullptr), right(nullptr) {}
   TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
   TreeNode(int x, TreeNode *left, TreeNode *right)
-    : val(x), left(left), right(right) {}
+      : val(x), left(left), right(right) {}
 };
 
 void PrePrintLCTree(TNP root) {
@@ -215,30 +215,32 @@ public:
 #endif
 // End of LeetCode
 
-
 class Solution {
 public:
-  int longestWPI(vector<int>& a) {
-    int n {SZ(a)}, ans {};
+  int longestWPI(vector<int> &a) {
+    int n{SZ(a)}, ans{};
+
     VI b(n + 1);
 
-    For(i, 0, n) {
-      b[i + 1] = b[i] + (a[i] > 8);
-    }
+    For(i, 0, n) { b[i + 1] = b[i] + (a[i] > 8 ? 1 : -1); }
 
     stack<int> stk;
     For1(i, 1, n) {
-      while (nemp(stk) && b[i] > b[stk.top()]) stk.pop();
+      if (b[i] > 0)
+        ckmax(ans, i);
+      if (nemp(stk) && b[i] >= b[stk.top()])
+        continue;
       stk.push(i);
     }
 
     Rof1(i, 1, n) {
-      if (stk.empty()) break;
+      if (stk.empty())
+        break;
       if (i <= stk.top()) {
         stk.pop();
         continue;
       }
-      if (b[i] > b[stk.top()]) {
+      while (nemp(stk) && b[i] > b[stk.top()]) {
         ckmax(ans, i - stk.top());
         stk.pop();
       }
@@ -257,6 +259,11 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
+  VI ve{9, 9, 6, 0, 6, 6, 9};
+  ve = VI{8, 10, 6, 16, 5};
+  ve = VI{8, 7, 7, 8, 6, 11, 12};
+  auto res = a.longestWPI(ve);
+  dbg(res);
 
   return 0;
 }
