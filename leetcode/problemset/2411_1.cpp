@@ -235,12 +235,12 @@ public:
         if (d[j].f1 == d[idx].f1) {
           d[idx].f2 = d[j].f2;
         } else {
-          d[idx] = d[j];
+          d[++idx] = d[j];
         }
       }
 
       d.resize(idx + 1);
-      ans[i] = d[0].f2;
+      ans[i] = d[0].f2 - i + 1;
     }
     return ans;
   }
@@ -255,6 +255,9 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
+  VI ve{1, 0, 2, 1, 3};
+  auto res = a.smallestSubarrays(ve);
+  dbg(res);
 
   return 0;
 }
