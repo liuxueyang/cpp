@@ -1,4 +1,4 @@
-// Date: Sat Sep 28 22:18:03 2024
+// Date: Sun Sep 29 10:23:49 2024
 
 #include <cassert>
 #include <climits>
@@ -217,21 +217,20 @@ public:
 
 class Solution {
 public:
-  int countTriplets(vector<int> &a) {
-    int n{SZ(a)}, ans{};
-    VI b(n + 1);
+  char kthCharacter(int k) {
+    string s = "a";
 
-    For(i, 0, n) b[i + 1] = b[i] ^ a[i];
-
-    map<int, PII> m;
-    For1(i, 1, n) {
-      auto [cnt, sum] = m[b[i]];
-      ans += i * cnt - sum;
-
-      auto &t = m[b[i - 1]];
-      t.f1++, t.f2 += i;
+    while (SZ(s) < k) {
+      string t = s;
+      for (auto &c : t) {
+        if (c == 'z')
+          c = 'a';
+        else
+          c++;
+      }
+      s = s + t;
     }
-    return ans;
+    return s[k - 1];
   }
 };
 
@@ -244,9 +243,6 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
-  VI ve{2, 3, 1, 6, 7};
-  auto res = a.countTriplets(ve);
-  dbg(res);
 
   return 0;
 }

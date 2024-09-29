@@ -1,4 +1,4 @@
-// Date: Sat Sep 28 22:18:03 2024
+// Date: Sun Sep 29 10:42:13 2024
 
 #include <cassert>
 #include <climits>
@@ -217,20 +217,58 @@ public:
 
 class Solution {
 public:
-  int countTriplets(vector<int> &a) {
-    int n{SZ(a)}, ans{};
-    VI b(n + 1);
+  long long countOfSubstrings(string s, int k) {
+    int n{SZ(s)};
+    ll ans{};
 
-    For(i, 0, n) b[i + 1] = b[i] ^ a[i];
-
-    map<int, PII> m;
-    For1(i, 1, n) {
-      auto [cnt, sum] = m[b[i]];
-      ans += i * cnt - sum;
-
-      auto &t = m[b[i - 1]];
-      t.f1++, t.f2 += i;
+    VI ow(26), vis(26);
+    string ai = "aeiou";
+    for (auto c : ai) {
+      vis[c - 'a'] = 1;
     }
+
+    auto check = [&]() {
+      for (auto c : ai) {
+        if (ow[c - 'a'] == 0)
+          return false;
+      }
+      return true;
+    };
+
+    auto isow = [&](char ch) { return vis[ch - 'a'] == 1; };
+
+    int other{}, p1{-1};
+
+    for (int i = 0, j = 0; j < n; ++j) {
+      char ch = s[j];
+
+      if (isow(ch))
+        ow[ch - 'a']++;
+      else {
+        other++;
+      }
+
+      while (other > k && i < j) {
+        if (isow(s[i]))
+          ow[s[i] - 'a']--;
+        else {
+          p1 = i;
+          other--;
+        }
+        ++i;
+      }
+
+      if (other < k || !check())
+        continue;
+
+      while (ow[s[i] - 'a'] > 1 && i < j) {
+        ow[s[i] - 'a']--;
+        ++i;
+      }
+
+      ans += i - p1;
+    }
+
     return ans;
   }
 };
@@ -244,8 +282,24 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
-  VI ve{2, 3, 1, 6, 7};
-  auto res = a.countTriplets(ve);
+  string s;
+  int k;
+  ll res;
+
+  s = "aeioqq", k = 1;
+  res = a.countOfSubstrings(s, k);
+  dbg(res);
+
+  s = "aeiou", k = 0;
+  res = a.countOfSubstrings(s, k);
+  dbg(res);
+
+  s = "ieaouqqieaouqq", k = 1;
+  res = a.countOfSubstrings(s, k);
+  dbg(res);
+
+  s = "iqeaouqi", k = 2;
+  res = a.countOfSubstrings(s, k);
   dbg(res);
 
   return 0;

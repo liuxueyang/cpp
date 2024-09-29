@@ -1,4 +1,4 @@
-// Date: Sat Sep 28 22:18:03 2024
+// Date: Sun Sep 29 10:35:12 2024
 
 #include <cassert>
 #include <climits>
@@ -217,19 +217,42 @@ public:
 
 class Solution {
 public:
-  int countTriplets(vector<int> &a) {
-    int n{SZ(a)}, ans{};
-    VI b(n + 1);
+  int countOfSubstrings(string s, int k) {
+    int ans{}, n{SZ(s)};
+    string t = "aeiou";
+    VI vis(26);
+    for (auto c : t)
+      vis[c - 'a'] = 1;
 
-    For(i, 0, n) b[i + 1] = b[i] ^ a[i];
+    auto check = [&](char c) { return vis[c - 'a'] == 1; };
 
-    map<int, PII> m;
-    For1(i, 1, n) {
-      auto [cnt, sum] = m[b[i]];
-      ans += i * cnt - sum;
+    For(i, 4, n) {
+      For1(j, 0, i - 4) {
+        int cnt{};
+        VI ocnt(26);
 
-      auto &t = m[b[i - 1]];
-      t.f1++, t.f2 += i;
+        For1(k, j, i) {
+          if (check(s[k]))
+            ocnt[s[k] - 'a']++;
+          else
+            cnt++;
+        }
+
+        bool ok{true};
+        if (cnt != k)
+          ok = false;
+        else {
+          for (auto c : t) {
+            if (ocnt[c - 'a'] == 0) {
+              ok = false;
+              break;
+            }
+          }
+        }
+
+        if (ok)
+          ans++;
+      }
     }
     return ans;
   }
@@ -244,9 +267,6 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
-  VI ve{2, 3, 1, 6, 7};
-  auto res = a.countTriplets(ve);
-  dbg(res);
 
   return 0;
 }
