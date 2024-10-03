@@ -232,10 +232,7 @@ public:
     node() { cur = "", son = vector<node *>(26); }
   };
 
-  bool check(int x, int y) {
-    return x >= 1 && x <= n && y >= 1 && y <= m;
-
-  }
+  bool check(int x, int y) { return x >= 1 && x <= n && y >= 1 && y <= m; }
 
   node *root;
 
@@ -253,27 +250,24 @@ public:
   }
 
   void dfs(int x, int y, node *p) {
-    if (nemp(p->cur)) {
-      ans.insert(p->cur);
-    }
+    int id = a[x][y] - 'a';
 
-    if (!check(x, y) || vis[x][y])
+    auto child = p->son[id];
+    if (!child)
       return;
 
-    For(i, 0, 26) {
-      auto child = p->son[i];
-      if (!child)
-        continue;
-
-      if (a[x][y] - 'a' == i) {
-        vis[x][y] = true;
-        For(j, 0, 4) {
-          int x1 = x + dir[j][0], y1 = y + dir[j][1];
-          dfs(x1, y1, child);
-        }
-        vis[x][y] = false;
-      }
+    vis[x][y] = true;
+    if (nemp(child->cur) && !has(ans, child->cur)) {
+      ans.insert(child->cur);
     }
+
+    For(j, 0, 4) {
+      int x1 = x + dir[j][0], y1 = y + dir[j][1];
+      if (check(x1, y1) && !vis[x1][y1])
+        dfs(x1, y1, child);
+    }
+
+    vis[x][y] = false;
   }
 
   vector<string> findWords(vector<vector<char>> &a_, vector<string> &words) {

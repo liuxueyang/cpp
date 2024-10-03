@@ -218,80 +218,54 @@ public:
 
 class Solution {
 public:
-  int n, m;
+  int n, m, mx_len;
   vector<vector<char>> a;
   vector<vector<bool>> vis;
+  set<string> dic, ans;
 
-  bool check(int x, int y) {
-    return x >= 1 && x <= n && y >= 1 && y <= m;
+  bool check(int x, int y) { return x >= 1 && x <= n && y >= 1 && y <= m; }
 
-  }
+  void dfs(int x, int y, string s) {
+    int x1, y1;
+    s += a[x][y];
 
-  bool dfs(string &s, int idx, int x, int y) {
+    if (has(dic, s) && !has(ans, s)) {
+      ans.insert(s);
+    }
+    if (SZ(s) == mx_len)
+      return;
+
     vis[x][y] = true;
-
-    if (a[x][y] != s[idx])
-      return false;
-    if (idx == SZ(s) - 1)
-      return true;
-
-    int x1{}, y1{};
 
     For(i, 0, 4) {
       x1 = x + dir[i][0], y1 = y + dir[i][1];
-      if (check(x1, y1) && !vis[x1][y1] && a[x1][y1] == s[idx + 1]) {
-        auto res = dfs(s, idx + 1, x1, y1);
-        if (res)
-          return true;
-        vis[x1][y1] = false;
-      }
+      if (check(x1, y1) && !vis[x1][y1])
+        dfs(x1, y1, s);
     }
 
-    return false;
+    vis[x][y] = false;
   }
 
   vector<string> findWords(vector<vector<char>> &a_, vector<string> &words) {
     n = SZ(a_), m = SZ(a_[0]);
     a = vector<vector<char>>(n + 1, vector<char>(m + 1));
     vis = vector<vector<bool>>(n + 1, vector<bool>(m + 1));
-    VI inb(26);
-
-    For(i, 0, n) { For(j, 0, m) a[i + 1][j + 1] = a_[i][j]; }
-    For1(i, 1, n) {
-      For1(j, 1, m) { inb[a[i][j] - 'a'] = 1; }
-    }
-
-    auto check = [&](string &s) {
-      for (auto c : s) {
-        if (!inb[c - 'a'])
-          return false;
-      }
-      return true;
-    };
-
-    vector<string> ans;
+    mx_len = {}, dic = {}, ans = {};
 
     for (auto &s : words) {
-      bool ok{false};
-      if (!check(s))
-        continue;
-
-      For1(i, 1, n) {
-        For1(j, 1, m) {
-          vis = vector<vector<bool>>(n + 1, vector<bool>(m + 1));
-          if (dfs(s, 0, i, j)) {
-            ok = true;
-            break;
-          }
-        }
-        if (ok)
-          break;
-      }
-      if (ok)
-        ans.pb(s);
+      if (!has(dic, s))
+        dic.insert(s);
+      ckmax(mx_len, SZ(s));
     }
 
-    return ans;
+    For(i, 0, n) { For(j, 0, m) a[i + 1][j + 1] = a_[i][j]; }
+
+    For1(i, 1, n) {
+      For1(j, 1, m) { dfs(i, j, ""); }
+    }
+
+    vector<string> res(all(ans));
+    return res;
   }
 };
 
