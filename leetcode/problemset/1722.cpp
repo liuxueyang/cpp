@@ -237,6 +237,7 @@ public:
 
   int minimumHammingDistance(vector<int> &source, vector<int> &target,
                              vector<vector<int>> &allowedSwaps) {
+    int ans{}, n{SZ(target)};
     fa = VI(mx);
     For(i, 0, mx) fa[i] = i;
 
@@ -259,22 +260,19 @@ public:
       }
     }
 
-    int ans{}, n{SZ(target)};
     For(i, 0, n) {
       int rx = Find(i);
 
       if (vs[rx].empty()) {
         if (target[i] != source[i])
           ans++;
-        continue;
-      }
-
-      auto it = vs[rx].find(target[i]);
-      if (it == vs[rx].end()) {
-        if (target[i] != source[i])
-          ans++;
       } else {
-        vs[rx].erase(it);
+        auto it = vs[rx].find(target[i]);
+        if (it == vs[rx].end()) {
+          ans++;
+        } else {
+          vs[rx].erase(it);
+        }
       }
     }
     return ans;
@@ -290,6 +288,15 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
+  VI source{89, 43, 23, 35, 73, 21, 22, 97, 5, 11, 81, 67, 89, 93, 19, 74};
+  VI target{68, 43, 21, 46, 41, 21, 26, 5, 14, 71, 4, 30, 52, 2, 47, 74};
+  vector<VI> allowed{{12, 2}, {3, 7},  {9, 15},  {5, 12},  {6, 11}, {13, 15},
+                     {4, 1},  {12, 0}, {9, 3},   {11, 12}, {4, 11}, {7, 9},
+                     {7, 2},  {9, 13}, {15, 12}, {3, 12},  {12, 8}, {13, 14},
+                     {11, 2}, {8, 3},  {14, 10}, {0, 9},   {12, 9}};
+
+  auto res = a.minimumHammingDistance(source, target, allowed);
+  dbg(res);
 
   return 0;
 }
