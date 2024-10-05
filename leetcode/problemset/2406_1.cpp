@@ -220,23 +220,23 @@ public:
 class Solution {
 public:
   int minGroups(vector<vector<int>> &a) {
-    pqg<int> q;
-    vector<PII> b;
+    int mx{}, ans{};
 
-    for (auto &v : a)
-      b.pb({v[0], v[1]});
-    sort(all(b));
-
-    for (auto [x, y] : b) {
-      if (nemp(q) && x > q.top()) {
-        q.pop();
-        q.push(y);
-      } else {
-        q.push(y);
-      }
+    for (auto &v : a) {
+      ckmax(mx, v[1]);
     }
 
-    return SZ(q);
+    VI b(mx + 10);
+    for (auto &v : a) {
+      int l = v[0], r = v[1];
+      b[l]++, b[r + 1]--;
+    }
+
+    For1(i, 1, mx) {
+      b[i] = b[i - 1] + b[i];
+      ckmax(ans, b[i]);
+    }
+    return ans;
   }
 };
 
