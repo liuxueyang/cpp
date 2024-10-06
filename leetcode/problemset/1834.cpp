@@ -1,15 +1,14 @@
 // Date: Sat Oct  5 21:56:50 2024
 
+#include <algorithm>
+#include <array>
+#include <bitset>
 #include <cassert>
 #include <climits>
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-
-#include <algorithm>
-#include <array>
-#include <bitset>
 #include <functional>
 #include <iomanip>
 #include <iostream>
@@ -251,21 +250,21 @@ public:
     int cur{};
 
     For(i, 0, n) {
-      dbg(cur);
-      if (b[i].l <= cur) {
+      while (i < n && cur >= b[i].l) {
         q.push(b[i]);
+        ++i;
+      }
+
+      if (q.empty()) {
+        ckmax(cur, b[i].r);
+        ans.pb(b[i].idx);
       } else {
-        if (q.empty()) {
-          ans.pb(b[i].idx);
-          ckmax(cur, b[i].r);
-        } else {
-          dbg(i, b[i].l, cur);
-          auto t = q.top();
-          q.pop();
-          ans.pb(t.idx);
-          cur += t.r;
-          i--;
-        }
+        auto t = q.top();
+        q.pop();
+        ans.pb(t.idx);
+        ckmax(cur, t.l);
+        cur += t.val;
+        i--;
       }
     }
 
@@ -294,6 +293,12 @@ int main(void) {
 
   ve = {{19, 13}, {16, 9},  {21, 10}, {32, 25}, {37, 4},  {49, 24}, {2, 15},
         {38, 41}, {37, 34}, {33, 6},  {45, 4},  {18, 18}, {46, 39}, {12, 24}};
+  res = a.getOrder(ve);
+  dbg(res);
+
+  ve = {{35, 36}, {11, 7}, {15, 47}, {34, 2},  {47, 19}, {16, 14},
+        {19, 8},  {7, 34}, {38, 15}, {16, 18}, {27, 22}, {7, 15},
+        {43, 2},  {10, 5}, {5, 4},   {3, 11}};
   res = a.getOrder(ve);
   dbg(res);
 
