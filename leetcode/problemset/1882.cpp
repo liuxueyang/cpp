@@ -237,15 +237,11 @@ public:
         q1.push({se[id], id});
       }
 
-      dbg(i, SZ(q1), cur);
-
       if (q1.empty()) {
         auto [ts, id] = q2.top();
-        q2.pop();
-        ans.pb(id);
-
         cur = ts;
-        q2.push({cur + ta[i], id});
+        i--;
+        continue;
       } else {
         auto [_, id] = q1.top();
         q1.pop();
