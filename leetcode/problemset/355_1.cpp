@@ -250,6 +250,10 @@ public:
     auto &f1 = feed[userId];
     if (SZ(f1) < 10)
       f1.push(tw);
+    else {
+      f1.pop();
+      f1.push(tw);
+    }
 
     auto &f2 = fan[userId];
     for (auto u : f2) {
@@ -307,8 +311,10 @@ public:
       else {
         if (q.top().ts > it->ts)
           break;
-        else
+        else {
+          q.pop();
           q.push(*it);
+        }
       }
     }
   }
