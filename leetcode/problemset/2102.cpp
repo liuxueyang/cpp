@@ -243,24 +243,28 @@ public:
   SORTracker() : q1{}, q2{}, cur{1} {}
 
   void add(string name, int score) {
-    if (SZ(q1) < cur) {
-      q1.push({score, name});
-    } else {
-      node tmp = {score, name};
-      if (tmp > q1.top()) {
-        auto t = q1.top();
-        q1.pop();
-        q2.push(t);
+    node tmp = {score, name};
+    q2.push(tmp);
 
-        q1.push(tmp);
-      } else {
-        q2.push(tmp);
-      }
+    while (SZ(q1) < cur && nemp(q2)) {
+      q1.push(q2.top());
+      q2.pop();
+    }
+
+    while (nemp(q1) && nemp(q2) && q1.top() < q2.top()) {
+      auto t1 = q1.top();
+      q1.pop();
+
+      auto t2 = q2.top();
+      q2.pop();
+
+      q1.push(t2);
+      q2.push(t1);
     }
   }
 
   string get() {
-    while (SZ(q1) < cur) {
+    while (SZ(q1) < cur && nemp(q2)) {
       auto t = q2.top();
       q1.push(t);
       q2.pop();
