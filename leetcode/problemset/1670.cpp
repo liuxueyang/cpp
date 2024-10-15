@@ -223,39 +223,38 @@ public:
 
   FrontMiddleBackQueue() : q1{}, q2{} {}
 
-  bool isEmpty() { return q1.empty() && q2.empty(); }
-
   void resize() {
-    while (SZ(q2) > SZ(q1)) {
-      q1.push_back(q2.front());
-      q2.pop_front();
+    while (SZ(q1) > SZ(q2)) {
+      q2.push_back(q1.front());
+      q1.pop_front();
     }
 
-    while (SZ(q1) - SZ(q2) > 1) {
-      q2.push_front(q1.back());
-      q1.pop_back();
+    while (SZ(q2) - SZ(q1) > 1) {
+      q1.push_front(q2.back());
+      q2.pop_back();
     }
   }
 
+  bool isEmpty() { return q1.empty() && q2.empty(); }
+
   void pushFront(int val) {
-    q1.push_front(val);
+    q2.push_front(val);
     resize();
   }
 
   void pushMiddle(int val) {
     if (SZ(q1) == SZ(q2)) {
-      q1.push_back(val);
+      q2.push_back(val);
     } else {
-      q2.push_front(q1.back());
-      q1.pop_back();
-      q1.push_back(val);
+      q1.push_front(q2.back());
+      q2.pop_back();
+      q2.push_back(val);
     }
-
     resize();
   }
 
   void pushBack(int val) {
-    q2.push_back(val);
+    q1.push_back(val);
     resize();
   }
 
@@ -263,8 +262,8 @@ public:
     if (isEmpty())
       return -1;
 
-    int ans = q1.front();
-    q1.pop_front();
+    int ans = q2.front();
+    q2.pop_front();
     resize();
     return ans;
   }
@@ -273,11 +272,8 @@ public:
     if (isEmpty())
       return -1;
 
-    int ans{};
-
-    ans = q1.back();
-    q1.pop_back();
-
+    int ans = q2.back();
+    q2.pop_back();
     resize();
     return ans;
   }
@@ -286,10 +282,16 @@ public:
     if (isEmpty())
       return -1;
 
-    int ans = q2.back();
-    q2.pop_back();
-    resize();
-    return ans;
+    if (nemp(q1)) {
+      int ans = q1.back();
+      q1.pop_back();
+      resize();
+      return ans;
+    } else {
+      int ans = q2.back();
+      q2.pop_back();
+      return ans;
+    }
   }
 };
 
@@ -313,6 +315,15 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   // Solution a;
+  auto a = FrontMiddleBackQueue();
+  a.pushFront(1);
+  a.pushBack(2);
+  a.pushMiddle(3);
+  a.pushMiddle(4);
+
+  dbg(a.popFront());
+  dbg(a.popMiddle());
+  dbg(a.popMiddle());
 
   return 0;
 }
