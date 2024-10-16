@@ -223,31 +223,30 @@ public:
   int k, n;
 
   int quick_select(int l, int r) {
-    if (l == r)
+    if (l >= r)
       return a[l];
-    int i = l + 1, j = r, x = a[l];
 
-    while (i <= j) {
-      while (i <= j && a[i] >= x)
+    int x = a[l], i = l - 1, j = r + 1;
+    while (i < j) {
+      do
         i++;
-      while (i <= j && a[j] < x)
-        --j;
-      swap(a[i], a[j]);
+      while (a[i] < x);
+      do
+        j--;
+      while (a[j] > x);
+      if (i < j)
+        swap(a[i], a[j]);
     }
 
-    ++j;
-    dbg(a[l], a[j], j);
-    swap(a[j], a[l]);
-    if (j > k - 1)
-      return quick_select(l, j - 1);
-    else if (j < k - 1)
+    if (k > j)
       return quick_select(j + 1, r);
     else
-      return a[j];
+      return quick_select(l, j);
   }
 
   int findKthLargest(vector<int> &a_, int k_) {
-    a = a_, k = k_, n = SZ(a);
+    a = a_, n = SZ(a);
+    k = n - k_;
     return quick_select(0, n - 1);
   }
 };
@@ -264,6 +263,10 @@ int main(void) {
   VI ve{3, 2, 1, 5, 6, 4};
   int k = 2;
   auto res = a.findKthLargest(ve, k);
+  dbg(res);
+
+  ve = {7, 6, 5, 4, 3, 2, 1};
+  res = a.findKthLargest(ve, k);
   dbg(res);
 
   return 0;
