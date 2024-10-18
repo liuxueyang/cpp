@@ -263,23 +263,17 @@ public:
     LN *p1 = q0, *h = p1->next;
 
     cnt = right - left + 1;
+    LN *p2 = p1->next;
 
-    LN *cur = q0;
-    while (cnt--)
-      cur = cur->next;
-    LN *t = cur;
-
-    LN *q1 = t->next, *p2 = p1->next;
-
-    while (p2 && p1 != t) {
+    while (p2 && cnt--) {
       LNP p3 = p2->next;
       p2->next = p1;
       p1 = p2;
       p2 = p3;
     }
 
-    q0->next = t;
-    h->next = q1;
+    q0->next = p1;
+    h->next = p2;
 
     auto res = du->next;
     delete du;
