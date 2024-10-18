@@ -243,27 +243,20 @@ void PrintList(LNP head) {
 
 class Solution {
 public:
-  static const int N = 3000;
-  PII q[N];
-
   int lengthOfLIS(vector<int> &a) {
-    int n{SZ(a)}, ans{1}, h = -1, t = 0;
-    q[++h] = PII(a[0], 1);
+    int n {SZ(a)}, ans {};
+    VI d(n + 1, INF);
 
-    For(i, 1, n) {
-      int x = a[i], l = h, r = t, mid;
+    For(i, 0, n) {
+      int l = 1, r = SZ(d), mid;
       while (l < r) {
-        mid = (l + r + 1) / 2;
-        if (x > q[mid].f1)
-          l = mid;
-        else
-          r = mid - 1;
+        mid = (l + r) / 2;
+        if (d[mid] >= a[i]) r = mid;
+        else l = mid + 1;
       }
 
-      if (x > q[l].f1) {
-
-      } else {
-      }
+      ckmin(d[r], a[i]);
+      ckmax(ans, r);
     }
 
     return ans;
@@ -279,6 +272,10 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
+
+  VI ve {10,9,2,5,3,7,101,18};
+  auto res = a.lengthOfLIS(ve);
+  dbg(res);
 
   return 0;
 }
