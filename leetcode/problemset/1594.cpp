@@ -241,33 +241,59 @@ class Solution {
 public:
   int maxProductPath(vector<vector<int>> &b) {
     int n{SZ(b)}, m{SZ(b[0])};
-    vector<VI> d1(n + 10, VI(m + 10, INF)), a(n + 10, VI(m + 10)),
-        d2(n + 10, VI(m + 10, INF));
+    vector<vector<ll>> d1(n + 10, vector<ll>(m + 10)),
+        a(n + 10, vector<ll>(m + 10)), d2(n + 10, vector<ll>(m + 10));
+
+    bool ok{false};
 
     For(i, 0, n) {
       For(j, 0, m) {
         a[i + 1][j + 1] = b[i][j];
-        if (i == 0)
-          d1[0][j] = d2[0][j] = 1;
-        if (j == 0)
-          d1[i][0] = d2[i][0] = 1;
+        if (b[i][j] == 0)
+          ok = true;
       }
     }
 
+    if (a[1][1] > 0)
+      d1[1][1] = a[1][1];
+    else if (a[1][1] < 0)
+      d2[1][1] = a[1][1];
+    else
+      return 0;
+
     For1(i, 1, n) {
       For1(j, 1, m) {
+        if (i == 1 && j == 1)
+          continue;
         if (a[i][j] > 0) {
-          d1[i][j] = a[i][j] * max(d1[i][j - 1], d1[i - 1][j]);
-          d2[i][j] = a[i][j] * min(d2[i][j - 1], d2[i - 1][j]);
+          if (d1[i][j - 1])
+            ckmax(d1[i][j], a[i][j] * d1[i][j - 1]);
+          if (d1[i - 1][j])
+            ckmax(d1[i][j], a[i][j] * d1[i - 1][j]);
+
+          if (d2[i][j - 1])
+            ckmin(d2[i][j], a[i][j] * d2[i][j - 1]);
+          if (d2[i - 1][j])
+            ckmin(d2[i][j], a[i][j] * d2[i - 1][j]);
         } else if (a[i][j] < 0) {
-          d1[i][j] = a[i][j] * min(d2[i][j - 1], d2[i - 1][j]);
-          d2[i][j] = a[i][j] * max(d1[i][j - 1], d1[i - 1][j]);
-        } else {
-          d1[i][j] = d2[i][j] = 0;
+          if (d2[i][j - 1])
+            ckmax(d1[i][j], a[i][j] * d2[i][j - 1]);
+          if (d2[i - 1][j])
+            ckmax(d1[i][j], a[i][j] * d2[i - 1][j]);
+
+          if (d1[i][j - 1])
+            ckmin(d2[i][j], a[i][j] * d1[i][j - 1]);
+          if (d1[i - 1][j])
+            ckmin(d2[i][j], a[i][j] * d1[i - 1][j]);
         }
       }
     }
-    return d1[n][m] < 0 ? -1 : d1[n][m];
+    if (d1[n][m] <= 0) {
+      if (ok)
+        return 0;
+      return -1;
+    }
+    return d1[n][m] % MOD;
   }
 };
 
