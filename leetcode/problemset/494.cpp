@@ -240,15 +240,18 @@ void PrintList(LNP head) {
 class Solution {
 public:
   int findTargetSumWays(vector<int> &b, int t) {
-    int n{SZ(b)};
+    int n{SZ(b)}, sum{};
     VI a(n + 10);
     map<PII, int> d;
 
-    For(i, 0, n) a[i + 1] = b[i];
+    For(i, 0, n) {
+      a[i + 1] = b[i];
+      sum += b[i];
+    }
 
     d[{0, 0}] = 1;
     For1(i, 1, n) {
-      For1(j, -1000, t + 1000) {
+      For1(j, -sum, sum) {
         d[{i, j}] += d[{i - 1, j + a[i]}] + d[{i - 1, j - a[i]}];
       }
     }
