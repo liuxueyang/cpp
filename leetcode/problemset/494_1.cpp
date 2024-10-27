@@ -1,4 +1,4 @@
-// Date: Sun Oct 27 10:42:24 2024
+// Date: Sun Oct 27 11:23:46 2024
 
 #include <cassert>
 #include <climits>
@@ -239,36 +239,27 @@ void PrintList(LNP head) {
 
 class Solution {
 public:
-  int lengthAfterTransformations(string s, int t) {
-    VI a(26);
+  int findTargetSumWays(vector<int> &b, int t) {
+    int s{}, n{SZ(b)}, m{};
+    VI a(n + 10);
 
-    for (auto c : s) {
-      a[c - 'a']++;
+    For(i, 0, n) {
+      a[i + 1] = b[i];
+      s += b[i];
     }
 
-    while (t--) {
-      int a0{}, a1{};
-      if (a[25]) {
-        a0 = a1 = a[25];
-        a[25] = 0;
-      }
+    if (s + t < 0 || s - t < 0 || ((s + t) & 1))
+      return 0;
 
-      Rof(i, 0, 25) {
-        if (a[i]) {
-          a[i + 1] = (a[i] + a[i + 1]) % MOD;
-          a[i] = 0;
-        }
-      }
+    m = (t < 0 ? (s + t) / 2 : (s - t) / 2);
 
-      if (a0) {
-        a[0] = (a[0] + a0) % MOD;
-        a[1] = (a[1] + a1) % MOD;
-      }
+    VI d(m + 10);
+    d[0] = 1;
+    For1(i, 1, n) {
+      Rof1(j, a[i], m) { d[j] += d[j - a[i]]; }
     }
 
-    int ans{};
-    For(i, 0, 26) { ans = (ans + a[i]) % MOD; }
-    return ans;
+    return d[m];
   }
 };
 
@@ -281,12 +272,8 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
-  string s = "cu";
-  auto res = a.lengthAfterTransformations(s, 5);
-  dbg(res);
-
-  s = "abcyy";
-  res = a.lengthAfterTransformations(s, 2);
+  VI ve{1, 1, 1, 1, 1};
+  auto res = a.findTargetSumWays(ve, 3);
   dbg(res);
 
   return 0;
