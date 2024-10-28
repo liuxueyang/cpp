@@ -1,14 +1,13 @@
 // Date: Mon Oct 28 12:37:43 2024
 
+#include <algorithm>
+#include <array>
 #include <cassert>
 #include <climits>
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-
-#include <algorithm>
-#include <array>
 #include <functional>
 #include <iomanip>
 #include <iostream>
@@ -29,8 +28,10 @@ typedef unsigned long long ull;
 typedef vector<int> VI;
 typedef pair<int, int> PII;
 typedef pair<ll, ll> PLL;
-template <class T> using pq = priority_queue<T>;
-template <class T> using pqg = priority_queue<T, vector<T>, greater<T>>;
+template <class T>
+using pq = priority_queue<T>;
+template <class T>
+using pqg = priority_queue<T, vector<T>, greater<T>>;
 
 const int INF = 0x3f3f3f3f, MOD = 1e9 + 7, MOD1 = 998'244'353;
 const ll INFL = 0x3f3f3f3f'3f3f3f3f;
@@ -58,21 +59,27 @@ const ull Pr = 131;
 #define SZ(a) int((a).size())
 #define NL cout << '\n';
 
-template <class T> bool ckmin(T &a, const T &b) { return b < a ? a = b, 1 : 0; }
-template <class T> bool ckmax(T &a, const T &b) { return a < b ? a = b, 1 : 0; }
+template <class T>
+bool ckmin(T &a, const T &b) {
+  return b < a ? a = b, 1 : 0;
+}
+template <class T>
+bool ckmax(T &a, const T &b) {
+  return a < b ? a = b, 1 : 0;
+}
 
-template <typename t> istream &operator>>(istream &in, vector<t> &vec) {
-  for (t &x : vec)
-    in >> x;
+template <typename t>
+istream &operator>>(istream &in, vector<t> &vec) {
+  for (t &x : vec) in >> x;
   return in;
 }
 
-template <typename t> ostream &operator<<(ostream &out, vector<t> &vec) {
+template <typename t>
+ostream &operator<<(ostream &out, vector<t> &vec) {
   int n = SZ(vec);
   For(i, 0, n) {
     out << vec[i];
-    if (i < n - 1)
-      out << ' ';
+    if (i < n - 1) out << ' ';
   }
   return out;
 }
@@ -112,19 +119,17 @@ struct TreeNode {
 };
 
 void PrePrintLCTree(TNP root) {
-  if (!root)
-    return;
+  if (!root) return;
   dbgi(root->val);
   PrePrintLCTree(root->left);
   PrePrintLCTree(root->right);
 }
 
 class LCCodec {
-public:
+ public:
   // Encodes a tree to a single string.
   string serialize(TreeNode *root) {
-    if (!root)
-      return "";
+    if (!root) return "";
 
     vector<TNP> a;
     a.pb(root);
@@ -172,8 +177,7 @@ public:
     int n = SZ(data);
     vector<string> b;
 
-    if (!n)
-      return nullptr;
+    if (!n) return nullptr;
 
     string t;
     for (auto x : data) {
@@ -196,15 +200,11 @@ public:
     int i = 0, j = 1;
 
     while (i < m) {
-      while (i < m && !a[i])
-        ++i;
-      if (i >= n)
-        break;
+      while (i < m && !a[i]) ++i;
+      if (i >= n) break;
 
-      if (j < m)
-        a[i]->left = a[j++];
-      if (j < m)
-        a[i]->right = a[j++];
+      if (j < m) a[i]->left = a[j++];
+      if (j < m) a[i]->right = a[j++];
       ++i;
     }
 
@@ -238,7 +238,7 @@ void PrintList(LNP head) {
 // End of LeetCode
 
 class Solution {
-public:
+ public:
   map<string, string> fa;
   map<string, double> ti;
 
@@ -247,8 +247,7 @@ public:
       ti[x] = 1;
       return fa[x] = x;
     }
-    if (fa[x] == x)
-      return x;
+    if (fa[x] == x) return x;
 
     string root = Find(fa[x]);
     ti[x] *= ti[fa[x]];
@@ -257,8 +256,7 @@ public:
 
   void Union(string s, string t, double k) {
     string rs = Find(s), rt = Find(t);
-    if (rs == rt)
-      return;
+    if (rs == rt) return;
     fa[rt] = rs;
     ti[rt] = ti[s] / ti[t] / k;
   }
@@ -268,6 +266,7 @@ public:
                               vector<vector<string>> &queries) {
     fa = {}, ti = {};
     int n{SZ(equations)};
+
     For(i, 0, n) {
       auto &v = equations[i];
       Union(v[0], v[1], values[i]);
