@@ -262,18 +262,15 @@ class Solution {
   }
 
   void dfs(node *p, string s) {
-    if (!p) return;
-
-    if (p->cnt) {
-      if (s.size() > ans_len) {
-        ans_len = s.size();
-        ans = s;
-      } else if (s.size() == ans_len) {
-        if (s < ans) ans = s;
-      }
+    if (s.size() > ans_len) {
+      ans_len = s.size();
+      ans = s;
+    } else if (s.size() == ans_len) {
+      if (s < ans) ans = s;
     }
+
     for (int i = 0; i < 26; ++i) {
-      if (p->child[i] && (p->cnt || p == root)) {
+      if (p->child[i] && p->child[i]->cnt) {
         dfs(p->child[i], s + char('a' + i));
       }
     }
