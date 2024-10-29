@@ -275,8 +275,6 @@ class Solution {
   }
 
   bool isValidBST(TreeNode *root) {
-    if (!root) return true;
-
     ok = false;
     dfs(root);
 
