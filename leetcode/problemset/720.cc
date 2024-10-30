@@ -262,10 +262,10 @@ class Solution {
   }
 
   void dfs(node *p, string s) {
-    if (s.size() > ans_len) {
+    if (int(s.size()) > ans_len) {
       ans_len = s.size();
       ans = s;
-    } else if (s.size() == ans_len) {
+    } else if (int(s.size()) == ans_len) {
       if (s < ans) ans = s;
     }
 
