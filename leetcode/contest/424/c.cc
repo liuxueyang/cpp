@@ -245,8 +245,6 @@ class Solution {
     int n{SZ(a1)};
     VI a(n + 10);
 
-    if (a1 == VI(n)) return 0;
-
     For(i, 0, n) a[i + 1] = a1[i];
 
     auto check = [&](int k) {
@@ -263,7 +261,7 @@ class Solution {
       return true;
     };
 
-    int l = 1, r = SZ(que), mid;
+    int l = 0, r = SZ(que), mid;
     while (l < r) {
       mid = (l + r) / 2;
       if (check(mid))
