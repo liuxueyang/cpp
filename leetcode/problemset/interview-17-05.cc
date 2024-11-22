@@ -1,4 +1,4 @@
-// Date: Fri Nov 22 12:03:42 2024
+// Date: Fri Nov 22 12:51:12 2024
 
 #include <algorithm>
 #include <array>
@@ -241,37 +241,35 @@ void PrintList(LNP head) {
 // End of LeetCode
 class Solution {
  public:
-  int findBestValue(vector<int> &arr, int target) {
-    auto check = [&](int x) {
-      int sum{};
-      for (auto i : arr) {
-        if (i > x)
-          sum += x;
-        else
-          sum += i;
+  vector<string> findLongestSubarray(vector<string> &array) {
+    int n{SZ(array)};
+    VI a(n + 10);
+    map<int, int> m;
+    int len{-1}, idx{-1}, cur{};
+    VS ans;
+
+    For(i, 0, n) { a[i + 1] = (isdigit(array[i][0]) ? 1 : -1); }
+
+    m[0] = 0;
+
+    For1(i, 1, n) {
+      cur += a[i];
+      if (has(m, cur)) {
+        int tmp = i - m[cur];
+        if (tmp > len) {
+          len = tmp;
+          idx = i - len + 1;
+        }
+      } else {
+        m[cur] = i;
       }
-      return sum;
-    };
-
-    int sum{};
-    for (auto i : arr) sum += i;
-    if (sum <= target) return *max_element(all(arr));
-
-    int l = 0, r = target, mid;
-    while (l < r) {
-      mid = (l + r) / 2;
-      int tmp = check(mid);
-      if (tmp > target)
-        r = mid;
-      else if (tmp == target)
-        return mid;
-      else
-        l = mid + 1;
     }
 
-    int g1 = check(r), g2 = check(r - 1);
-    if (abs(g1 - target) < abs(g2 - target)) return r;
-    return r - 1;
+    if (idx != -1) {
+      idx--;
+      For(i, idx, idx + len) ans.pb(array[i]);
+    }
+    return ans;
   }
 };
 #ifdef _DEBUG
@@ -283,15 +281,11 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
-  VI ve;
-  int res;
+  VS ve, res;
 
-  ve = {4, 9, 3};
-  res = a.findBestValue(ve, 10);
-  dbg(res);
-
-  ve = {2, 3, 5};
-  res = a.findBestValue(ve, 11);
+  ve = {"A", "1", "B", "C", "D", "2", "3", "4", "E", "5",
+        "F", "G", "6", "7", "H", "I", "J", "K", "L", "M"};
+  res = a.findLongestSubarray(ve);
   dbg(res);
 
   return 0;
