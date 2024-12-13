@@ -242,44 +242,46 @@ void PrintList(LNP head) {
 
 class Solution {
 public:
-  static const int N = 1100;
-  int n, dis[N];
-  bool st[N];
+  int n;
+  vector<vector<PII>> g;
+  VI dis;
+  VB st;
+  
+  void dijkstra(int s) {
+    dis[s] = 0;
+    pqg<PII> q;
+    q.push({0, s});
+    
+    while (nemp(q)) {
+      auto [base, ver] = q.top();
+      q.pop();
 
-  void Init() {
-    for (int i = 0; i < n; ++i) {
-      dis[i] = INF;
-      st[i] = false;
+      if (st[ver]) continue;
+      st[ver] = true;
+      
+      for (auto &[v, w] : g[ver]) {
+        if (ckmin(dis[v], base + w)) {
+          q.push({dis[v], v});
+        }
+      }
     }
   }
-
-  int minCostConnectPoints(vector<vector<int>>& a) {
-    n = SZ(a);
-    Init();
-    int res {};
+  
+  int networkDelayTime(vector<vector<int>>& times, int n1, int k) {
+    n = n1;
+    g = vector<vector<PII>>(n + 10), dis = VI(n + 10, INF), st = VB(n + 10);
     
-    auto get = [&](int i, int j) {
-      auto v1 = a[i], v2 = a[j];
-      int x1 = v1[0], y1 = v1[1], x2 = v2[0], y2 = v2[1];
-      return abs(x1 - x2) + abs(y1 - y2);
-    };
-    
-    for (int i = 0; i < n; ++i) {
-      int t = -1;
-      for (int j = 0; j < n; ++j) {
-        if (!st[j] && (t == -1 || dis[j] < dis[t])) t = j;
-      }
-
-      if (i) {
-        if (dis[t] == INF) return INF;
-        res += dis[t];
-      }
-      st[t] = true;
-
-      for (int j = 0; j < n; ++j) {
-        ckmin(dis[j], get(j, t));
-      }
+    for (auto &v : times) {
+      int u = v[0], u1 = v[1], w = v[2];
+      g[u].pb({u1, w});
     }
+    dijkstra(k);
+    
+    int res {-1};
+    For1(i, 1, n) {
+      ckmax(res, dis[i]);
+    } 
+    if (res == INF) return -1;
     return res;
   }
 };
@@ -296,8 +298,8 @@ int main(void) {
   VVI ve;
   int res;
   
-  ve = {{0,0},{2,2},{3,10},{5,2},{7,0}};
-  res = a.minCostConnectPoints(ve);
+  ve = {{2,1,1},{2,3,1},{3,4,1}};
+  res = a.networkDelayTime(ve, 4, 2);
   dbg(res);
 
   return 0;
