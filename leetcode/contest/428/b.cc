@@ -44,7 +44,7 @@ const int dir[8][2] = {
 };
 mt19937_64 _m_gen64;
 
-const ull Pr = 131;
+const ull Pr = 131, Pr1 = 13331;
 
 #define For(i, a, b) for (int i = int(a); i < int(b); ++i)
 #define Rof(i, a, b) for (int i = int(b) - 1; i >= int(a); --i)

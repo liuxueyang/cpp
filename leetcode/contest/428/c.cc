@@ -44,7 +44,7 @@ const int dir[8][2] = {
 };
 mt19937_64 _m_gen64;
 
-const ull Pr = 131;
+const ull Pr = 131, Pr1 = 13331;
 
 #define For(i, a, b) for (int i = int(a); i < int(b); ++i)
 #define Rof(i, a, b) for (int i = int(b) - 1; i >= int(a); --i)
@@ -243,7 +243,38 @@ void PrintList(LNP head) {
 class Solution {
 public:
   int beautifulSplits(vector<int>& a1) {
+    int n {SZ(a1)}, res {};
+    vector<ull> a(n + 10), h(n + 10), p(n + 10);
     
+    For(i, 0, n) a[i + 1] = a1[i];
+    
+    h[0] = p[0] = 1;
+    For1(i, 1, n) {
+      h[i] = h[i - 1] * Pr1 + a[i];
+      p[i] = p[i - 1] * Pr1;
+    }
+    
+    auto hash = [&](int l, int r) -> ull {
+      return h[r] - p[r - l + 1] * h[l - 1];
+    };
+    
+    for (int i = 2; i <= n; ++i) {
+      for (int j = i + 1; j <= n; ++j) {
+        bool ok {};
+        
+        if (j - i >= i - 1) {
+          if (hash(1, i - 1) == hash(i, 2 * i - 2)) {
+            res++;
+            ok = true;
+          } 
+        }
+        if (!ok && n - j + 1 >= j - i) {
+          if (hash(i, j - 1) == hash(j, 2 * j - i - 1)) res++;
+        }
+      }
+    }
+    
+    return res;
   }
 };
 
@@ -264,6 +295,10 @@ int main(void) {
   dbg(res);
   
   ve = {1,2,3,4};
+  res = a.beautifulSplits(ve);
+  dbg(res);
+  
+  ve = {3,3,3,1,3};
   res = a.beautifulSplits(ve);
   dbg(res);
 
