@@ -150,7 +150,19 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
-void solve() {}
+void solve() {
+  string s;
+  cin >> s;
+
+  for (auto &c : s) {
+    if (c == 'p')
+      c = 'q';
+    else if (c == 'q')
+      c = 'p';
+  }
+  reverse(all(s));
+  cout << s << '\n';
+}
 
 int main(void) {
 #ifdef _DEBUG

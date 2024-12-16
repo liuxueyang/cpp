@@ -150,7 +150,11 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
-void solve() {}
+void solve() {
+  int n;
+  cin >> n;
+  cout << n - 1 << '\n';
+}
 
 int main(void) {
 #ifdef _DEBUG

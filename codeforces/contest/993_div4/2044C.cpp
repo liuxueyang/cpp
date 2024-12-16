@@ -150,7 +150,16 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
-void solve() {}
+void solve() {
+  int n, a, b, c, res{};
+  cin >> n >> a >> b >> c;
+
+  int r1 = n, tmp1 = min(n, a), r2 = n, tmp2 = min(n, b);
+  res = tmp1 + tmp2;
+  r1 -= tmp1, r2 -= tmp2;
+  res += min(r1 + r2, c);
+  cout << res << '\n';
+}
 
 int main(void) {
 #ifdef _DEBUG

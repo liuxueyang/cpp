@@ -150,7 +150,32 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
-void solve() {}
+void solve() {
+  int n;
+  cin >> n;
+
+  VI a(n), b;
+  set<int> vis;
+
+  For(i, 0, n) {
+    cin >> a[i];
+    if (!has(vis, a[i])) {
+      vis.insert(a[i]);
+      b.pb(a[i]);
+    }
+  }
+
+  int idx = 1;
+  while (SZ(b) < n) {
+    while (has(vis, idx)) idx++;
+    b.pb(idx++);
+  }
+
+  for (auto x : b) {
+    cout << x << ' ';
+  }
+  cout << '\n';
+}
 
 int main(void) {
 #ifdef _DEBUG
