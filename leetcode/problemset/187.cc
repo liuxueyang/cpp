@@ -247,7 +247,7 @@ public:
     string s1 = " " + s;
     VS res;
     
-    vector<ull> p(n + 10, 1), h(n + 10, 1);
+    vector<ull> p(n + 10, 1), h(n + 10);
     
     For1(i, 1, n) {
       p[i] = p[i - 1] * Pr1;

@@ -242,32 +242,52 @@ void PrintList(LNP head) {
 
 class Solution {
 public:
-  int distinctEchoSubstrings(string text) {
-    int n {SZ(text)};
-    string s = " " + text;
+  int minimumCost(string target, vector<string>& words, vector<int>& costs) {
+    int n {SZ(target)};
+    string s = " " + target;
     
     vector<ull> p(n + 10, 1), h(n + 10);
+    VI d(n + 10, INF);
     
     For1(i, 1, n) {
       p[i] = p[i - 1] * Pr1;
       h[i] = h[i - 1] * Pr1 + s[i];
     }
     
+    map<ull, int> co;
+    int m {SZ(words)};
+    set<int> lens;
+    
+    For(i, 0, m) {
+      string s1 = " " + words[i];
+      int len {SZ(words[i])};
+      lens.insert(len);
+      ull tmp {0};
+
+      For1(i, 1, len) {
+        tmp = tmp * Pr1 + s1[i];
+      }
+
+      if (!has(co, tmp)) co[tmp] = costs[i];
+      else ckmin(co[tmp], costs[i]);
+    }
+    
     auto get = [&](int l, int r) -> ull {
       return h[r] - h[l - 1] * p[r - l + 1];
     };
     
-    set<ull> vis;
-    For1(i, 2, n) {
-      for (int k = 1; 2 * k <= i; k++) {
-        ull t1 = get(i - k + 1, i);
-        if (t1 == get(i - 2 * k + 1, i - k)) {
-          vis.insert(t1);
+    d[0] = 0;
+    For1(i, 1, n) {
+      for (auto len : lens) {
+        if (len > i) break;
+        ull tmp = get(i - len + 1, i);
+        if (has(co, tmp)) {
+          ckmin(d[i], d[i - len] + co[tmp]);
         }
       }
     }
     
-    return SZ(vis);
+    return d[n] == INF ? -1 : d[n];
   }
 };
 
@@ -281,10 +301,14 @@ int main(void) {
 
   Solution a;
   string s;
+  VS words;
+  VI costs;
   int res;
   
-  s = "abcabcabc";
-  res = a.distinctEchoSubstrings(s);
+  s = "abcdef";
+  words = {"abdef","abc","d","def","ef"};
+  costs = {100,1,1,10,5};
+  res = a.minimumCost(s, words, costs);
   dbg(res);
 
   return 0;
