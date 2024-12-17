@@ -2,8 +2,9 @@
 *.exe
 *~
 input.txt
-.cph/
+# .cph/
 *.bin
 *.dSYM/
 *__tests
+output/
 
