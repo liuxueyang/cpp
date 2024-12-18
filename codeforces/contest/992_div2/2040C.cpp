@@ -150,11 +150,44 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
-void solve() {}
+void solve() {
+  ll n, k;
+  cin >> n >> k;
+
+  if (n == 1) {
+    if (k == 1)
+      cout << "1\n";
+    else
+      cout << "-1\n";
+  } else if (n >= 41 || (1LL << (n - 1)) >= k) {
+    VI a(n + 10);
+    int m = n - 2, i = 1, j = n;
+
+    For1(s, 1, n) {
+      if (m >= 40) {
+        a[i++] = s;
+        m--;
+      } else {
+        ll tmp = 1LL << m;
+
+        if (k <= tmp)
+          a[i++] = s;
+        else {
+          k -= tmp;
+          a[j--] = s;
+        }
+        if (m > 0) m--;
+      }
+    }
+    Outputr(a.begin() + 1, a.begin() + 1 + n);
+  } else {
+    cout << "-1\n";
+  }
+}
 
 int main(void) {
 #ifdef _DEBUG
-  // freopen("../../input.txt", "r", stdin);
+  freopen("../../input.txt", "r", stdin);
 #endif
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
