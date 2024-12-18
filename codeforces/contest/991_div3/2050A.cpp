@@ -150,11 +150,23 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
-void solve() {}
+void solve() {
+  int n, m, res {}, cur {};
+  cin >> n >> m;
+
+  VS a(n + 10);
+  
+  For1(i, 1, n) {
+    cin >> a[i];
+    cur += SZ(a[i]);
+    if (cur <= m) res++;
+  }
+  cout << res << '\n';
+}
 
 int main(void) {
 #ifdef _DEBUG
-  // freopen("../input.txt", "r", stdin);
+  // freopen("../../input.txt", "r", stdin);
 #endif
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);

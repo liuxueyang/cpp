@@ -150,11 +150,43 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
-void solve() {}
+void solve() {
+  int n;
+  cin >> n;
+
+  VI a(n + 10);
+  ll sum{};
+
+  For1(i, 1, n) {
+    cin >> a[i];
+    sum += a[i];
+  }
+
+  if (sum % n) {
+    cout << "NO\n";
+    return;
+  }
+
+  ll av = sum / n;
+  For1(i, 2, n - 1) {
+    int delt = a[i - 1] - av;
+    a[i - 1] = av;
+    a[i + 1] += delt;
+  }
+
+  bool ok{true};
+  For1(i, 1, n) {
+    if (a[i] != av) {
+      ok = false;
+      break;
+    }
+  }
+  cout << (ok ? "YES" : "NO") << '\n';
+}
 
 int main(void) {
 #ifdef _DEBUG
-  // freopen("../input.txt", "r", stdin);
+  freopen("../input.txt", "r", stdin);
 #endif
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
