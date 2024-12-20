@@ -159,6 +159,25 @@ void solve() {
   For1(i, 1, n) cin >> a[1][i];
   For1(i, 1, n) cin >> a[2][i];
 
+  int sum{};
+  For1(i, 1, n) sum += max(a[1][i], a[2][i]);
+
+  int cur{-INF};
+  For1(i, 1, n) ckmax(cur, min(a[1][i], a[2][i]));
+
+  ans = sum + cur;
+  cout << ans << '\n';
+}
+
+void solve2() {
+  int n, ans{-INF};
+  cin >> n;
+
+  VVI a(3, VI(n + 10));
+
+  For1(i, 1, n) cin >> a[1][i];
+  For1(i, 1, n) cin >> a[2][i];
+
   For1(i, 1, n) {
     int tmp = a[1][i] + a[2][i];
     For1(j, 1, n) {
