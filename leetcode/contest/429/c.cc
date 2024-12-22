@@ -242,56 +242,53 @@ void PrintList(LNP head) {
 
 class Solution {
  public:
-  int maxDistinctElements(vector<int> &a1, int k) {
-    int n{SZ(a1)};
-    sort(all(a1));
+  int minLength(string s, int k) {
+    VI a;
+    int cur{}, n{SZ(s)};
+    char ch = ' ';
+    string s1(n, ' '), s2(n, ' ');
 
-    VI a(n + 10), d(n + 10);
-
-    For(i, 0, n) a[i + 1] = a1[i];
-    d[1] = a[1] - k;
-
-    set<int> s;
-    s.insert(d[1]);
-
-    For1(i, 2, n) {
-      int l = a[i] - k, r = a[i] + k, cur = d[i - 1] + 1;
-
-      if (cur >= l && cur <= r) {
-        d[i] = cur;
-        s.insert(cur);
-      } else {
-        s.insert(l);
-        d[i] = max(l, d[i - 1]);
-      }
+    For(i, 0, n) {
+      s1[i] = (i & 1) ? '0' : '1';
+      s2[i] = (i & 1) ? '1' : '0';
     }
 
-    return SZ(s);
-  }
-
-  int maxDistinctElements1(vector<int> &a1, int k) {
-    int n{SZ(a1)};
-    sort(all(a1));
-    VI a(n + 10), d(n + 10), b(n + 10);
-
-    For(i, 0, n) a[i + 1] = a1[i];
-    d[1] = a[1] - k;
-    b[1] = d[1];
-
-    For1(i, 2, n) {
-      int l = a[i] - k, r = a[i] + k, cur = d[i - 1] + 1;
-
-      if (cur >= l && cur <= r) {
-        d[i] = b[i] = cur;
-      } else {
-        b[i] = l;
-        d[i] = max(b[i], d[i - 1]);
+    for (auto c : s) {
+      if (c == ch)
+        cur++;
+      else {
+        if (cur) a.pb(cur);
+        cur = 1;
+        ch = c;
       }
     }
+    if (cur) a.pb(cur);
 
-    set<int> s;
-    For1(i, 1, n) s.insert(b[i]);
-    return SZ(s);
+    auto check = [&](int m) -> bool {
+      if (m == 1) {
+        int cnt1{}, cnt2{};
+        For(i, 0, n) {
+          if (s[i] != s1[i]) cnt1++;
+          if (s[i] != s2[i]) cnt2++;
+        }
+        return (cnt1 <= k || cnt2 <= k);
+      } else {
+        int cnt{};
+        for (auto x : a) cnt += x / (m + 1);
+        return cnt <= k;
+      }
+    };
+
+    int l = 1, r = n, mid;
+    while (l < r) {
+      mid = (l + r) / 2;
+      if (check(mid))
+        r = mid;
+      else
+        l = mid + 1;
+    }
+
+    return r;
   }
 };
 
@@ -304,19 +301,27 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
-  VI ve;
+  string s;
   int res;
 
-  ve = {1, 2, 2, 3, 3, 4};
-  res = a.maxDistinctElements(ve, 2);
+  s = "000001";
+  res = a.minLength(s, 1);
   dbg(res);
 
-  ve = {6, 7};
-  res = a.maxDistinctElements(ve, 9);
+  s = "0000";
+  res = a.minLength(s, 2);
   dbg(res);
 
-  ve = {9, 10, 9, 9, 9};
-  res = a.maxDistinctElements(ve, 1);
+  s = "0101";
+  res = a.minLength(s, 0);
+  dbg(res);
+
+  s = "10";
+  res = a.minLength(s, 0);
+  dbg(res);
+
+  s = "000";
+  res = a.minLength(s, 0);
   dbg(res);
 
   return 0;

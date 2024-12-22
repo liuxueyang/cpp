@@ -242,6 +242,21 @@ void PrintList(LNP head) {
 class Solution {
  public:
   int minimumOperations(vector<int> &a) {
+    int n{SZ(a)}, cnt{};
+    set<int> vis;
+
+    Rof(i, 0, n) {
+      if (has(vis, a[i])) {
+        cnt = i + 1;
+        break;
+      }
+      vis.insert(a[i]);
+    }
+
+    return (cnt + 2) / 3;
+  }
+
+  int minimumOperations1(vector<int> &a) {
     int res{}, n{SZ(a)};
     map<int, int> m;
 
