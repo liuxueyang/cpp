@@ -161,6 +161,37 @@ void solve() {
 
   VVI d(n + 10, VI(m + 10, INF));
   d[0][0] = 0;
+  For1(i, 1, n) { d[i][0] = d[i - 1][0] + (c[i] != a[i]); }
+  For1(i, 1, m) d[0][i] = d[0][i - 1] + (c[i] != b[i]);
+
+  For1(i, 1, n) {
+    For1(j, 1, m) {
+      int k = i + j;
+      if (a[i] == c[k])
+        ckmin(d[i][j], d[i - 1][j]);
+      else
+        ckmin(d[i][j], d[i - 1][j] + 1);
+
+      if (b[j] == c[k])
+        ckmin(d[i][j], d[i][j - 1]);
+      else
+        ckmin(d[i][j], d[i][j - 1] + 1);
+    }
+  }
+  cout << d[n][m] << '\n';
+}
+
+void solve1() {
+  string a, b, c;
+  cin >> a >> b >> c;
+
+  int n{SZ(a)}, m{SZ(b)};
+  a = " " + a;
+  b = " " + b;
+  c = " " + c;
+
+  VVI d(n + 10, VI(m + 10, INF));
+  d[0][0] = 0;
 
   For1(i, 0, n) {
     For1(j, 0, m) {
@@ -184,7 +215,7 @@ void solve() {
 
 int main(void) {
 #ifdef _DEBUG
-  // freopen("../input.txt", "r", stdin);
+  freopen("../input.txt", "r", stdin);
 #endif
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);

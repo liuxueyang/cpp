@@ -156,6 +156,26 @@ void solve() {
 
   int n{SZ(s)};
 
+  For(i, 1, n) {
+    int j{min(s[i] - '0', 9)}, i1 = i;
+    while (j-- && i1) {
+      if (s[i1] - 1 > s[i1 - 1]) {
+        swap(s[i1 - 1], s[i1]);
+        i1--;
+        s[i1]--;
+      } else
+        break;
+    }
+  }
+  cout << s << '\n';
+}
+
+void solve1() {
+  string s;
+  cin >> s;
+
+  int n{SZ(s)};
+
   For(i, 0, n) {
     int cur = s[i] - '0';
     int j1{};
