@@ -170,7 +170,12 @@ void solve() {
     }
 
     string ans = string(m, '0');
-    ans[cur - 1] = '1';
+    For1(i, 1, m) {
+      if (a[i] == cur) {
+        ans[i - 1] = '1';
+        break;
+      }
+    }
     cout << ans << '\n';
   } else {
     cout << string(m, '0') << '\n';
