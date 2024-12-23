@@ -151,47 +151,47 @@ ostream &operator<<(ostream &os, const lll &v) {
 #endif
 
 void solve() {
-  ll n, x, y;
-  cin >> n >> x >> y;
+  int n, k;
+  cin >> n >> k;
 
-  VI a(n + 10);
-  ll sum{};
+  VI a(n + 10), b(n + 10);
+  For1(i, 1, n) cin >> a[i];
+  For1(i, 1, n) cin >> b[i];
 
+  VI c;
   For1(i, 1, n) {
-    cin >> a[i];
-    sum = sum + a[i];
+    c.pb(a[i]);
+    c.pb(b[i]);
   }
+  sort(all(c));
+  c.resize(distance(c.begin(), unique(all(c))));
 
-  sort(a.begin() + 1, a.begin() + 1 + n);
+  auto geti = [&](int x) -> int {
+    return lower_bound(all(c), x) - c.begin() + 1;
+  };
+
+  int m{SZ(c)};
+  VI g(m + 10), g1(m + 10);
+  For1(i, 1, n) {
+    int x = a[i], y = b[i], x1 = geti(x), y1 = geti(y);
+    g[x1 + 1] += 1;
+    g[y1 + 1] -= 1;
+  }
+  For1(i, 1, m) g1[i] = g[i] + g1[i - 1];
+
+  VI b1(m + 10), p1(m + 10);
+  For1(i, 1, n) {
+    int x = b[i], x1 = geti(x);
+    b1[x1]++;
+  }
+  Rof1(i, 1, m) { p1[i] = p1[i + 1] + b1[i]; }
+
   ll ans{};
 
-  For1(i, 1, n) {
-    int ai = a[i];
-    ll P = sum - ai;
-
-    int l = i + 1, r = n, mid;
-    while (l < r) {
-      mid = (l + r) / 2;
-      if (a[mid] >= P - y)
-        r = mid;
-      else
-        l = mid + 1;
-    }
-
-    if (r >= 1 && r <= n && a[r] >= P - y) {
-      int res_l = r;
-      l = i + 1, r = n;
-      while (l < r) {
-        mid = (l + r + 1) / 2;
-        if (a[mid] <= P - x)
-          l = mid;
-        else
-          r = mid - 1;
-      }
-      if (l >= 1 && l <= n && a[l] <= P - x) {
-        int res_r = l;
-        ans = ans + res_r - res_l + 1;
-      }
+  For1(i, 1, m) {
+    ll price = c[i - 1], cnt = p1[i], neg = g1[i];
+    if (neg <= k) {
+      ckmax(ans, price * cnt);
     }
   }
 
