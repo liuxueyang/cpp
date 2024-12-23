@@ -166,6 +166,31 @@ void solve() {
   ll ans{};
 
   For1(i, 1, n) {
+    ll l = sum - a[i] - y, r = sum - a[i] - x;
+    int cnt = upper_bound(a.begin() + i + 1, a.begin() + n + 1, r) -
+              lower_bound(a.begin() + i + 1, a.begin() + n + 1, l);
+    ans += cnt;
+  }
+
+  cout << ans << '\n';
+}
+
+void solve2() {
+  ll n, x, y;
+  cin >> n >> x >> y;
+
+  VI a(n + 10);
+  ll sum{};
+
+  For1(i, 1, n) {
+    cin >> a[i];
+    sum = sum + a[i];
+  }
+
+  sort(a.begin() + 1, a.begin() + 1 + n);
+  ll ans{};
+
+  For1(i, 1, n) {
     int ai = a[i];
     ll P = sum - ai;
 
