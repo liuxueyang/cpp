@@ -151,21 +151,91 @@ ostream &operator<<(ostream &os, const lll &v) {
 #endif
 
 void solve() {
-  int n, d;
-  cin >> n >> d;
+  int n;
+  cin >> n;
 
-  VI ans{1};
-  if (n >= 3 || (d % 3) == 0) ans.pb(3);
-  if (d == 5) ans.pb(5);
-  if (d == 7 || (n >= 3)) ans.pb(7);
-  if (d == 9 || n >= 6 || (d % 3 == 0 && n >= 3)) ans.pb(9);
-  sort(all(ans));
+  VI a(n + 10);
+  int pos{-1};
+  VI ans;
+
+  For1(i, 1, n) {
+    cin >> a[i];
+    if (a[i] != 1 && a[i] != -1) pos = i;
+  }
+
+  auto get = [&](int l, int r) -> PII {
+    VI p(n + 10);
+    int mi{}, mx{}, ansl{}, ansr{};
+
+    For1(i, l, r) { p[i] = p[i - 1] + a[i]; }
+    For1(i, l, r) {
+      ckmin(ansl, p[i] - mx);
+      ckmax(ansr, p[i] - mi);
+
+      ckmin(mi, p[i]);
+      ckmax(mx, p[i]);
+    }
+    return {ansl, ansr};
+  };
+
+  if (pos == -1) {
+    auto [l1, r1] = get(1, n);
+    For1(i, l1, r1) ans.pb(i);
+  } else {
+    VI p1(n + 10), p2(n + 10);
+    vector<PII> b(n + 10);
+
+    For1(i, 1, pos - 1) p1[i] = p1[i - 1] + a[i];
+    Rof1(i, pos + 1, n) p2[i] = p2[i + 1] + a[i];
+
+    b[0] = {0, 0};
+    int l = 0, r = 0;
+    For1(i, 1, pos - 1) {
+      b[i] = {min(p1[i] - r, 0), max(p1[i] - l, 0)};
+      ckmin(l, p1[i]);
+      ckmax(r, p1[i]);
+    }
+
+    l = r = 0;
+    b[n + 1] = {0, 0};
+    Rof1(i, pos + 1, n) {
+      b[i] = {min(p2[i] - r, 0), max(p2[i] - l, 0)};
+      ckmin(l, p2[i]);
+      ckmax(r, p2[i]);
+    }
+
+    vector<PII> rngs;
+    rngs.pb(get(1, pos - 1));
+    rngs.pb(get(pos + 1, n));
+    rngs.pb(PII{a[pos] + b[pos - 1].f1 + b[pos + 1].f1,
+                a[pos] + b[pos - 1].f2 + b[pos + 1].f2});
+
+    sort(all(rngs));
+    PII cur = rngs[0];
+    vector<PII> res;
+
+    For(i, 1, 3) {
+      if (cur.f2 < rngs[i].f1) {
+        res.pb(cur);
+        cur = rngs[i];
+      } else {
+        ckmax(cur.f2, rngs[i].f2);
+      }
+    }
+    res.pb(cur);
+
+    for (auto [x, y] : res) {
+      For1(i, x, y) ans.pb(i);
+    }
+  }
+
+  cout << SZ(ans) << '\n';
   Outputr(all(ans));
 }
 
 int main(void) {
 #ifdef _DEBUG
-  // freopen("../input.txt", "r", stdin);
+  freopen("../input.txt", "r", stdin);
 #endif
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
