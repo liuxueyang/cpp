@@ -168,7 +168,6 @@ void solve() {
       }
     }
 
-    dbg(cur);
     if (cur) {
       res += (cur & 1) + (cur / 2);
     }

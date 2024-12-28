@@ -150,7 +150,7 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
-const int N = 200010;
+const int N = 200110;
 
 template <class T>
 struct BIT {
@@ -160,7 +160,6 @@ struct BIT {
   void resize(int _n) {
     n = _n;
     For1(i, 0, n) c[i] = 0;
-    // memset(c, 0, sizeof c);
   }
 
   int lowbit(int x) { return x & (-x); }

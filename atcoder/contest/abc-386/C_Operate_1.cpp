@@ -167,7 +167,6 @@ void solve() {
       else
         cout << "No\n";
     } else if (len1 + 1 == len2) {
-      int cnt{};
       bool ok{true};
 
       For(i, 0, len1) {
@@ -180,10 +179,8 @@ void solve() {
       cout << (ok ? "Yes\n" : "No\n");
     } else if (len1 == len2 + 1) {
       bool ok{true};
-      dbg(len1, len2);
 
       For(i, 0, len2) {
-        dbg(i);
         if (t[i] != s[i]) {
           ok = (s.substr(i + 1) == t.substr(i));
           break;
