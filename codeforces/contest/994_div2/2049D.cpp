@@ -152,11 +152,36 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
-void solve() {}
+void solve() {
+  int n, m;
+  ll w;
+  cin >> n >> m >> w;
+
+  VVI a(n + 10, VI(m + 10));
+  VVL d(n + 10, VL(m + 10, INFL));
+  vector<VVL> d1(n + 10, VVL(m + 10, VL(m + 10, INFL)));
+
+  For1(i, 1, n) For1(j, 1, m) cin >> a[i][j];
+
+  d[0][1] = 0;
+
+  For1(i, 1, n) {
+    For1(j, 1, m) {
+      For(k, 0, m) {
+        int j1 = ((j - 1 + k) % m) + 1;
+        ckmin(d1[i][j][k],
+              min(d[i - 1][j] + k * w + a[i][j1], d1[i][j - 1][k] + a[i][j1]));
+        ckmin(d[i][j], d1[i][j][k]);
+      }
+    }
+  }
+
+  cout << d[n][m] << '\n';
+}
 
 int main(void) {
 #ifdef _DEBUG
-  // freopen("../input.txt", "r", stdin);
+  freopen("../input.txt", "r", stdin);
 #endif
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
