@@ -193,7 +193,7 @@ struct node {
   }
 };
 
-void solve() {
+void solve1() {
   int n, m;
   while (cin >> n >> m) {
     int x, y;
@@ -239,6 +239,35 @@ void solve() {
 
     cout << (ok ? "Yes\n" : "No\n");
   }
+}
+
+void solve() {
+  int n, m;
+  cin >> n >> m;
+
+  vector<node> a;
+
+  while (m--) {
+    int x, y;
+    string ch;
+    cin >> x >> y >> ch;
+    a.pb(node{x, y, ch});
+  }
+  sort(all(a));
+
+  int curx{INF};
+  bool ok{true};
+  for (auto [x, y, ch] : a) {
+    if (ch == "W")
+      ckmin(curx, x);
+    else {
+      if (x >= curx) {
+        ok = false;
+        break;
+      }
+    }
+  }
+  cout << (ok ? "Yes" : "No") << '\n';
 }
 
 int main(void) {
