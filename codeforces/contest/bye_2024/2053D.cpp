@@ -150,31 +150,64 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
-ll n, k;
+using VL = vector<ll>;
 
-PLL dfs(ll l, ll r) {
-  ll len = r - l + 1;
-  if (len < k) return {};
-
-  ll m = (l + r) / 2;
-  PLL res{};
-
-  if (len & 1) {
-    auto resl = dfs(l, m - 1);
-    res.f1 = resl.f1 * 2 + 1;
-    res.f2 = resl.f2 + resl.f1 * (m + 1 - l) + resl.f2 + m;
-  } else {
-    auto resl = dfs(l, m);
-    res.f1 = resl.f1 * 2;
-    res.f2 = resl.f2 + resl.f1 * (m + 1 - l) + resl.f2;
+ll qmi(ll a, ll b, ll c) {
+  ll res = 1 % c;
+  while (b) {
+    if (b & 1) res = res * a % c;
+    a = a * a % c;
+    b >>= 1;
   }
   return res;
 }
 
 void solve() {
-  cin >> n >> k;
-  auto [_, ans] = dfs(1, n);
-  cout << ans << '\n';
+  int n, q;
+  cin >> n >> q;
+
+  VL a(n + 10), b(n + 10), pa(a), pb(b);
+
+  For1(i, 1, n) {
+    cin >> a[i];
+    pa[i] = a[i];
+  }
+  For1(i, 1, n) {
+    cin >> b[i];
+    pb[i] = b[i];
+  }
+
+  sort(all1(pa.begin(), n));
+  sort(all1(pb.begin(), n));
+
+  ll ans{1};
+  For1(i, 1, n) { ans = (ans * min(pa[i], pb[i])) % MOD1; }
+  cout << ans << ' ';
+
+  while (q--) {
+    int o, x;
+    cin >> o >> x;
+
+    if (o == 1) {
+      int pos = upper_bound(pa.begin() + 1, pa.begin() + 1 + n, a[x]) -
+                pa.begin() - 1;
+      if (pa[pos] < pb[pos]) {
+        ans = (ans * qmi(pa[pos], MOD1 - 2, MOD1)) % MOD1;
+        ans = (ans * (pa[pos] + 1)) % MOD1;
+      }
+      a[x]++, pa[pos]++;
+    } else {
+      int pos = upper_bound(pb.begin() + 1, pb.begin() + 1 + n, b[x]) -
+                pb.begin() - 1;
+      if (pb[pos] < pa[pos]) {
+        ans = (ans * qmi(pb[pos], MOD1 - 2, MOD1)) % MOD1;
+        ans = (ans * (pb[pos] + 1)) % MOD1;
+      }
+      b[x]++, pb[pos]++;
+    }
+    cout << ans << ' ';
+  }
+  cout << '\n';
 }
 
 int main(void) {
