@@ -1,12 +1,11 @@
 // Date: Sat Mar  9 22:15:34 2024
 
+#include <algorithm>
 #include <climits>
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-
-#include <algorithm>
 #include <functional>
 #include <iomanip>
 #include <iostream>
@@ -26,8 +25,10 @@ typedef unsigned long long ull;
 typedef vector<int> VI;
 typedef pair<int, int> PII;
 typedef pair<ll, ll> PLL;
-template <class T> using pq = priority_queue<T>;
-template <class T> using pqg = priority_queue<T, vector<T>, greater<T>>;
+template <class T>
+using pq = priority_queue<T>;
+template <class T>
+using pqg = priority_queue<T, vector<T>, greater<T>>;
 
 const int INF = 0x3f3f3f3f, MOD = 1e9 + 7, MOD1 = 998'244'353;
 const ll INFL = 0x3f3f3f3f'3f3f3f3f;
@@ -53,21 +54,27 @@ const ull Pr = 131;
 #define SZ(a) int((a).size())
 #define NL cout << '\n';
 
-template <class T> bool ckmin(T &a, const T &b) { return b < a ? a = b, 1 : 0; }
-template <class T> bool ckmax(T &a, const T &b) { return a < b ? a = b, 1 : 0; }
+template <class T>
+bool ckmin(T &a, const T &b) {
+  return b < a ? a = b, 1 : 0;
+}
+template <class T>
+bool ckmax(T &a, const T &b) {
+  return a < b ? a = b, 1 : 0;
+}
 
-template <typename t> istream &operator>>(istream &in, vector<t> &vec) {
-  for (t &x : vec)
-    in >> x;
+template <typename t>
+istream &operator>>(istream &in, vector<t> &vec) {
+  for (t &x : vec) in >> x;
   return in;
 }
 
-template <typename t> ostream &operator<<(ostream &out, vector<t> &vec) {
+template <typename t>
+ostream &operator<<(ostream &out, vector<t> &vec) {
   int n = SZ(vec);
   For(i, 0, n) {
     out << vec[i];
-    if (i < n - 1)
-      out << ' ';
+    if (i < n - 1) out << ' ';
   }
   return out;
 }
@@ -86,36 +93,37 @@ void __print(const char *x) { cerr << '\"' << x << '\"'; }
 void __print(const string &x) { cerr << '\"' << x << '\"'; }
 void __print(bool x) { cerr << (x ? "true" : "false"); }
 
-template <typename T, typename V> void __print(const pair<T, V> &x) {
+template <typename T, typename V>
+void __print(const pair<T, V> &x) {
   cerr << '{';
   __print(x.first);
   cerr << ", ";
   __print(x.second);
   cerr << '}';
 }
-template <typename T> void __print(const T &x) {
+template <typename T>
+void __print(const T &x) {
   int f = 0;
   cerr << '{';
-  for (auto &i : x)
-    cerr << (f++ ? ", " : ""), __print(i);
+  for (auto &i : x) cerr << (f++ ? ", " : ""), __print(i);
   cerr << "}";
 }
 void _print() { cerr << "]\n"; }
-template <typename T, typename... V> void _print(T t, V... v) {
+template <typename T, typename... V>
+void _print(T t, V... v) {
   __print(t);
-  if (sizeof...(v))
-    cerr << ", ";
+  if (sizeof...(v)) cerr << ", ";
   _print(v...);
 }
 
 #ifdef _DEBUG
 #define debug1(x) cout << #x " = " << x << endl;
 #define debug2(x, y) cout << #x " = " << x << " " #y " = " << y << endl;
-#define debug3(x, y, z)                                                        \
+#define debug3(x, y, z) \
   cout << #x " = " << x << " " #y " = " << y << " " #z " = " << z << endl;
-#define dbg(x...)                                                              \
-  cerr << "\e[91m" << __func__ << ":" << __LINE__ << " [" << #x << "] = [";    \
-  _print(x);                                                                   \
+#define dbg(x...)                                                           \
+  cerr << "\e[91m" << __func__ << ":" << __LINE__ << " [" << #x << "] = ["; \
+  _print(x);                                                                \
   cerr << "\e[39m" << endl;
 #else
 #define debug1
@@ -154,7 +162,7 @@ struct TreeNode {
 int dp[30][300];
 
 class Solution {
-public:
+ public:
   int len, ds1, ds2;
   string s1, s2;
 
@@ -163,16 +171,13 @@ public:
       return cur >= ds1 && cur <= ds2;
     }
 
-    if (!bdl && !bdr && dp[pos][cur] != -1)
-      return dp[pos][cur];
+    if (!bdl && !bdr && dp[pos][cur] != -1) return dp[pos][cur];
 
     int low = 0, up = 9, l1 = s1[pos] - '0', r1 = s2[pos] - '0';
     ll ans = 0;
 
-    if (bdl)
-      ckmax(low, l1);
-    if (bdr)
-      ckmin(up, r1);
+    if (bdl) ckmax(low, l1);
+    if (bdr) ckmin(up, r1);
 
     For1(i, low, up) {
       int cur1 = cur + i;
@@ -183,8 +188,7 @@ public:
     }
 
     ans %= MOD;
-    if (!bdl && !bdr)
-      dp[pos][cur] = ans;
+    if (!bdl && !bdr) dp[pos][cur] = ans;
     return ans;
   }
 
@@ -222,4 +226,3 @@ int main(void) {
 }
 
 #endif
-
