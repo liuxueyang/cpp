@@ -163,6 +163,61 @@ struct node {
 };
 
 void solve() {
+  int n, m;
+  cin >> n >> m;
+
+  VS a(n + 10);
+  For(i, 0, n) cin >> a[i];
+
+  PII src{}, dst{};
+  For(i, 0, n) {
+    For(j, 0, m) {
+      if (a[i][j] == 'S') {
+        src = {i, j};
+      } else if (a[i][j] == 'G')
+        dst = {i, j};
+    }
+  }
+
+  vector<VVI> d(n + 10, VVI(m + 10, VI(2, INF)));
+  queue<node> q;
+  q.push({src.f1, src.f2, 0, 0});
+  q.push({src.f1, src.f2, 0, 1});
+  d[src.f1][src.f2][0] = d[src.f1][src.f2][1] = 0;
+
+  auto check = [&](int x, int y) { return x >= 0 && x < n && y >= 0 && y < m; };
+
+  while (nemp(q)) {
+    auto [x, y, dis, orid] = q.front();
+    q.pop();
+
+    int x1{}, y1{};
+    if (orid == 0) {
+      For(i, 2, 4) {
+        x1 = x + dir[i][0];
+        y1 = y + dir[i][1];
+        if (check(x1, y1) && a[x1][y1] != '#') {
+          if (ckmin(d[x1][y1][orid ^ 1], dis + 1))
+            q.push({x1, y1, dis + 1, orid ^ 1});
+        }
+      }
+    } else {
+      For(i, 0, 2) {
+        x1 = x + dir[i][0];
+        y1 = y + dir[i][1];
+        if (check(x1, y1) && a[x1][y1] != '#') {
+          if (ckmin(d[x1][y1][orid ^ 1], dis + 1))
+            q.push({x1, y1, dis + 1, orid ^ 1});
+        }
+      }
+    }
+  }
+
+  int ans = min(d[dst.f1][dst.f2][0], d[dst.f1][dst.f2][1]);
+  cout << (ans >= INF ? -1 : ans) << '\n';
+}
+
+void solve1() {
   cin >> n >> m;
   string tmp;
   g = VS(n + 10);
@@ -215,8 +270,6 @@ void solve() {
       }
     }
   }
-
-  dbg(s2.f1, s2.f2, d1[s2.f1][s2.f2], d2[s2.f1][s2.f2]);
 
   int ans = min(d1[s2.f1][s2.f2], d2[s2.f1][s2.f2]);
   if (ans != INF)
