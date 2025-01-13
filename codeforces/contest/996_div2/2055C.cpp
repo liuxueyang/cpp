@@ -158,6 +158,127 @@ struct node {
 
 void solve() {
   int n, m;
+  string s;
+
+  cin >> n >> m >> s;
+
+  VVL a(n + 10, VL(m + 10));
+  VL row(n + 10), col(m + 10);
+
+  For(i, 0, n) {
+    For(j, 0, m) {
+      cin >> a[i][j];
+      row[i] += a[i][j];
+      col[j] += a[i][j];
+    }
+  }
+
+  PII cur{0, 0};
+  for (auto ch : s) {
+    if (ch == 'D') {
+      a[cur.f1][cur.f2] = -row[cur.f1];
+      col[cur.f2] += a[cur.f1][cur.f2];
+      cur.f1++;
+    } else {
+      a[cur.f1][cur.f2] = -col[cur.f2];
+      row[cur.f1] += a[cur.f1][cur.f2];
+      cur.f2++;
+    }
+  }
+  a[n - 1][m - 1] = -row[n - 1];
+  For(i, 0, n) {
+    For(j, 0, m) { cout << a[i][j] << " \n"[j == m - 1]; }
+  }
+}
+
+void solve3() {
+  int n, m;
+  cin >> n >> m;
+  string s;
+  cin >> s;
+
+  VVL a(n + 10, VL(m + 10));
+  VVB vis(n + 10, VB(m + 10));
+  VI col(m + 10), row(n + 10);
+
+  For(i, 0, n) {
+    For(j, 0, m) { cin >> a[i][j]; }
+  }
+  PII cur{0, 0};
+  vis[0][0] = true;
+  queue<node> q;
+  for (auto c : s) {
+    if (c == 'D')
+      cur.f1++;
+    else
+      cur.f2++;
+    vis[cur.f1][cur.f2] = true;
+  }
+
+  For(i, 0, n) {
+    For(j, 0, m) {
+      if (vis[i][j]) {
+        row[i]++;
+      }
+    }
+    if (row[i] == 1) {
+      q.push({i, 1});
+    }
+  }
+
+  For(j, 0, m) {
+    For(i, 0, n) {
+      if (vis[i][j]) {
+        col[j]++;
+      }
+    }
+    if (col[j] == 1) {
+      q.push({j, 2});
+    }
+  }
+
+  while (nemp(q)) {
+    auto [val, typ] = q.front();
+    q.pop();
+
+    if (typ == 1 && row[val] == 1) {
+      // row
+      ll sum{};
+      int nj = -1;
+      For(j, 0, m) {
+        if (!vis[val][j])
+          sum += a[val][j];
+        else
+          nj = j;
+      }
+      a[val][nj] = -sum;
+      vis[val][nj] = false;
+      row[val]--, col[nj]--;
+      if (col[nj] == 1) q.push({nj, 2});
+    } else if (typ == 2 && col[val] == 1) {
+      // col
+      ll sum{};
+      int ni = -1;
+      For(i, 0, n) {
+        if (!vis[i][val])
+          sum += a[i][val];
+        else
+          ni = i;
+      }
+      a[ni][val] = -sum;
+      vis[ni][val] = false;
+      row[ni]--, col[val]--;
+      if (row[ni] == 1) q.push({ni, 1});
+    }
+  }
+  For(i, 0, n) {
+    For(j, 0, m) { cout << a[i][j] << ' '; }
+    cout << '\n';
+  }
+}
+
+void solve2() {
+  int n, m;
   cin >> n >> m;
   string s;
   cin >> s;
