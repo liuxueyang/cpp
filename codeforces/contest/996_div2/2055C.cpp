@@ -158,6 +158,91 @@ struct node {
 
 void solve() {
   int n, m;
+  cin >> n >> m;
+  string s;
+  cin >> s;
+
+  VVL a(n + 10, VL(m + 10));
+  VVB vis(n + 10, VB(m + 10));
+  VI col(m + 10), row(n + 10);
+
+  For(i, 0, n) {
+    For(j, 0, m) { cin >> a[i][j]; }
+  }
+  PII cur{0, 0};
+  vis[0][0] = true;
+  queue<PII> q;
+  for (auto c : s) {
+    if (c == 'D')
+      cur.f1++;
+    else
+      cur.f2++;
+    vis[cur.f1][cur.f2] = true;
+  }
+
+  For(i, 0, n) {
+    int nj{-1};
+    For(j, 0, m) {
+      if (vis[i][j]) {
+        row[i]++;
+        nj = j;
+      }
+    }
+    if (row[i] == 1) {
+      q.push({i, nj});
+    }
+  }
+  For(j, 0, m) {
+    int ni{-1};
+    For(i, 0, n) {
+      if (vis[i][j]) {
+        col[j]++;
+        ni = i;
+      }
+    }
+    if (col[j] == 1) q.push({ni, j});
+  }
+
+  while (nemp(q)) {
+    auto [x, y] = q.front();
+    q.pop();
+    if (row[x] == 1) {
+      ll sum{};
+      For(j, 0, m) {
+        if (j != y) sum += a[x][j];
+      }
+      a[x][y] = -sum;
+      vis[x][y] = false;
+      row[x]--;
+      col[y]--;
+    } else if (col[y] == 1) {
+      ll sum{};
+      For(i, 0, n) if (i != x) sum += a[i][y];
+      a[x][y] = -sum;
+      vis[x][y] = false;
+      row[x]--, col[y]--;
+    }
+    if (row[x] == 1) {
+      For(j, 0, m) if (vis[x][j]) {
+        q.push({x, j});
+        break;
+      }
+    }
+    if (col[y] == 1) {
+      For(i, 0, n) if (vis[i][y]) {
+        q.push({i, y});
+        break;
+      }
+    }
+  }
+  For(i, 0, n) {
+    For(j, 0, m) { cout << a[i][j] << ' '; }
+    cout << '\n';
+  }
+}
+
+void solve1() {
+  int n, m;
   string s;
 
   cin >> n >> m >> s;
