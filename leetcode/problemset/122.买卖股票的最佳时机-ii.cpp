@@ -253,6 +253,22 @@ void PrintList(LNP head) {
 class Solution {
  public:
   int maxProfit(vector<int> &prices) {
+    int n{SZ(prices)};
+    VI a(n + 10);
+    VVI d(n + 10, VI(2));
+
+    For(i, 0, n) a[i + 1] = prices[i];
+    d[0][1] = -INF;
+
+    For1(i, 1, n) {
+      d[i][0] = max(d[i - 1][0], d[i - 1][1] + a[i]);
+      d[i][1] = max(d[i - 1][1], d[i - 1][0] - a[i]);
+    }
+
+    return d[n][0];
+  }
+
+  int maxProfit1(vector<int> &prices) {
     int ans{}, cur{INF};
 
     for (auto x : prices) {
