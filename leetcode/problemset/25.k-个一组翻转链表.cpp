@@ -265,7 +265,42 @@ class Solution {
     if (k == 1) return head;
 
     ListNode *dummy = new ListNode(0, head);
+    ListNode *B0 = dummy, *t = B0->next;
 
+    while (t) {
+      ListNode *h = t;
+      int cnt = k - 1;
+      while (cnt-- && h) {
+        h = h->next;
+      }
+
+      if (!h) {
+        B0->next = t;
+        break;
+      }
+
+      ListNode *B1 = h->next;
+      h->next = nullptr;
+      ListNode *p1 = nullptr, *p2 = t, *p3;
+      while (p2) {
+        p3 = p2->next;
+        p2->next = p1;
+        p1 = p2;
+        p2 = p3;
+      }
+
+      B0->next = h;
+      B0 = t;
+      t = B1;
+    }
+
+    return dummy->next;
+  }
+
+  ListNode *reverseKGroup1(ListNode *head, int k) {
+    if (k == 1) return head;
+
+    ListNode *dummy = new ListNode(0, head);
     ListNode *B0 = dummy, *t = dummy->next;
 
     while (t) {
