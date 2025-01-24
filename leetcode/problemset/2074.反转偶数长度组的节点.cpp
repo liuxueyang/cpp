@@ -261,6 +261,47 @@ void PrintList(LNP head) {
 class Solution {
  public:
   ListNode *reverseEvenLengthGroups(ListNode *head) {
+    ListNode *dummy = new ListNode(0, head), *B0{dummy}, *B1{}, *t{B0->next},
+             *h{};
+
+    int k = 1;
+    while (t) {
+      int cnt = 1;
+      h = t;
+      while (cnt < k && h->next) {
+        h = h->next;
+        cnt++;
+      }
+
+      B1 = h->next;
+
+      if (cnt % 2 == 0) {
+        ListNode *p1 = B0, *p2 = t, *p3{};
+        h->next = nullptr;
+        while (p2) {
+          p3 = p2->next;
+          p2->next = p1;
+          p1 = p2;
+          p2 = p3;
+        }
+
+        B0->next = h;
+        t->next = B1;
+
+        B0 = t;
+        t = B0->next;
+      } else {
+        B0 = h;
+        t = B0->next;
+      }
+
+      k++;
+    }
+
+    return dummy->next;
+  }
+
+  ListNode *reverseEvenLengthGroups1(ListNode *head) {
     ListNode *dummy = new ListNode(0, head), *B0{dummy}, *B1{}, *t{}, *h{};
 
     int k = 1;
