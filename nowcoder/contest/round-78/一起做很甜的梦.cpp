@@ -157,6 +157,16 @@ void solve() {
   cin >> n;
 
   VI a(n + 10);
+  For1(i, 1, n) a[i] = i;
+  swap(a[2], a[n]);
+  Outputr(a.begin() + 1, a.begin() + n + 1);
+}
+
+void solve1() {
+  int n;
+  cin >> n;
+
+  VI a(n + 10);
   for (int i = 1, j = n, k = 1; i <= j; ++i, --j) {
     if (i == j) {
       a[i] = k;
