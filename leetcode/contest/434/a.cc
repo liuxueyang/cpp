@@ -245,6 +245,14 @@ void PrintList(LNP head) {
 class Solution {
  public:
   int countPartitions(vector<int> &nums) {
+    int ans = reduce(all(nums), 0), n{SZ(nums)};
+    if (ans % 2 == 0)
+      return n - 1;
+    else
+      return 0;
+  }
+
+  int countPartitions1(vector<int> &nums) {
     int n{SZ(nums)}, ans{};
     VI a(n + 10), p(a), q(a);
 
