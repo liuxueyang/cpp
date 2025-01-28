@@ -249,7 +249,6 @@ class Solution {
 
     sort(all(events), [&](const VS &a, const VS &b) {
       int ts1 = stoi(a[1]), ts2 = stoi(b[1]);
-      // return ts1 < ts2;
       if (ts1 != ts2) return ts1 < ts2;
       return a[0] > b[0];
     });
