@@ -163,6 +163,74 @@ void solve() {
     a[i] = " " + tmp;
   }
 
+  VVI g(n + 10);
+  VI d(n + 10);
+
+  For1(i, 1, n) {
+    For1(j, i + 1, n) {
+      if (a[i][j] == '1') {
+        g[i].pb(j);
+        d[j]++;
+      }
+    }
+  }
+
+  pq<int> q;
+  For1(i, 1, n) {
+    if (d[i] == 0) q.push(i);
+  }
+
+  VI ans;
+  while (nemp(q)) {
+    int u = q.top();
+    q.pop();
+    ans.pb(u);
+    for (auto v : g[u]) {
+      d[v]--;
+      if (d[v] == 0) q.push(v);
+    }
+  }
+  Outputr(all(ans));
+}
+
+void solve3() {
+  int n;
+  cin >> n;
+
+  VS a(n + 10);
+  For1(i, 1, n) {
+    string tmp;
+    cin >> tmp;
+    a[i] = " " + tmp;
+  }
+
+  VI ans(n + 10);
+
+  For1(i, 1, n) {
+    int cnt{};
+    For1(j, 1, n) {
+      if (i == j) continue;
+      if (j < i && a[i][j] == '1')
+        cnt++;
+      else if (j > i && a[i][j] == '0')
+        cnt++;
+    }
+    ans[1 + cnt] = i;
+  }
+  Outputr(all1(ans.begin(), n));
+}
+
+void solve2() {
+  int n;
+  cin >> n;
+
+  VS a(n + 10);
+  For1(i, 1, n) {
+    string tmp;
+    cin >> tmp;
+    a[i] = " " + tmp;
+  }
+
   VI ans(n + 10);
   For1(i, 1, n) ans[i] = i;
   sort(ans.begin() + 1, ans.begin() + 1 + n, [&](const int x, const int y) {
@@ -185,17 +253,6 @@ void solve1() {
     a[i] = " " + tmp;
   }
 
-  VVI g(n + 10);
-  For1(i, 1, n) {
-    For1(j, 1, n) {
-      if (a[i][j] == '1') {
-        g[i].pb(j);
-        g[j].pb(i);
-      }
-    }
-  }
-  For1(i, 1, n) sort(all(g[i]));
-
   VI ans(n + 10);
   set<int> rem;
 
@@ -205,12 +262,10 @@ void solve1() {
     for (auto u : rem) {
       bool ok = true;
       For1(j, u + 1, n) {
-        auto it = lower_bound(g[u].begin(), g[u].end(), j);
-        bool adj = (it != g[u].end() && *it == j);
-
-        if (!has(rem, j) || adj) continue;
-        ok = false;
-        break;
+        if (a[u][j] == '0' && has(rem, j)) {
+          ok = false;
+          break;
+        }
       }
       if (ok) {
         ans[i] = u;
