@@ -162,7 +162,7 @@ void solve() {
       cur += (x << i);
     } else {
       int x1 = cur + (1 << i) - 1, x2 = cur + (1 << i);
-      if (x1 == r || x2 == r)
+      if (x2 == r)
         cout << l << ' ';
       else
         cout << r << ' ';
@@ -174,7 +174,9 @@ void solve() {
 
 int main(void) {
 #ifdef _DEBUG
+#ifndef _CPH
   freopen("../input.txt", "r", stdin);
+#endif
 #endif
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);

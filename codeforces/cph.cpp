@@ -156,8 +156,11 @@ void solve() {}
 
 int main(void) {
 #ifdef _DEBUG
-  // freopen("../input.txt", "r", stdin);
+#ifndef _CPH
+  freopen("../input.txt", "r", stdin);
 #endif
+#endif
+
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
   cout.tie(NULL);
