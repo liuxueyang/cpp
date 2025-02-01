@@ -154,7 +154,26 @@ ostream &operator<<(ostream &os, const lll &v) {
 
 VI a, dfn, dfo;
 VVI g;
-int ts;
+VL c;
+int n, m, r, ts;
+
+void Init() { c = VL(n + 10); }
+
+int lowbit(int x) { return x & -x; }
+void modify(int idx, int x) {
+  while (idx <= n) {
+    c[idx] += x;
+    idx += lowbit(idx);
+  }
+}
+ll query(int idx) {
+  ll ans{};
+  while (idx) {
+    ans += c[idx];
+    idx -= lowbit(idx);
+  }
+  return ans;
+}
 
 void dfs(int u, int fa) {
   dfn[u] = ++ts;
@@ -165,126 +184,49 @@ void dfs(int u, int fa) {
   dfo[u] = ts;
 }
 
-struct info {
-  ll sum;
-
-  info() : sum(0) {}
-  info(ll sum_) : sum(sum_) {}
-
-  info operator+(const info &rh) const { return info(sum + rh.sum); }
-};
-
-struct SegmentTree {
-  struct Node {
-    info val;
-  };
-
-  int n;
-  vector<int> a;
-  vector<Node> seg;
-
-  SegmentTree() : n(0) {}
-  SegmentTree(int n_, vector<int> a_)
-      : n(n_), a(a_), seg(vector<Node>(n * 4 + 10)) {}
-
-  void update(int id) {
-    int left = id * 2, right = left + 1;
-    seg[id].val = seg[left].val + seg[right].val;
-  }
-
-  void build(int id, int l, int r) {
-    if (l == r) {
-      seg[id].val = info(a[l]);
-      return;
-    }
-
-    int mid = (l + r) / 2, left = id * 2, right = left + 1;
-    build(left, l, mid);
-    build(right, mid + 1, r);
-    update(id);
-  }
-
-  void change(int id, int l, int r, int pos, int d) {
-    if (l == r) {
-      seg[id].val.sum += d;
-      return;
-    }
-
-    int mid = (l + r) / 2, left = id * 2, right = left + 1;
-    if (pos <= mid)
-      change(left, l, mid, pos, d);
-    else
-      change(right, mid + 1, r, pos, d);
-    update(id);
-  }
-
-  info query(int id, int l, int r, int ql, int qr) {
-    if (l >= ql && r <= qr) {
-      return seg[id].val;
-    }
-
-    int mid = (l + r) / 2, left = id * 2, right = left + 1;
-    if (qr <= mid)
-      return query(left, l, mid, ql, qr);
-    else if (ql > mid)
-      return query(right, mid + 1, r, ql, qr);
-    else
-      return query(left, l, mid, ql, mid) +
-             query(right, mid + 1, r, mid + 1, qr);
-  }
-};
-
-SegmentTree tree;
-VI b;
-
 void solve() {
-  int n, m, r;
   cin >> n >> m >> r;
 
-  a = dfn = dfo = VI(n + 10);
-  For1(i, 1, n) cin >> a[i];
+  a = VI(n + 10);
+  dfn = dfo = VI(n + 10);
+  ts = 0;
 
+  For1(i, 1, n) cin >> a[i];
   g = VVI(n + 10);
   For(i, 0, n - 1) {
     int u, v;
     cin >> u >> v;
-    g[u].pb(v), g[v].pb(u);
+    g[u].pb(v);
+    g[v].pb(u);
   }
 
-  ts = 0;
   dfs(r, -1);
 
-  b = VI(n + 10);
+  Init();
   For1(i, 1, n) {
-    int pos = dfn[i];
-    b[pos] = a[i];
+    int idx = dfn[i];
+    modify(idx, a[i]);
   }
-  tree = SegmentTree(n, b);
-  tree.build(1, 1, n);
 
   while (m--) {
-    int op, pos, x;
+    int op, u, x;
     cin >> op;
     if (op == 1) {
-      cin >> pos >> x;
-      int l = dfn[pos];
-      tree.change(1, 1, n, l, x);
+      cin >> u >> x;
+      int idx = dfn[u];
+      modify(idx, x);
     } else {
-      cin >> pos;
-      int l = dfn[pos], r = dfo[pos];
-      auto res = tree.query(1, 1, n, l, r);
-      cout << res.sum << '\n';
+      cin >> u;
+      int r = dfo[u], l = dfn[u];
+      cout << query(r) - query(l - 1) << '\n';
     }
   }
 }
 
 int main(void) {
 #ifdef _DEBUG
-#ifndef _CPH
-  freopen("../input.txt", "r", stdin);
+  // freopen("../input.txt", "r", stdin);
 #endif
-#endif
-
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
   cout.tie(NULL);
