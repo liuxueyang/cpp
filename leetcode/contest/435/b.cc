@@ -244,47 +244,57 @@ void PrintList(LNP head) {
 
 class Solution {
  public:
+  int k;
+
+  int solve(PII a, PII b) {
+    int k = this->k;
+
+    if (a.f1 < a.f2) swap(a.f1, a.f2);
+    if (b.f1 < b.f2) swap(b.f1, b.f2);
+
+    if (k >= a.f2) {
+      a.f1 += a.f2, k -= a.f2;
+      a.f2 = 0;
+    } else {
+      a.f2 -= k, a.f1 += k;
+      k = 0;
+    }
+
+    if (k >= b.f2) {
+      b.f1 += b.f2, k -= b.f2;
+      b.f2 = 0;
+    } else {
+      b.f2 -= k, b.f1 += k;
+      k = 0;
+    }
+    return abs(a.f2 - a.f1) + abs(b.f2 - b.f1);
+  }
+
+  int solve1(PII a, PII b) {
+    int mie1 = min(a.f1, a.f2), mie2 = min(b.f1, b.f2),
+        cnt = min({mie1 + mie2, k}), base = abs(a.f1 - a.f2) + abs(b.f1 - b.f2),
+        ans = base + cnt * 2;
+    return ans;
+  }
+
   int maxDistance(string s, int k) {
-    int x1{}, x2{}, y1{}, y2{}, ans{}, x{}, y{};
+    PII a{}, b{};
+    this->k = k;
+    int ans{};
 
     for (auto c : s) {
       if (c == 'N')
-        x1++, y++;
+        a.f1++;
       else if (c == 'S')
-        x2++, y--;
+        a.f2++;
       else if (c == 'W')
-        y1++, x--;
+        b.f1++;
       else
-        y2++, x++;
-      ckmax(ans, abs(x) + abs(y));
+        b.f2++;
+
+      int tmp = solve(a, b);
+      ckmax(ans, tmp);
     }
-
-    if (x1 > x2) swap(x1, x2);
-    if (y1 > y2) swap(y1, y2);
-
-    dbg(ans);
-
-    if (k) {
-      int g = x2 - x1;
-      if (g <= k) {
-        k -= g;
-        ans += g * 2;
-      } else {
-        ans += k * 2;
-        k = 0;
-      }
-    }
-    if (k) {
-      int g = y2 - y1;
-      if (g <= k) {
-        k -= g;
-        ans += g * 2;
-      } else {
-        ans += k * 2;
-        k = 0;
-      }
-    }
-
     return ans;
   }
 };
@@ -314,6 +324,14 @@ int main(void) {
 
   s = "SN";
   res = a.maxDistance(s, 0);
+  dbg(res);
+
+  s = "EWWE";
+  res = a.maxDistance(s, 0);
+  dbg(res);
+
+  s = "NSNSNNE";
+  res = a.maxDistance(s, 1);
   dbg(res);
 
   return 0;
