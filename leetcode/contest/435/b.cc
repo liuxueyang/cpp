@@ -247,30 +247,6 @@ class Solution {
   int k;
 
   int solve(PII a, PII b) {
-    int k = this->k;
-
-    if (a.f1 < a.f2) swap(a.f1, a.f2);
-    if (b.f1 < b.f2) swap(b.f1, b.f2);
-
-    if (k >= a.f2) {
-      a.f1 += a.f2, k -= a.f2;
-      a.f2 = 0;
-    } else {
-      a.f2 -= k, a.f1 += k;
-      k = 0;
-    }
-
-    if (k >= b.f2) {
-      b.f1 += b.f2, k -= b.f2;
-      b.f2 = 0;
-    } else {
-      b.f2 -= k, b.f1 += k;
-      k = 0;
-    }
-    return abs(a.f2 - a.f1) + abs(b.f2 - b.f1);
-  }
-
-  int solve1(PII a, PII b) {
     int mie1 = min(a.f1, a.f2), mie2 = min(b.f1, b.f2),
         cnt = min({mie1 + mie2, k}), base = abs(a.f1 - a.f2) + abs(b.f1 - b.f2),
         ans = base + cnt * 2;
@@ -312,26 +288,6 @@ int main(void) {
 
   s = "NSWWEW";
   int res = a.maxDistance(s, 3);
-  dbg(res);
-
-  s = "NSES";
-  res = a.maxDistance(s, 1);
-  dbg(res);
-
-  s = "NWSE";
-  res = a.maxDistance(s, 1);
-  dbg(res);
-
-  s = "SN";
-  res = a.maxDistance(s, 0);
-  dbg(res);
-
-  s = "EWWE";
-  res = a.maxDistance(s, 0);
-  dbg(res);
-
-  s = "NSNSNNE";
-  res = a.maxDistance(s, 1);
   dbg(res);
 
   return 0;
