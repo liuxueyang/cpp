@@ -152,107 +152,17 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
+struct Node {
+  int len;
+  ll sum, t;
+  Node() : len(1), sum(0), t(0) {}
+};
+
 const int N = 1000010;
 int a[N], dfn[N], dfo[N], b[N];
 int e[N * 2], ne[N * 2], h[N];
 int ts, idx;
-
-struct tag {
-  ll d;
-  tag() : d(0) {}
-  tag(ll d_) : d(d_) {}
-  tag operator+(const tag &rh) const { return {d + rh.d}; }
-};
-
-struct Info {
-  int len;
-  ll sum;
-  Info() : len(1), sum(0) {}
-  Info(int len_, ll sum_) : len(len_), sum(sum_) {}
-
-  Info operator+(const Info &rh) const { return {len + rh.len, sum + rh.sum}; }
-  Info operator+(const tag &rh) const { return {len, sum + len * rh.d}; }
-};
-
-struct node {
-  Info val;
-  tag t;
-};
-
-node seg[N * 4];
-
-struct SegmentTree {
-  int n;
-
-  SegmentTree() : n(0) {}
-  SegmentTree(int n_) : n(n_) {}
-
-  void set_tag(int id, tag t) {
-    seg[id].val = seg[id].val + t;
-    seg[id].t = seg[id].t + t;
-  }
-
-  void update(int id) {
-    int left = id * 2, right = left + 1;
-    seg[id].val = seg[left].val + seg[right].val;
-  }
-
-  void push_down(int id) {
-    auto &t = seg[id].t;
-    if (t.d != 0) {
-      int left = id * 2, right = left + 1;
-      set_tag(left, t);
-      set_tag(right, t);
-      t.d = 0;
-    }
-  }
-
-  void build(int id, int l, int r) {
-    if (l == r) {
-      seg[id].val = {1, a[l]};
-      return;
-    }
-    int mid = (l + r) / 2, left = id * 2, right = left + 1;
-    build(left, l, mid);
-    build(right, mid + 1, r);
-    update(id);
-  }
-
-  void modify(int id, int l, int r, int ql, int qr, tag t) {
-    if (l >= ql && r <= qr) {
-      set_tag(id, t);
-      return;
-    }
-    push_down(id);
-
-    int mid = (l + r) / 2, left = id * 2, right = left + 1;
-    if (qr <= mid)
-      modify(left, l, mid, ql, qr, t);
-    else if (ql > mid)
-      modify(right, mid + 1, r, ql, qr, t);
-    else {
-      modify(left, l, mid, ql, mid, t);
-      modify(right, mid + 1, r, mid + 1, qr, t);
-    }
-    update(id);
-  }
-
-  Info query(int id, int l, int r, int ql, int qr) {
-    if (l >= ql && r <= qr) {
-      return seg[id].val;
-    }
-
-    int mid = (l + r) / 2, left = id * 2, right = left + 1;
-    push_down(id);
-    if (qr <= mid)
-      return query(left, l, mid, ql, qr);
-    else if (ql > mid)
-      return query(right, mid + 1, r, ql, qr);
-    else
-      return query(left, l, mid, ql, mid) +
-             query(right, mid + 1, r, mid + 1, qr);
-  }
-};
+Node seg[N * 4];
 
 void Init() {
   idx = ts = 0;
@@ -269,6 +179,72 @@ void dfs(int u, int fa) {
     dfs(v, u);
   }
   dfo[u] = ts;
+}
+
+void update(int id) {
+  int left = id * 2, right = left + 1;
+  seg[id].sum = seg[left].sum + seg[right].sum;
+  seg[id].len = seg[left].len + seg[right].len;
+}
+
+void set_tag(int id, ll t) {
+  seg[id].t = seg[id].t + t;
+  seg[id].sum = seg[id].sum + t * seg[id].len;
+}
+
+void push_down(int id) {
+  int left = id * 2, right = left + 1;
+  auto &t = seg[id].t;
+  if (t != 0) {
+    set_tag(left, t), set_tag(right, t);
+    t = 0;
+  }
+}
+
+void build(int id, int l, int r) {
+  if (l == r) {
+    seg[id].sum = a[l];
+    return;
+  }
+
+  int mid = (l + r) / 2, left = id * 2, right = left + 1;
+  build(left, l, mid);
+  build(right, mid + 1, r);
+  update(id);
+}
+
+void modify(int id, int l, int r, int ql, int qr, ll t) {
+  if (ql == l && qr == r) {
+    set_tag(id, t);
+    return;
+  }
+
+  push_down(id);
+  int mid = (l + r) / 2, left = id * 2, right = left + 1;
+  if (qr <= mid)
+    modify(left, l, mid, ql, qr, t);
+  else if (ql > mid)
+    modify(right, mid + 1, r, ql, qr, t);
+  else {
+    modify(left, l, mid, ql, mid, t);
+    modify(right, mid + 1, r, mid + 1, qr, t);
+  }
+  update(id);
+}
+
+ll query(int id, int l, int r, int ql, int qr) {
+  if (l >= ql && r <= qr) {
+    return seg[id].sum;
+  }
+
+  push_down(id);
+  int mid = (l + r) / 2, left = id * 2, right = left + 1;
+  if (qr <= mid)
+    return query(left, l, mid, ql, qr);
+  else if (ql > mid)
+    return query(right, mid + 1, r, ql, qr);
+  else
+    return query(left, l, mid, ql, mid) + query(right, mid + 1, r, mid + 1, qr);
 }
 
 void solve() {
@@ -291,8 +267,7 @@ void solve() {
   }
   For1(i, 1, n) a[i] = b[i];
 
-  SegmentTree tree(n);
-  tree.build(1, 1, n);
+  build(1, 1, n);
 
   while (m--) {
     int op, pos, x;
@@ -300,11 +275,11 @@ void solve() {
     if (op == 1) {
       cin >> pos >> x;
       int l = dfn[pos], r = dfo[pos];
-      tree.modify(1, 1, n, l, r, x);
+      modify(1, 1, n, l, r, x);
     } else {
       cin >> pos;
       int l = dfn[pos], r = dfo[pos];
-      ll res = tree.query(1, 1, n, l, r).sum;
+      ll res = query(1, 1, n, l, r);
       cout << res << '\n';
     }
   }
