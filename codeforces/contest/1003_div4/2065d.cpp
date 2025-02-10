@@ -156,30 +156,29 @@ void solve() {
   int n, m;
   cin >> n >> m;
 
-  VI a(n + 10);
-  For1(i, 1, n) cin >> a[i];
-  int b;
-  cin >> b;
-
-  int pre = {-INF};
-  bool ok{true};
+  VVI a(n + 10);
+  VL b(n + 10);
+  VI c(n + 10);
 
   For1(i, 1, n) {
-    int x = b - a[i];
-    int mie = min(x, a[i]), mx = max(x, a[i]);
-
-    if (mie >= pre) {
-      pre = mie;
-    } else {
-      if (mx >= pre)
-        pre = mx;
-      else {
-        ok = false;
-        break;
-      }
+    c[i] = i;
+    a[i] = VI(m + 10);
+    For1(j, 1, m) {
+      cin >> a[i][j];
+      b[i] += a[i][j];
     }
   }
-  cout << (ok ? "YES" : "NO") << '\n';
+  sort(all1(c.begin(), n),
+       [&](const int x, const int y) { return b[x] > b[y]; });
+
+  ll ans{}, sum{};
+  For1(i, 1, n) {
+    For1(j, 1, m) {
+      sum += a[c[i]][j];
+      ans += sum;
+    }
+  }
+  cout << ans << '\n';
 }
 
 int main(void) {

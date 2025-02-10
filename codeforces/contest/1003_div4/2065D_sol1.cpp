@@ -152,34 +152,56 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
+struct node {
+  ll sum;
+  VL a, p;
+  int n, id;
+
+  node() : sum(0) {}
+  node(VI &a_, int id_) : sum(0), id(id_) {
+    n = SZ(a_);
+    a = p = VL(n);
+
+    For(i, 0, n) {
+      a[i] = a_[i];
+      sum += a[i];
+    }
+    p[0] = a[0];
+    For(i, 1, n) { p[i] = p[i - 1] + a[i]; }
+  }
+
+  bool operator<(const node &rh) const {
+    if (sum != rh.sum) return sum > rh.sum;
+    For(i, 0, n) {
+      if (p[i] != rh.p[i]) return p[i] > rh.p[i];
+    }
+    return id < rh.id;
+  }
+};
+
 void solve() {
   int n, m;
   cin >> n >> m;
 
-  VI a(n + 10);
-  For1(i, 1, n) cin >> a[i];
-  int b;
-  cin >> b;
-
-  int pre = {-INF};
-  bool ok{true};
-
-  For1(i, 1, n) {
-    int x = b - a[i];
-    int mie = min(x, a[i]), mx = max(x, a[i]);
-
-    if (mie >= pre) {
-      pre = mie;
-    } else {
-      if (mx >= pre)
-        pre = mx;
-      else {
-        ok = false;
-        break;
-      }
-    }
+  vector<node> a(n + 10);
+  For(i, 0, n) {
+    VI b(m);
+    For(j, 0, m) cin >> b[j];
+    a[i] = node(b, i);
   }
-  cout << (ok ? "YES" : "NO") << '\n';
+  sort(a.begin(), a.begin() + n);
+
+  VL b;
+  For(i, 0, n) {
+    For(j, 0, m) { b.pb(a[i].a[j]); }
+  }
+  int len{SZ(b)};
+  VL p(len + 10);
+  p[0] = b[0];
+  For(i, 1, len) p[i] = p[i - 1] + b[i];
+  ll ans{};
+  For(i, 0, len) ans += p[i];
+  cout << ans << '\n';
 }
 
 int main(void) {

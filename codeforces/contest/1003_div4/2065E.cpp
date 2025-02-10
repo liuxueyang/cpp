@@ -153,39 +153,29 @@ ostream &operator<<(ostream &os, const lll &v) {
 #endif
 
 void solve() {
-  int n, m;
-  cin >> n >> m;
+  int n, m, k;
+  cin >> n >> m >> k;
 
-  VI a(n + 10);
-  For1(i, 1, n) cin >> a[i];
-  int b;
-  cin >> b;
-
-  int pre = {-INF};
-  bool ok{true};
-
-  For1(i, 1, n) {
-    int x = b - a[i];
-    int mie = min(x, a[i]), mx = max(x, a[i]);
-
-    if (mie >= pre) {
-      pre = mie;
-    } else {
-      if (mx >= pre)
-        pre = mx;
-      else {
-        ok = false;
-        break;
-      }
-    }
+  if (abs(n - m) > k || max(n, m) < k) {
+    cout << -1 << '\n';
+    return;
   }
-  cout << (ok ? "YES" : "NO") << '\n';
+  if (n > m) {
+    For1(i, 1, k) cout << 0;
+    For1(i, 1, n - k) cout << 1 << 0;
+    For1(i, 1, m - n + k) cout << 1;
+  } else {
+    For1(i, 1, k) cout << 1;
+    For1(i, 1, m - k) cout << 0 << 1;
+    For1(i, 1, n - m + k) cout << 0;
+  }
+  cout << '\n';
 }
 
 int main(void) {
 #ifdef _DEBUG
 #ifndef _CPH
-  freopen("../input.txt", "r", stdin);
+  // freopen("../input.txt", "r", stdin);
 #endif
 #endif
 
