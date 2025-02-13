@@ -175,8 +175,6 @@ void solve() {
   For1(i, pos, m) c.pb(b[i]);
   For1(i, 1, pos - 1) c.pb(b[i]);
 
-  For1(i, 1, m) { dbg(i, c[i]); }
-
   pos = -1;
   for (int i = 1; i + m - 1 <= n; ++i) {
     if (a[i] > c[1]) {
@@ -193,7 +191,6 @@ void solve() {
           break;
         }
       }
-      dbg(i, ok);
       if (ok == 1) {
         pos = i;
         break;
@@ -201,8 +198,7 @@ void solve() {
     }
   }
 
-  if (pos == -1) {
-  } else {
+  if (pos != -1) {
     For1(i, pos, n - m + 1) a[i] = c[1];
     for (int i = n - m + 1, j = 1; i <= n; ++i, ++j) a[i] = c[j];
   }

@@ -156,6 +156,13 @@ struct node {
   int l, r;
 
   int get_len() const { return (r - l) / 2; }
+  bool operator<(const node &rh) const {
+    int len1 = get_len(), len2 = rh.get_len();
+    if (len1 != len2)
+      return len1 > len2;
+    else
+      return PII(l, r) < PII(rh.l, rh.r);
+  }
 };
 
 void solve() {
@@ -170,17 +177,8 @@ void solve() {
     m[a[i]] = i;
   }
 
-  auto cmp_len = [](const node &lh, const node &rh) {
-    int len1 = lh.get_len(), len2 = rh.get_len();
-    if (len1 != len2) return len1 > len2;
-    return PII(lh.l, lh.r) < PII(rh.l, rh.r);
-  };
-  auto cmp_pos = [](const node &lh, const node &rh) {
-    return PII(lh.l, lh.r) < PII(rh.l, rh.r);
-  };
-
-  set<node, decltype(cmp_len)> qnode;
-  set<node, decltype(cmp_pos)> p;
+  set<node> qnode;
+  set<PII> p;
 
   For1(i, 1, n) {
     int pos = m[i];
@@ -197,7 +195,7 @@ void solve() {
       auto it = p.lower_bound({pos, pos});
       it--;
 
-      auto [l, r] = *it;
+      int l = it->first, r = it->second;
       int len1 = qnode.begin()->get_len(), len2 = min(pos - l, r - pos);
       if (len1 != len2) {
         cout << "NO\n";
