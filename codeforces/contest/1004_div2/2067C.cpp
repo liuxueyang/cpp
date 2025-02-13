@@ -156,6 +156,33 @@ void solve() {
   ll n;
   cin >> n;
 
+  For1(k, 0, 7) {
+    int x = n - k, mx{};
+    string s = to_string(x);
+
+    for (auto c : s) {
+      int id = c - '0';
+      if (id < 7) {
+        if (id + k == 7) {
+          cout << k << '\n';
+          return;
+        }
+      } else if (id == 7) {
+        cout << k << '\n';
+        return;
+      }
+    }
+    if (mx + k == 7) {
+      cout << k << '\n';
+      return;
+    }
+  }
+}
+
+void solve1() {
+  ll n;
+  cin >> n;
+
   auto check = [](ll n) {
     while (n) {
       if (n % 10 == 7) return true;
