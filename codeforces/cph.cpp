@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <array>
 #include <cassert>
+#include <chrono>
 #include <climits>
 #include <cmath>
 #include <cstdio>
@@ -166,12 +167,23 @@ int main(void) {
   cout.tie(NULL);
   _m_gen64.seed(Pr);
 
+#ifdef _DEBUG
+  auto _start_ts = std::chrono::high_resolution_clock::now();
+#endif
+
   int T = 1;
   cin >> T;
 
   while (T--) {
     solve();
   }
+
+#ifdef _DEBUG
+  auto _end_ts = std::chrono::high_resolution_clock::now();
+  std::cerr << "Execution time: "
+            << std::chrono::duration<double>(_end_ts - _start_ts).count()
+            << " seconds." << std::endl;
+#endif
 
   return 0;
 }

@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <array>
 #include <cassert>
-#include <chrono>
 #include <climits>
 #include <cmath>
 #include <cstdio>
@@ -153,77 +152,46 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
+int randn(int n) {
+  random_device rd;
+  mt19937 g(rd());
+
+  return g() % n + 1;
+}
+
 void solve() {
-  int n, q;
-  cin >> n;
+  random_device rd;
+  mt19937 g(rd());
 
-  VI a(n + 10);
-  For1(i, 1, n) cin >> a[i];
-  cin >> q;
+  int tc = 300;
+  int len = 15;
 
-  set<int, greater<int>> s;
-  For1(i, 1, n) {
-    if (i & 1) {
-      if (a[i] == 1) s.insert(i);
-    } else {
-      if (!a[i]) s.insert(i);
-    }
-  }
-
-  while (q--) {
-    int p, x;
-    cin >> p >> x;
-    if (p & 1) {
-      if (x == 1)
-        s.insert(p);
-      else if (s.contains(p))
-        s.erase(p);
-    } else {
-      if (!x)
-        s.insert(p);
-      else if (s.contains(p))
-        s.erase(p);
-    }
-    a[p] = x;
-
-    if (s.empty())
-      cout << a[1] << '\n';
-    else {
-      auto p0 = *s.begin();
-      cout << a[p0] << '\n';
-    }
+  cout << tc << '\n';
+  while (tc--) {
+    int n = randn(len) + 2, k = randn(n - 1);
+    cout << n << ' ' << k << '\n';
+    VI a(n);
+    iota(all(a), 1);
+    shuffle(all(a), g);
+    Outputr(all(a));
   }
 }
 
 int main(void) {
 #ifdef _DEBUG
-#ifndef _CPH
-  freopen("../input.txt", "r", stdin);
+  freopen("../input.txt", "w", stdout);
 #endif
-#endif
-
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
   cout.tie(NULL);
   _m_gen64.seed(Pr);
 
-#ifdef _DEBUG
-  auto _start_ts = std::chrono::high_resolution_clock::now();
-#endif
-
   int T = 1;
-  cin >> T;
+  // cin >> T;
 
   while (T--) {
     solve();
   }
-
-#ifdef _DEBUG
-  auto _end_ts = std::chrono::high_resolution_clock::now();
-  std::cerr << "Execution time: "
-            << std::chrono::duration<double>(_end_ts - _start_ts).count()
-            << " seconds." << std::endl;
-#endif
 
   return 0;
 }

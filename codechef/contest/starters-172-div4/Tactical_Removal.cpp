@@ -154,51 +154,71 @@ ostream &operator<<(ostream &os, const lll &v) {
 #endif
 
 void solve() {
-  int n, q;
-  cin >> n;
+  int n, k;
+  cin >> n >> k;
 
   VI a(n + 10);
-  For1(i, 1, n) cin >> a[i];
-  cin >> q;
+  For1(i, 1, n) { cin >> a[i]; }
 
-  set<int, greater<int>> s;
+  set<int, greater<int>> left;
+  set<int> right;
+  ll sum{};
+
+  auto maintain = [&]() {
+    while (SZ(right) > SZ(left)) {
+      auto it = right.begin();
+      left.insert(*it);
+      sum += *it;
+      right.erase(it);
+    }
+    while (SZ(left) - SZ(right) > 1) {
+      auto it = left.begin();
+      right.insert(*it);
+      sum -= *it;
+      left.erase(it);
+    }
+  };
+  For1(i, 1, n) right.insert(a[i]);
+
+  ll mx{-INF};
+
   For1(i, 1, n) {
-    if (i & 1) {
-      if (a[i] == 1) s.insert(i);
-    } else {
-      if (!a[i]) s.insert(i);
-    }
-  }
-
-  while (q--) {
-    int p, x;
-    cin >> p >> x;
-    if (p & 1) {
-      if (x == 1)
-        s.insert(p);
-      else if (s.contains(p))
-        s.erase(p);
-    } else {
-      if (!x)
-        s.insert(p);
-      else if (s.contains(p))
-        s.erase(p);
-    }
-    a[p] = x;
-
-    if (s.empty())
-      cout << a[1] << '\n';
+    if (right.contains(a[i]))
+      right.erase(a[i]);
     else {
-      auto p0 = *s.begin();
-      cout << a[p0] << '\n';
+      sum -= a[i];
+      left.erase(a[i]);
+    }
+
+    if (i <= k - 1) continue;
+
+    maintain();
+
+    ll tmp{};
+    if ((n - k) % 2 == 0)
+      tmp = sum * 2;
+    else
+      tmp = sum * 2 - *left.begin();
+
+    ckmax(mx, tmp);
+
+    int l = i - k + 1;
+    if (a[l] > *left.begin()) {
+      right.insert(a[l]);
+    } else {
+      left.insert(a[l]);
+      sum += a[l];
     }
   }
+
+  cout << mx << '\n';
 }
 
 int main(void) {
 #ifdef _DEBUG
 #ifndef _CPH
   freopen("../input.txt", "r", stdin);
+  freopen("../output.txt", "w", stdout);
 #endif
 #endif
 
