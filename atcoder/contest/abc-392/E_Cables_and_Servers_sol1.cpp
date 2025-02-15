@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <array>
 #include <cassert>
-#include <chrono>
 #include <climits>
 #include <cmath>
 #include <cstdio>
@@ -153,11 +152,21 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
+struct edge {
+  int u, v, id;
+
+  bool operator<(const edge &rh) const { return id < rh.id; }
+};
+
 const int N = 200100;
-int n, fa[N], sz[N];
+int fa[N], n;
+multiset<edge> dup[N];
 
 void Init() {
-  For1(i, 1, n) { fa[i] = i, sz[i] = 1; }
+  For1(i, 1, n) {
+    fa[i] = i;
+    dup[i] = {};
+  }
 }
 
 int Find(int x) {
@@ -168,56 +177,73 @@ int Find(int x) {
 void Union(int x, int y) {
   int rx = Find(x), ry = Find(y);
   if (rx == ry) return;
-  if (sz[rx] >= ry) {
-    sz[rx] += sz[ry];
+  if (SZ(dup[rx]) > SZ(dup[ry])) {
     fa[ry] = rx;
+    for (auto x : dup[ry]) dup[rx].insert(x);
   } else {
-    sz[ry] += sz[rx];
     fa[rx] = ry;
+    for (auto x : dup[rx]) dup[ry].insert(x);
   }
 }
-
-struct edge {
-  int l, r, id;
-  bool operator<(const edge &rh) const { return id < rh.id; }
-};
 
 void solve() {
   int m;
   cin >> n >> m;
-
   Init();
-  vector<edge> a(m + 10);
-  set<edge> dup;
-  set<int> s;
 
   For1(i, 1, m) {
-    cin >> a[i].l >> a[i].r;
-    a[i].id = i;
-
-    int r1 = Find(a[i].l), r2 = Find(a[i].r);
-    if (r1 == r2) {
-      dup.insert(a[i]);
+    int u, v;
+    cin >> u >> v;
+    int fu = Find(u), fv = Find(v);
+    if (fu == fv) {
+      dup[fu].insert({u, v, i});
     } else {
-      Union(r1, r2);
+      Union(fu, fv);
     }
   }
-  For1(i, 1, n) { s.insert(Find(i)); }
-  int k = SZ(s) - 1;
-  cout << k << '\n';
-  while (k--) {
-    auto it = dup.begin();
-    auto [l, r, id] = *it;
-    int ro0 = Find(l);
-    for (auto ro1 : s) {
-      if (Find(ro1) != ro0) {
-        cout << id << ' ' << r << ' ' << ro1 << '\n';
-        s.erase(ro1);
-        Union(ro1, ro0);
-        break;
+
+  int cur = 1;
+  vector<edge> ans;
+  VI rem;
+
+  For1(i, 1, n) {
+    int fi = Find(i), fcur = Find(cur);
+
+    if (fi != fcur) {
+      if (nemp(dup[fi])) {
+        auto it = dup[fi].begin();
+        auto [u, v, id] = *it;
+        ans.pb({id, u, fcur});
+        dup[fi].erase(it);
+      } else if (nemp(dup[fcur])) {
+        auto it = dup[fcur].begin();
+        auto [u, v, id] = *it;
+        ans.pb({id, u, fi});
+        dup[fcur].erase(it);
+      } else {
+        rem.pb(i);
+        continue;
       }
+
+      Union(fi, fcur);
+      cur = fcur;
+    } else {
     }
-    dup.erase(it);
+  }
+
+  for (auto x : rem) {
+    int fi = Find(x), fcur = Find(cur);
+    if (nemp(dup[fcur])) {
+      auto it = dup[fcur].begin();
+      auto [u, v, id] = *it;
+      ans.pb({id, u, fi});
+      dup[fcur].erase(it);
+    }
+  }
+
+  cout << SZ(ans) << '\n';
+  for (auto [x, y, z] : ans) {
+    cout << x << ' ' << y << ' ' << z << '\n';
   }
 }
 
@@ -233,23 +259,12 @@ int main(void) {
   cout.tie(NULL);
   _m_gen64.seed(Pr);
 
-#ifdef _DEBUG
-  auto _start_ts = std::chrono::high_resolution_clock::now();
-#endif
-
   int T = 1;
   // cin >> T;
 
   while (T--) {
     solve();
   }
-
-#ifdef _DEBUG
-  auto _end_ts = std::chrono::high_resolution_clock::now();
-  std::cerr << "Execution time: "
-            << std::chrono::duration<double>(_end_ts - _start_ts).count()
-            << " seconds." << std::endl;
-#endif
 
   return 0;
 }
