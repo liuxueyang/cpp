@@ -262,7 +262,6 @@ class Solution {
     double l = 0, r = 2e9 + 10, mid;
     while (abs(r - l) > eps) {
       mid = (l + r) / 2;
-      dbg(l, r);
       double tmp = check(mid);
       if (tmp > 0)
         r = mid;
@@ -283,7 +282,7 @@ class Solution {
         break;
       }
     }
-    dbg(int(ok));
+
     if (!ok) {
       set<int> s;
       for (auto &v : a) {
