@@ -153,58 +153,65 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
+struct node {
+  int l, r, cnt;
+};
+
 void solve() {
-  int n;
-  string s;
-
-  cin >> n >> s;
-
-  s = " " + s;
-  VI a;
-
-  For1(i, 1, n) {
-    if (s[i] == '1') {
-      a.pb(i);
-    }
-  }
-
-  int m{SZ(a)};
-  For(i, 0, m) { a[i] = a[i] - i; }
-  sort(all(a));
-
-  int mid = m / 2;
-  ll ans{};
-  for (auto x : a) {
-    ans += abs(x - a[mid]);
-  }
-  cout << ans << '\n';
-}
-
-void solve1() {
   int n, tot{};
   string s;
   cin >> n >> s;
 
   s = " " + s;
-  VI p(n + 10);
+  VI p(n + 10), p1(n + 10);
+  vector<node> a;
+  node cur{};
 
   For1(i, 1, n) {
+    p[i] = p[i - 1] + (s[i] == '0');
+    p1[i] = p1[i - 1] + (s[i] == '1');
+    tot += (s[i] == '1');
     if (s[i] == '1') {
-      p[i] = p[i - 1] + 1;
-      tot++;
-    } else
-      p[i] = p[i - 1];
+      if (!cur.cnt) {
+        cur.l = i;
+      }
+      cur.r = i;
+      cur.cnt++;
+    } else {
+      if (cur.cnt) {
+        a.pb(cur);
+        cur = {};
+      }
+    }
   }
+  if (cur.cnt) a.pb(cur);
+  int m = SZ(a), sum{}, pos{-1};
 
-  ll ans{};
-  For1(i, 2, n - 1) {
-    if (s[i] == '0') {
-      int l = p[i], r = tot - l;
-      ans += min(l, r);
+  For(i, 0, m) {
+    sum += a[i].cnt;
+    if (sum >= tot - sum) {
+      pos = i;
+      break;
     }
   }
 
-  cout << ans << '\n';
+  auto check = [&](int pos) {
+    auto [l, r, cnt] = a[pos];
+    ll res{};
+    For(i, 0, pos) {
+      auto [l1, r1, cnt1] = a[i];
+      res += (p[l] - p[r1]) * 1LL * cnt1;
+    }
+
+    For(i, pos + 1, m) {
+      auto [l1, r1, cnt1] = a[i];
+      res += 1LL * (p[l1] - p[r]) * cnt1;
+    }
+    return res;
+  };
+
+  ll res = check(pos);
+  cout << res << '\n';
 }
 
 int main(void) {
