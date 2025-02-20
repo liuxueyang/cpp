@@ -153,21 +153,47 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
+const int N = 55;
+int d[2][N][N];
+
 void solve() {
   int n;
   cin >> n;
 
   VI a(n + 10);
-  For1(i, 1, n) cin >> a[i];
+  For1(i, 1, n) { cin >> a[i]; }
 
-  int ans{};
   For1(i, 1, n) {
-    int l{}, r{};
-    if (i == 2) l = a[i - 1];
-    if (i == n - 1) r = a[i + 1];
-    ckmax(ans, max(0, a[i] - l - r));
+    For1(j, i, n) {
+      if (i == j)
+        d[0][i][j] = d[1][i][j] = a[i];
+      else
+        d[0][i][j] = d[1][i][j] = 0;
+    }
   }
-  cout << ans << '\n';
+
+  For1(len, 2, n) {
+    for (int i = 1; i + len - 1 <= n; ++i) {
+      int j = i + len - 1;
+      auto check = [&](int x, int y) {
+        int t1 = max(0, x - y), t2 = max(0, y - x);
+        if (t1 > t2) swap(t1, t2);
+        return PII(t1, t2);
+      };
+      int mie{INF}, mx{-INF};
+
+      For1(L, i, j - 1) {
+        For(k, 0, 2) {
+          auto [x, y] = check(d[k][i][L], d[k][L + 1][j]);
+          auto [x1, y1] = check(d[k][i][L], d[k ^ 1][L + 1][j]);
+          ckmin(mie, min({x, y, x1, y1}));
+          ckmax(mx, max({x, y, x1, y1}));
+        }
+      }
+      d[0][i][j] = mie, d[1][i][j] = mx;
+    }
+  }
+  cout << d[1][1][n] << '\n';
 }
 
 int main(void) {
