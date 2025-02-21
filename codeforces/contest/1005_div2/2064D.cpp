@@ -155,7 +155,54 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
-void solve() {}
+void solve() {
+  int n, q;
+  cin >> n >> q;
+  VI a(n + 1), b(n + 1);
+  cin >> a;
+
+  For1(i, 1, n) b[i] = b[i - 1] ^ a[i];
+
+  VVI d(n + 1, VI(32, -1));
+  For1(j, 0, 30) {
+    For1(i, 1, n) {
+      if (log2(a[i]) >= j)
+        d[i][j] = i;
+      else
+        d[i][j] = d[i - 1][j];
+    }
+  }
+
+  while (q--) {
+    int x;
+    cin >> x;
+    int msb = log2(x), pos = n, ans{};
+
+    while (x) {
+      int pos1 = d[pos][msb];
+
+      if (pos1 == -1) {
+        ans = n;
+        break;
+      }
+      x = x ^ b[pos] ^ b[pos1];
+      if (x >= a[pos1]) {
+        x ^= a[pos1];
+        pos = pos1 - 1;
+        msb = log2(x);
+        if (x == 0) {
+          ans = n - pos1 + 1;
+          break;
+        }
+      } else {
+        ans = n - pos1;
+        break;
+      }
+    }
+    cout << ans << ' ';
+  }
+  NL;
+}
 
 int main(void) {
 #ifdef _DEBUG
