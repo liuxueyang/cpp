@@ -67,6 +67,11 @@ const ull Pr = 131, Pr1 = 13331;
 #define SZ(a) int((a).size())
 #define NL cout << '\n';
 
+#define No() cout << "No\n"
+#define Yes() cout << "Yes\n"
+#define NO() cout << "NO\n"
+#define YES() cout << "YES\n"
+
 template <class T>
 bool ckmin(T &a, const T &b) {
   return b < a ? a = b, 1 : 0;
@@ -160,7 +165,7 @@ void solve() {}
 int main(void) {
 #ifdef _DEBUG
 #ifndef _CPH
-  freopen("../input.txt", "r", stdin);
+  freopen("input.txt", "r", stdin);
 #endif
 #endif
 

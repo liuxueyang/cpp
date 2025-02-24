@@ -67,6 +67,11 @@ const ull Pr = 131, Pr1 = 13331;
 #define SZ(a) int((a).size())
 #define NL cout << '\n';
 
+#define No() cout << "No\n"
+#define Yes() cout << "Yes\n"
+#define NO() cout << "NO\n"
+#define YES() cout << "YES\n"
+
 template <class T>
 bool ckmin(T &a, const T &b) {
   return b < a ? a = b, 1 : 0;
@@ -155,49 +160,56 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
-#define No() cout << "No\n"
-#define Yes() cout << "Yes\n"
-#define NO() cout << "NO\n"
-#define YES() cout << "YES\n"
+struct Cmp {
+  bool operator()(const PLL &lh, const PLL &rh) const {
+    if (lh.f1 != rh.f1) return lh.f1 > rh.f1;
+    return lh.f2 < rh.f2;
+  }
+};
 
 void solve() {
-  string s;
-  cin >> s;
+  int n;
+  cin >> n;
 
-  stack<char> stk;
-  for (auto c : s) {
-    if (c == '(' || c == '[' || c == '<')
-      stk.push(c);
-    else if (c == ')') {
-      if (stk.empty() || stk.top() != '(') {
-        No();
-        return;
+  VI a(n + 1), b(n + 1);
+  cin >> a >> b;
+
+  ll ans{};
+
+  set<PLL, Cmp> q1, q2;
+  for (int i = 1, j = 1; j <= n; ++j) {
+    while (nemp(q1) && q1.begin()->f1 >= a[j] + b[j] && i < j) {
+      auto it = q1.begin();
+      if (it->second < i) {
+        q1.erase(it);
+      } else {
+        q1.erase({a[i] + b[i], i});
+        ++i;
       }
-      stk.pop();
-    } else if (c == ']') {
-      if (stk.empty() || stk.top() != '[') {
-        No();
-        return;
-      }
-      stk.pop();
-    } else if (c == '>') {
-      if (stk.empty() || stk.top() != '<') {
-        No();
-        return;
-      }
-      stk.pop();
     }
+    while (nemp(q2) && q2.begin()->f1 >= a[j] - b[j] && i < j) {
+      auto it = q2.begin();
+      if (it->second < i) {
+        q2.erase(it);
+      } else {
+        q2.erase({a[i] - b[i], i});
+        ++i;
+      }
+    }
+
+    q1.insert({a[j] + b[j], j});
+    q2.insert({a[j] - b[j], j});
+    ans += j - i;
   }
-  if (stk.empty())
-    Yes();
-  else
-    No();
+
+  cout << ans << '\n';
 }
 
 int main(void) {
 #ifdef _DEBUG
 #ifndef _CPH
-  freopen("../input.txt", "r", stdin);
+  freopen("input.txt", "r", stdin);
+  freopen("my_output.txt", "w", stdout);
 #endif
 #endif
 

@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <array>
 #include <cassert>
-#include <chrono>
 #include <climits>
 #include <cmath>
 #include <cstdio>
@@ -66,6 +65,11 @@ const ull Pr = 131, Pr1 = 13331;
 #define all1(a, len) (a + 1), (a + 1 + len)
 #define SZ(a) int((a).size())
 #define NL cout << '\n';
+
+#define No() cout << "No\n"
+#define Yes() cout << "Yes\n"
+#define NO() cout << "NO\n"
+#define YES() cout << "YES\n"
 
 template <class T>
 bool ckmin(T &a, const T &b) {
@@ -155,60 +159,35 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
-#define No() cout << "No\n"
-#define Yes() cout << "Yes\n"
-#define NO() cout << "NO\n"
-#define YES() cout << "YES\n"
-
 void solve() {
-  string s;
-  cin >> s;
+  random_device dev;
+  mt19937 rd(dev());
 
-  stack<char> stk;
-  for (auto c : s) {
-    if (c == '(' || c == '[' || c == '<')
-      stk.push(c);
-    else if (c == ')') {
-      if (stk.empty() || stk.top() != '(') {
-        No();
-        return;
-      }
-      stk.pop();
-    } else if (c == ']') {
-      if (stk.empty() || stk.top() != '[') {
-        No();
-        return;
-      }
-      stk.pop();
-    } else if (c == '>') {
-      if (stk.empty() || stk.top() != '<') {
-        No();
-        return;
-      }
-      stk.pop();
-    }
+  int tc = rd() % 100 + 1;
+  cout << tc << '\n';
+
+  while (tc--) {
+    int n = rd() % 8 + 1;
+    cout << n << '\n';
+    VI a(n + 1);
+    For1(i, 1, n) { a[i] = rd() % 30 + 1; }
+    sort(all1(a.begin(), n));
+    cout << a;
+
+    For1(i, 1, n) { cout << rd() % 30 + 1 << ' '; }
+    cout << '\n';
   }
-  if (stk.empty())
-    Yes();
-  else
-    No();
 }
 
 int main(void) {
 #ifdef _DEBUG
-#ifndef _CPH
-  freopen("../input.txt", "r", stdin);
+  // freopen("../input.txt", "r", stdin);
+  freopen("input.txt", "w", stdout);
 #endif
-#endif
-
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
   cout.tie(NULL);
   _m_gen64.seed(Pr);
-
-#ifdef _DEBUG
-  auto _start_ts = std::chrono::high_resolution_clock::now();
-#endif
 
   int T = 1;
   // cin >> T;
@@ -216,13 +195,6 @@ int main(void) {
   while (T--) {
     solve();
   }
-
-#ifdef _DEBUG
-  auto _end_ts = std::chrono::high_resolution_clock::now();
-  std::cerr << "Execution time: "
-            << std::chrono::duration<double>(_end_ts - _start_ts).count()
-            << " seconds." << std::endl;
-#endif
 
   return 0;
 }

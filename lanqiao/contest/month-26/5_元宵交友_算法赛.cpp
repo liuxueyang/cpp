@@ -165,7 +165,6 @@ void solve() {
   For1(i, 1, n) { cin >> a[i]; }
   sort(all1(a, n));
   int m = distance(a + 1, unique(all1(a, n)));
-  dbg(m);
 
   For1(k, 1, n) {
     int res{1}, cur = a[1] + k;

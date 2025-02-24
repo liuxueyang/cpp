@@ -1,0 +1,1 @@
+{"name":"Local: 6_std","url":"/home/rakuyo/cpp/lanqiao/contest/month-26/6_std.cpp","tests":[{"id":1740386334021,"input":"1\n7\n1 9 16 21 22 24 26\n25 7 17 16 28 11 10 ","output":"2"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/rakuyo/cpp/lanqiao/contest/month-26/6_std.cpp","group":"local","local":true}
