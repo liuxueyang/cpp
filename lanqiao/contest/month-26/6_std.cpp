@@ -1,4 +1,6 @@
 #include <bits/stdc++.h>
+#include "debug.h"
+
 using namespace std;
 #define int long long
 signed main() {
@@ -23,9 +25,9 @@ signed main() {
     }
     int sum = 0;
     for (int i = 0; i < N; ++i) {
-      if (dp[i]) {
-        cerr << "i = " << i << " " << dp[i] << '\n';
-      }
+        if (dp[i]) {
+            dbg(i, dp[i]);
+        }
       sum += dp[i];
     }
     cout << sum << endl;
