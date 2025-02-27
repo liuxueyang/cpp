@@ -164,55 +164,59 @@ void solve() {
   int n;
   cin >> n;
 
-  VI par(n + 1);
-  VVI g(n + 1);
-
+  VVI g(n + 10);
+  VI par(n + 10);
   For1(i, 2, n) {
-    cin >> par[i];
-    g[i].pb(par[i]);
-    g[par[i]].pb(i);
+    int u, v = i;
+    cin >> u;
+    par[i] = u;
+    g[v].pb(u), g[u].pb(v);
   }
 
-  ll ans{}, presum{};
-  queue<PII> q;
-  VI cur_arr;
-  VL d(n + 1);
-  VB vis(n + 1);
-  int cur_level = 1;
+  VL dp(n + 10);
+  dp[1] = 1;
 
-  q.push({1, 1});
+  queue<PII> q;
+  ll ans{};
+  ll presum{};
+  VB vis(n + 10);
+  VI a;
+  int cur = 1;
+
   vis[1] = true;
-  d[1] = 1;
+  q.push(PII(1, 1));
 
   while (nemp(q)) {
-    auto [u, level] = q.front();
+    auto [ver, level] = q.front();
     q.pop();
 
-    if (level == cur_level) {
-      cur_arr.pb(u);
-    } else {
+    if (cur != level) {
       presum = 0;
-      for (auto x : cur_arr) {
-        presum = (presum + d[x]) % MOD1;
+      for (auto v : a) {
+        presum = (presum + dp[v]) % MOD1;
       }
-      cur_arr = {u};
-      cur_level = level;
+
+      a = {ver};
+      cur = level;
+    } else {
+      a.pb(ver);
     }
 
-    if (level == 2)
-      d[u] = 1;
-    else if (level > 2) {
-      d[u] = (presum - d[par[u]] + MOD1) % MOD1;
+    if (level >= 2) {
+      if (level == 2) {
+        dp[ver] = 1;
+      } else {
+        dp[ver] = (presum - dp[par[ver]] + MOD1) % MOD1;
+      }
     }
+    ans = (ans + dp[ver]) % MOD1;
 
-    for (auto v : g[u]) {
+    for (auto v : g[ver]) {
       if (vis[v]) continue;
       q.push(PII(v, level + 1));
       vis[v] = true;
     }
   }
-
-  For1(i, 1, n) { ans = (ans + d[i]) % MOD1; }
 
   cout << ans << '\n';
 }
