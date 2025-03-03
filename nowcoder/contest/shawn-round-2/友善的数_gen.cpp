@@ -162,10 +162,10 @@ ostream &operator<<(ostream &os, const lll &v) {
 void solve() {
   mt19937 rnd(random_device{}());
   int tc = rnd() % 500 + 1;
-  tc = 1000;
+  tc = 200;
   cout << tc << '\n';
 
-  int limit = 2e5;
+  int limit = 2e3;
   For(i, 0, tc) {
     int a = rnd() % limit + 1, b = rnd() % limit + 1;
     cout << a << " " << b << '\n';
