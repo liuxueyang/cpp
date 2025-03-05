@@ -161,17 +161,20 @@ ostream &operator<<(ostream &os, const lll &v) {
 #endif
 
 void solve() {
-  VI a(4), b(4);
-  cin >> a >> b;
+  int a, b, c, A, B, C;
+  cin >> a >> b >> c >> A >> B >> C;
 
   int ans{};
 
-  Rof1(i, 1, 3) {
-    int x = min(a[i], b[i]);
-    ans += x;
-    a[i - 1] += a[i] - x;
-  }
+  ans += min(c, C);
+  c -= min(c, C);
+  b += c;
 
+  ans += min(b, B);
+  b -= min(b, B);
+  a += b;
+
+  ans += min(a, A);
   cout << ans << '\n';
 }
 
