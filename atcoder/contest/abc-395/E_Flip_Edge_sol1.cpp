@@ -160,45 +160,72 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
+struct node {
+  ll d;
+  int ver, odd;
+  bool operator>(const node &rh) const {
+    if (d != rh.d)
+      return d > rh.d;
+    else if (odd != rh.odd)
+      return odd > rh.odd;
+    return ver > rh.ver;
+  }
+};
+
 void solve() {
   int n, m, X;
   cin >> n >> m >> X;
 
-  vector<vector<PII>> g(n * 2 + 10);
+  vector<vector<PII>> g(n + 1);
   For(i, 0, m) {
     int u, v;
     cin >> u >> v;
     g[u].pb({v, 1});
-    g[v + n].pb({u + n, 1});
+    g[v].pb({u, -1});
   }
 
-  For1(i, 1, n) {
-    int j = i + n;
-    g[i].pb({j, X});
-    g[j].pb({i, X});
-  }
+  VVL dis(n + 1, VL(2, INFL));
+  set<PII> st;
 
-  int n2 = n * 2;
-  VB st(n2 + 10);
-  VL dis(n2 + 10, INFL);
-  pqg<pair<ll, int>> q;
+  dis[1][0] = 0;
+  dis[1][1] = X;
+  priority_queue<node, vector<node>, greater<node>> q;
+  q.push({0, 1, 0});
+  q.push({X, 1, 1});
 
-  q.push({0, 1});
   while (nemp(q)) {
-    auto [base, ver] = q.top();
+    auto [base, ver, odd] = q.top();
     q.pop();
 
-    if (st[ver]) continue;
-    st[ver] = true;
+    if (has(st, PII(ver, odd))) continue;
+    st.insert(PII{ver, odd});
 
-    for (auto [v, w] : g[ver]) {
-      if (ckmin(dis[v], base + w)) {
-        q.push({dis[v], v});
+    for (auto &[v, w] : g[ver]) {
+      if (w == -1) {
+        if (odd & 1) {
+          if (ckmin(dis[v][odd], (ll)base + 1)) {
+            q.push(node{dis[v][odd], v, odd});
+          }
+        } else {
+          if (ckmin(dis[v][odd ^ 1], (ll)base + X + 1)) {
+            q.push(node{dis[v][odd ^ 1], v, 1 ^ odd});
+          }
+        }
+      } else {
+        if (odd & 1) {
+          if (ckmin(dis[v][odd ^ 1], (ll)base + X + 1)) {
+            q.push(node{dis[v][odd ^ 1], v, 1 ^ odd});
+          }
+        } else {
+          if (ckmin(dis[v][odd], (ll)base + 1)) {
+            q.push(node{dis[v][odd], v, odd});
+          }
+        }
       }
     }
   }
 
-  cout << min(dis[n], dis[n2]) << '\n';
+  cout << min(dis[n][0], dis[n][1]) << '\n';
 }
 
 int main(void) {
