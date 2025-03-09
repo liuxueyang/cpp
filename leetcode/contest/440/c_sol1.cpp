@@ -243,26 +243,24 @@ void PrintList(LNP head) {
 
 #endif
 // End of LeetCode
-
 struct info {
   int mx;
-  info() : mx(0) {}
-  info(int x_) : mx(x_) {}
 
+  info() : mx(0) {}
+  info(int mx_) : mx(mx_) {}
   info operator+(const info &rh) const { return info(max(mx, rh.mx)); }
 };
 
 struct SegmentTree {
-  int n;
-  VI a;
-
-  struct node {
+  struct Node {
     info val;
   };
 
-  vector<node> seg;
+  int n;
+  VI a;
+  vector<Node> seg;
 
-  SegmentTree(int n_, VI &a_) : n(n_), a(a_) { seg = vector<node>(n * 4 + 10); }
+  SegmentTree(int n_, VI &a_) : n(n_), a(a_), seg(vector<Node>(n * 4 + 10)) {}
 
   void update(int id) {
     int left = id * 2, right = left + 1;
@@ -270,12 +268,11 @@ struct SegmentTree {
   }
 
   void build(int id, int l, int r) {
+    int mid = (l + r) / 2, left = id * 2, right = left + 1;
     if (l == r) {
       seg[id].val = info(a[l]);
       return;
     }
-
-    int mid = (l + r) / 2, left = id * 2, right = left + 1;
     build(left, l, mid);
     build(right, mid + 1, r);
     update(id);
@@ -283,10 +280,9 @@ struct SegmentTree {
 
   void change(int id, int l, int r, int pos, int d) {
     if (l == r) {
-      seg[id].val = info(d);
+      seg[id].val = {d};
       return;
     }
-
     int mid = (l + r) / 2, left = id * 2, right = left + 1;
     if (pos <= mid)
       change(left, l, mid, pos, d);
@@ -296,29 +292,33 @@ struct SegmentTree {
   }
 
   int binary_search(int id, int l, int r, int ql, int qr, int d) {
-    int mid = (l + r) / 2, left = id * 2, right = left + 1;
-
+    // 如果是叶子结点，根据当前结点的最大值返回答案
     if (l == r) {
       if (seg[id].val.mx >= d) return l;
       return -1;
     }
 
+    int mid = (l + r) / 2, left = id * 2, right = left + 1;
     if (l == ql && r == qr) {
+      // 先检查当前结点的最大值是否 >= d
       if (seg[id].val.mx < d) return -1;
-      int res = binary_search(left, l, mid, ql, mid, d);
-      if (res != -1) return res;
+      // 先查看左儿子是否满足条件，如果满足，直接返回左子树的答案
+      if (seg[left].val.mx >= d) return binary_search(left, l, mid, ql, mid, d);
+      // 否则返回右子树的答案
       return binary_search(right, mid + 1, r, mid + 1, qr, d);
     }
 
+    // 查询区间在左子树
     if (qr <= mid)
       return binary_search(left, l, mid, ql, qr, d);
-    else if (ql > mid)
+    else if (ql > mid)  // 查询区间在右子树
       return binary_search(right, mid + 1, r, ql, qr, d);
-    else {
-      int res = binary_search(left, l, mid, ql, mid, d);
-      if (res != -1) return res;
-      return binary_search(right, mid + 1, r, mid + 1, qr, d);
-    }
+
+    // 查询区间跨越左右子树，先对左子树查询，如果存在，直接返回
+    int pos = binary_search(left, l, mid, ql, mid, d);
+    if (pos != -1) return pos;
+    // 左子树不存在答案，返回右子树的答案
+    return binary_search(right, mid + 1, r, mid + 1, qr, d);
   }
 };
 
