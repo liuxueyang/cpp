@@ -1,3 +1,5 @@
+
+
 #include <algorithm>
 #include <array>
 #include <cassert>
@@ -247,7 +249,7 @@ void PrintList(LNP head) {
 const int N = 100100;
 int a[N], b[N], n, len;
 
-inline int get_segid(int i) { return (i - 1) / len + 1; }
+int get_segid(int i) { return (i - 1) / len + 1; }
 
 int query(int l, int r, int x) {
   int lsid = get_segid(l), rsid = get_segid(r);
@@ -269,11 +271,8 @@ int query(int l, int r, int x) {
   For1(i, lsid + 1, rsid - 1) {
     if (b[i] >= x) {
       For1(j, (i - 1) * len + 1, i * len) {
-        if (a[j] >= x) {
-          return j;
-        }
+        if (a[j] >= x) return j;
       }
-      return -1;
     }
   }
 
@@ -289,40 +288,49 @@ int query(int l, int r, int x) {
 void change(int pos, int x) {
   int sid = get_segid(pos);
   a[pos] = x;
-  // 更新块的最大值，初始化成最小值
-  b[sid] = -INF;
   For1(i, (sid - 1) * len + 1, min(sid * len, n)) { ckmax(b[sid], a[i]); }
 }
 
 class Solution {
  public:
-  int numOfUnplacedFruits(vector<int> &fruits_, vector<int> &baskets_) {
-    n = SZ(fruits_);
-    len = sqrt(n);
-
-    For(i, 0, n) { a[i + 1] = baskets_[i]; }
-
-    For1(i, 1, n) { b[i] = -INF; }
-
-    For1(i, 1, n) {
-      int sid = get_segid(i);
-      ckmax(b[sid], a[i]);
+  int numOfUnplacedFruits(vector<int> &fruits, vector<int> &baskets) {
+    int n = fruits.size();
+    int m = ceil(sqrt(n));
+    int siz = (n + m - 1) / m;
+    vector<int> mx(siz);
+    for (int i = 0; i < n; i++) {
+      int g = i / m;
+      mx[g] = max(mx[g], baskets[i]);
     }
-
-    int ans{};
-
-    For1(i, 1, n) {
-      int pos = query(1, n, fruits_[i - 1]);
-      if (pos == -1) {
-        ans++;
-      } else {
-        change(pos, -INF);
+    auto modify = [&](int pos, int v) {
+      int g = pos / m;
+      baskets[pos] = v;
+      mx[g] = 0;
+      for (int i = g * m; i < min((g + 1) * m, n); i++) {
+        mx[g] = max(mx[g], baskets[i]);
       }
+    };
+    int ans = 0;
+    for (int x : fruits) {
+      bool ok = false;
+      for (int g = 0; g < siz; g++) {
+        if (mx[g] >= x) {
+          ok = true;
+          for (int i = g * m; i < min((g + 1) * m, n); i++) {
+            if (baskets[i] >= x) {
+              modify(i, 0);
+              break;
+            }
+          }
+          break;
+        }
+      }
+      ans += !ok;
     }
-
     return ans;
   }
 };
+
 #ifdef _DEBUG
 
 int main(void) {

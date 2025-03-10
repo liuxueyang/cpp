@@ -169,20 +169,31 @@ int get_segid(int i) { return (i - 1) / len + 1; }
 void add(int l, int r, ll c) {
   int lsid = get_segid(l), rsid = get_segid(r);
   if (lsid == rsid) {
+    // 左右端点在同一个块内部，暴力
+    // 1. 递增单点 2. 更新这个块的总和
     For1(i, l, r) {
       a[i] += c;
       s[lsid] += c;
     }
     return;
   }
+
+  // 最左边的不完整块，暴力
+  // 1. 递增单点 2. 更新这个块的总和
   for (int i = l; get_segid(i) == lsid; i++) {
     s[lsid] += c;
     a[i] += c;
   }
+
+  // 中间完整的块
+  // 1. 对这个块打标记 2. 更新这个块的总和
   For1(i, lsid + 1, rsid - 1) {
     s[i] += c * len;
     tag[i] += c;
   }
+
+  // 最右边的不完整块，暴力
+  // 1. 递增单点 2. 更新这个块的总和
   for (int i = r; get_segid(i) == rsid; i--) {
     s[rsid] += c;
     a[i] += c;
@@ -194,15 +205,24 @@ ll query(int l, int r, ll c) {
 
   ll ans{};
   if (lsid == rsid) {
+    // 左右端点在同一个块内部，暴力
+    // 1. 累计单点的值 2. 累计在这个块上的标记
     For1(i, l, r) { ans = (ans + a[i] + tag[lsid]) % (c + 1); }
     return ans;
   }
+
+  // 最左边的不完整的块，暴力
+  // 1. 累计单点的值 2. 累计在这个块上的标记
   for (int i = l; get_segid(i) == lsid; i++) {
     ans = (ans + a[i] + tag[lsid]) % (c + 1);
   }
 
+  // 中间完整的块
+  // 累加这些块的和。（不需要累加标记，因为标记只对单点有效）
   For1(i, lsid + 1, rsid - 1) { ans = (ans + s[i]) % (c + 1); }
 
+  // 最右边的不完整的块，暴力
+  // 1. 累计单点的值 2. 累计在这个块上的标记
   for (int i = r; get_segid(i) == rsid; i--) {
     ans = (ans + a[i] + tag[rsid]) % (c + 1);
   }

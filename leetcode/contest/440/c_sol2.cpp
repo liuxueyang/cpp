@@ -244,83 +244,107 @@ void PrintList(LNP head) {
 #endif
 // End of LeetCode
 
-const int N = 100100;
-int a[N], b[N], n, len;
+struct info {
+  int mx;
+  info() : mx(0) {}
+  info(int x_) : mx(x_) {}
 
-inline int get_segid(int i) { return (i - 1) / len + 1; }
+  info operator+(const info &rh) const { return info(max(mx, rh.mx)); }
+};
 
-int query(int l, int r, int x) {
-  int lsid = get_segid(l), rsid = get_segid(r);
+struct SegmentTree {
+  int n;
+  VI a;
 
-  int res = -1;
-  if (lsid == rsid) {
-    For1(i, l, r) {
-      if (a[i] >= x) {
-        return i;
-      }
+  struct node {
+    info val;
+  };
+
+  vector<node> seg;
+
+  SegmentTree(int n_, VI &a_) : n(n_), a(a_) { seg = vector<node>(n * 4 + 10); }
+
+  void update(int id) {
+    int left = id * 2, right = left + 1;
+    seg[id].val = seg[left].val + seg[right].val;
+  }
+
+  void build(int id, int l, int r) {
+    if (l == r) {
+      seg[id].val = info(a[l]);
+      return;
     }
-    return -1;
+
+    int mid = (l + r) / 2, left = id * 2, right = left + 1;
+    build(left, l, mid);
+    build(right, mid + 1, r);
+    update(id);
   }
 
-  for (int i = l; get_segid(i) == lsid; i++) {
-    if (a[i] >= x) return i;
+  void change(int id, int l, int r, int pos, int d) {
+    if (l == r) {
+      seg[id].val = info(d);
+      return;
+    }
+
+    int mid = (l + r) / 2, left = id * 2, right = left + 1;
+    if (pos <= mid)
+      change(left, l, mid, pos, d);
+    else
+      change(right, mid + 1, r, pos, d);
+    update(id);
   }
 
-  For1(i, lsid + 1, rsid - 1) {
-    if (b[i] >= x) {
-      For1(j, (i - 1) * len + 1, i * len) {
-        if (a[j] >= x) {
-          return j;
-        }
-      }
+  int binary_search(int id, int l, int r, int ql, int qr, int d) {
+    int mid = (l + r) / 2, left = id * 2, right = left + 1;
+
+    if (l == r) {
+      if (seg[id].val.mx >= d) return l;
       return -1;
     }
-  }
 
-  for (int i = r; get_segid(i) == rsid; i--) {
-    if (a[i] >= x) {
-      res = i;
+    if (l == ql && r == qr) {
+      // 线段树二分的关键：如果整个区间在询问区间内，
+      // 先查看整个区间的性质是否满足条件，然后再查看左右儿子。
+      // 如果没有这个判断，那么就会退化成询问区间中的每个点。
+      if (seg[id].val.mx < d) return -1;
+      int res = binary_search(left, l, mid, ql, mid, d);
+      if (res != -1) return res;
+      return binary_search(right, mid + 1, r, mid + 1, qr, d);
+    }
+
+    if (qr <= mid)
+      return binary_search(left, l, mid, ql, qr, d);
+    else if (ql > mid)
+      return binary_search(right, mid + 1, r, ql, qr, d);
+    else {
+      int res = binary_search(left, l, mid, ql, mid, d);
+      if (res != -1) return res;
+      return binary_search(right, mid + 1, r, mid + 1, qr, d);
     }
   }
-
-  return res;
-}
-
-void change(int pos, int x) {
-  int sid = get_segid(pos);
-  a[pos] = x;
-  // 更新块的最大值，初始化成最小值
-  b[sid] = -INF;
-  For1(i, (sid - 1) * len + 1, min(sid * len, n)) { ckmax(b[sid], a[i]); }
-}
+};
 
 class Solution {
  public:
-  int numOfUnplacedFruits(vector<int> &fruits_, vector<int> &baskets_) {
-    n = SZ(fruits_);
-    len = sqrt(n);
+  int numOfUnplacedFruits(vector<int> &fruits, vector<int> &baskets) {
+    int n{SZ(fruits)};
+    VI a(n + 1);
+    For(i, 0, n) { a[i + 1] = baskets[i]; }
 
-    For(i, 0, n) { a[i + 1] = baskets_[i]; }
+    SegmentTree tree(n, a);
+    tree.build(1, 1, n);
+    int res{};
 
-    For1(i, 1, n) { b[i] = -INF; }
-
-    For1(i, 1, n) {
-      int sid = get_segid(i);
-      ckmax(b[sid], a[i]);
+    for (auto x : fruits) {
+      int pos = tree.binary_search(1, 1, n, 1, n, x);
+      if (pos == -1)
+        res++;
+      else
+        tree.change(1, 1, n, pos, -1);
     }
 
-    int ans{};
-
-    For1(i, 1, n) {
-      int pos = query(1, n, fruits_[i - 1]);
-      if (pos == -1) {
-        ans++;
-      } else {
-        change(pos, -INF);
-      }
-    }
-
-    return ans;
+    return res;
   }
 };
 #ifdef _DEBUG
@@ -339,6 +363,7 @@ int main(void) {
     for (auto &x : ve1) cin >> x;
     cin >> n;
     for (auto &x : ve2) cin >> x;
+
     int res = a.numOfUnplacedFruits(ve1, ve2);
     dbg(res);
   }

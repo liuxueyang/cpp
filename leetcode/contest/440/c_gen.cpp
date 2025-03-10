@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <array>
 #include <cassert>
-#include <chrono>
 #include <climits>
 #include <cmath>
 #include <cstdio>
@@ -160,70 +159,28 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
-const int N = 50100;
-int n, len, id[N];
-ll a[N], tag[N];
-
-void add(int l, int r, ll c) {
-  int lsid = id[l], rsid = id[r];
-  if (lsid == rsid) {
-    // 左右端点在同一个块内部，暴力
-    For1(i, l, r) { a[i] += c; }
-    return;
-  }
-
-  // 最左边不完整块，暴力
-  for (int i = l; id[i] == lsid; i++) a[i] += c;
-  // 中间完整块，打标记
-  For1(i, lsid + 1, rsid - 1) tag[i] += c;
-  // 最右边不完整块，暴力
-  for (int i = r; id[i] == rsid; i--) a[i] += c;
-}
-
-ll query(int pos) {
-  int sid = id[pos];
-  // 点的值加上标记值
-  return a[pos] + tag[sid];
-}
-
 void solve() {
-  cin >> n;
+  mt19937 rnd(random_device{}());
 
-  len = sqrt(n);
-  For1(i, 1, n) tag[i] = 0;
-  For1(i, 1, n) {
-    cin >> a[i];
-    id[i] = (i - 1) / len + 1;
-  }
-
-  int op, l, r;
-  ll c;
-  For1(i, 1, n) {
-    cin >> op >> l >> r >> c;
-    if (op == 0) {
-      add(l, r, c);
-    } else {
-      ll ans = query(r);
-      cout << ans << '\n';
-    }
-  }
+  // int tc = rnd() % 500 + 1;
+  // cout << tc << '\n';
+  int n = int(1e5), x = int(1e9);
+  cout << n << '\n';
+  For1(i, 1, n) cout << x << ' ';
+  NL;
+  cout << n << '\n';
+  For1(i, 1, n) cout << x << ' ';
+  NL;
 }
 
 int main(void) {
 #ifdef _DEBUG
-#ifndef _CPH
-  freopen("input.txt", "r", stdin);
+  freopen("input.txt", "w", stdout);
 #endif
-#endif
-
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
   cout.tie(NULL);
   _m_gen64.seed(Pr);
-
-#ifdef _DEBUG
-  auto _start_ts = std::chrono::high_resolution_clock::now();
-#endif
 
   int T = 1;
   // cin >> T;
@@ -231,13 +188,6 @@ int main(void) {
   while (T--) {
     solve();
   }
-
-#ifdef _DEBUG
-  auto _end_ts = std::chrono::high_resolution_clock::now();
-  std::cerr << "Execution time: "
-            << std::chrono::duration<double>(_end_ts - _start_ts).count()
-            << " seconds." << std::endl;
-#endif
 
   return 0;
 }
