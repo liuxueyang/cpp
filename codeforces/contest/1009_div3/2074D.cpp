@@ -168,16 +168,13 @@ void solve() {
   cin >> a >> r;
 
   map<int, int> mp;
-  // dbg(n, m);
 
   For1(i, 1, n) {
     For1(j, a[i] - r[i], a[i] + r[i]) {
       ll x = j;
       ll tmp = r[i] * 1LL * r[i] - (x - a[i]) * 1LL * (x - a[i]);
-      // dbg(tmp);
-
       ll y = sqrtl(tmp);
-      // dbg(x, y);
+
       ckmax(mp[x], int(y));
     }
   }

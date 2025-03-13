@@ -166,20 +166,10 @@ void solve() {
 
   ll ans = 0;
 
-  int bit = 0;
-  auto get = [](ll x) {
-    int res{};
-    while (x) {
-      res++;
-      x >>= 1;
-    }
-    return res;
-  };
-
-  bit = get(n);
   int idx0{-1}, idx1{-1};
 
-  For(i, 0, bit) {
+  int tk = __lg(n);
+  For1(i, 0, tk) {
     if ((n >> i) & 1) {
       if (idx1 == -1) {
         idx1 = i;

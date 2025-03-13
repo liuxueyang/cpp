@@ -164,28 +164,11 @@ void solve() {
   int n;
   cin >> n;
 
-  VL a(n + 1);
+  VI a(n + 1);
   cin >> a;
 
-  sort(all1(a.begin(), n));
-
-  multiset<ll> s;
-  For1(i, 1, n) { s.insert(a[i]); }
-
-  while (SZ(s) > 1) {
-    auto it = s.begin();
-    ll x = *it;
-    s.erase(it);
-
-    it = s.begin();
-    ll y = *it;
-    s.erase(it);
-
-    ll z = x + y - 1;
-    s.insert(z);
-  }
-
-  cout << *s.begin() << '\n';
+  int sum = accumulate(all1(a.begin(), n), 0LL);
+  cout << sum - (n - 1) << '\n';
 }
 
 int main(void) {

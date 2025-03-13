@@ -163,35 +163,35 @@ ostream &operator<<(ostream &os, const lll &v) {
 void solve() {
   int n;
   cin >> n;
-  mt19937 rnd(random_device{}());
 
-  VI a(n + 1);
-  For1(i, 1, n) a[i] = i;
-  shuffle(all1(a.begin(), n), rnd);
-  cout << "? " << a[1] << ' ' << a[2] << ' ' << a[3] << endl;
+  VL a(n + 1);
+  cin >> a;
 
-  For(i, 0, 75) {
-    int p;
-    cin >> p;
+  sort(all1(a.begin(), n));
 
-    if (p == 0) {
-      cout << "! " << a[1] << ' ' << a[2] << ' ' << a[3] << endl;
-      return;
-    }
+  multiset<ll> s;
+  For1(i, 1, n) { s.insert(a[i]); }
 
-    vector<PII> b({{a[1], a[2]}, {a[1], a[3]}, {a[2], a[3]}});
-    shuffle(all(b), rnd);
-    a[1] = b[0].f1;
-    a[2] = b[0].f2;
-    a[3] = p;
-    cout << "? " << b[0].f1 << ' ' << b[0].f2 << ' ' << p << endl;
+  while (SZ(s) > 1) {
+    auto it = s.begin();
+    ll x = *it;
+    s.erase(it);
+
+    it = s.begin();
+    ll y = *it;
+    s.erase(it);
+
+    ll z = x + y - 1;
+    s.insert(z);
   }
+
+  cout << *s.begin() << '\n';
 }
 
 int main(void) {
 #ifdef _DEBUG
 #ifndef _CPH
-  // freopen("input.txt", "r", stdin);
+  freopen("input.txt", "r", stdin);
 #endif
 #endif
 
