@@ -91,6 +91,21 @@ ostream &operator<<(ostream &os, const vector<T> &a) {
 }
 
 template <class T>
+ostream &operator<<=(ostream &os, const vector<T> &a) {
+  int n = int(a.size());
+  for (int i = 0; i < n; ++i) {
+    os << a[i] << " \n"[i == n - 1];
+  }
+  return os;
+}
+
+template <class T>
+istream &operator>>=(istream &is, vector<T> &a) {
+  for (auto &x : a) is >> x;
+  return is;
+}
+
+template <class T>
 istream &operator>>(istream &is, vector<T> &a) {
   int n = int(a.size()) - 1;
   for (int i = 1; i <= n; ++i) {
