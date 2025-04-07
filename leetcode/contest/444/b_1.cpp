@@ -272,7 +272,7 @@ struct node {
 class Router {
  public:
   int n;
-  unordered_map<int, deque<int>> dst_pkg;
+  unordered_map<int, deque<node>> dst_pkg;
   set<node> vis;
   queue<node> pkg;
 
@@ -295,7 +295,7 @@ class Router {
 
     vis.insert(x);
     pkg.push(x);
-    dst_pkg[destination].push_back(timestamp);
+    dst_pkg[destination].push_back(x);
     return true;
   }
 
@@ -317,8 +317,8 @@ class Router {
   int getCount(int destination, int startTime, int endTime) {
     auto &s = dst_pkg[destination];
 
-    auto it1 = lower_bound(all(s), startTime);
-    auto it2 = upper_bound(all(s), endTime);
+    auto it1 = lower_bound(all(s), node(startTime, -1, -1));
+    auto it2 = upper_bound(all(s), node(endTime, INF, -1));
     return distance(it1, it2);
   }
 };
