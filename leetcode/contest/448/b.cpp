@@ -282,7 +282,6 @@ class Solution {
     g = VVI(1 << n, VI(1 << n));
     cur = 0;
     dfs(0, 0, (1 << n) - 1, (1 << n) - 1);
-
     return g;
   }
 };

@@ -260,17 +260,17 @@ void PrintList(LNP head) {
 // End of LeetCode
 
 class Solution {
-  public:
-      int maxProduct(int n) {
-          VI a;
-          while (n) {
-            a.pb(n % 10);
-            n /= 10;
-          }
-          sort(all(a), greater<int>());
-          return a[0] * a[1];
-      }
-  };
+ public:
+  int maxProduct(int n) {
+    VI a;
+    while (n) {
+      a.pb(n % 10);
+      n /= 10;
+    }
+    sort(all(a), greater<int>());
+    return a[0] * a[1];
+  }
+};
 
 #ifdef _DEBUG
 
