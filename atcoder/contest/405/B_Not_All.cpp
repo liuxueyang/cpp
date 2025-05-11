@@ -175,7 +175,7 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
-void solve() {
+void solve1() {
   int n, m;
   cin >> n >> m;
 
@@ -198,6 +198,28 @@ void solve() {
       cout << n - i + 1 << '\n';
       return;
     }
+  }
+
+  cout << "0\n";
+}
+
+void solve() {
+  int n, m;
+  cin >> n >> m;
+
+  VI a(n + 1);
+  cin >> a;
+
+  int cnt{};
+  VB vis(m + 10);
+
+  For1(i, 1, n) {
+    if (!vis[a[i]]) cnt++;
+    if (cnt == m) {
+      cout << n - i + 1 << '\n';
+      return;
+    }
+    vis[a[i]] = true;
   }
 
   cout << "0\n";

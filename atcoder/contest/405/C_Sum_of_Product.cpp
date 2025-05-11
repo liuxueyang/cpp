@@ -175,7 +175,7 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
-void solve() {
+void solve1() {
   int n;
   cin >> n;
 
@@ -188,6 +188,38 @@ void solve() {
   ll ans{};
   For1(i, 1, n) { ans += 1LL * a[i] * b[i + 1]; }
 
+  cout << ans << '\n';
+}
+
+void solve2() {
+  int n;
+  cin >> n;
+
+  VI a(n + 1);
+  cin >> a;
+
+  ll ans{}, post{};
+
+  Rof1(i, 1, n) {
+    ans += 1LL * a[i] * post;
+    post += a[i];
+  }
+
+  cout << ans << '\n';
+}
+
+void solve() {
+  int n;
+  cin >> n;
+
+  VI a(n + 1);
+  cin >> a;
+
+  ll ans{}, sum = accumulate(all1(a.begin(), n), 0LL), sum2{};
+
+  For1(i, 1, n) { sum2 += a[i] * a[i]; }
+
+  ans = (sum * sum - sum2) / 2;
   cout << ans << '\n';
 }
 
