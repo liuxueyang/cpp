@@ -175,73 +175,44 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
-void solve1() {
-  int n, m;
-  cin >> n >> m;
-
-  vector<string> g(n + 1);
-  For1(i, 1, n) {
-    string s;
-    cin >> s;
-    g[i] = " " + s;
+ll qmod(ll a, ll b, ll c) {
+  ll res = 1;
+  while (b) {
+    if (b & 1) res = res * a % c;
+    a = a * a % c;
+    b >>= 1;
   }
-
-  VVI d(n + 10, VI(m + 10, INF));
-  VVB vis(n + 10, VB(m + 10));
-
-  priority_queue<pair<int, PII>, vector<pair<int, PII>>,
-                 greater<pair<int, PII>>>
-      q;
-
-  For1(i, 1, n) {
-    For1(j, 1, m) {
-      if (g[i][j] == 'E') {
-        d[i][j] = 0;
-        q.push({0, PII(i, j)});
-      }
-    }
-  }
-
-  auto check = [&](int x, int y) {
-    return x >= 1 && x <= n && y >= 1 && y <= m;
-  };
-
-  while (nemp(q)) {
-    auto [base, ver] = q.top();
-    q.pop();
-    auto [x, y] = ver;
-
-    if (vis[x][y]) continue;
-    vis[x][y] = true;
-
-    For(i, 0, 4) {
-      int x1 = x + dir[i][0], y1 = y + dir[i][1];
-      if (check(x1, y1) && g[x1][y1] == '.' && ckmin(d[x1][y1], base + 1)) {
-        q.push({d[x1][y1], PII(x1, y1)});
-      }
-    }
-  }
-
-  string dirc = "><v^";
-
-  For1(i, 1, n) {
-    For1(j, 1, m) {
-      if (g[i][j] == '.') {
-        For(k, 0, 4) {
-          int i1 = i + dir[k][0], j1 = j + dir[k][1];
-          if (check(i1, j1) && g[i1][j1] != '#' && d[i1][j1] + 1 == d[i][j]) {
-            cout << dirc[k];
-            break;
-          }
-        }
-      } else
-        cout << g[i][j];
-    }
-    cout << '\n';
-  }
+  return res;
 }
 
-void solve();
+const int N = 4000100;
+
+VI fac(N, 1), inv(N, 1);
+
+void Init() {
+  For(i, 1, N) fac[i] = 1LL * fac[i - 1] * i % MOD1;
+  inv[N - 1] = qmod(fac[N - 1], MOD1 - 2, MOD1);
+  Rof(i, 1, N - 1) inv[i] = 1LL * inv[i + 1] * (i + 1) % MOD1;
+}
+
+ll binom(ll n, ll m) {
+  if (n < m || n < 0 || m < 0) return 0;
+  return (1LL * fac[n] * inv[m] % MOD1) * inv[n - m] % MOD1;
+}
+
+void solve() {
+  ll a, b, c, d;
+  cin >> a >> b >> c >> d;
+  ll n = a + b + c + d;
+
+  ll ans{};
+  For1(x, 0, b) {
+    ans =
+        (ans + (1LL * binom(a - 1 + x, a - 1) * binom(n - (x + a), c) % MOD1)) %
+        MOD1;
+  }
+  cout << ans << '\n';
+}
 
 int main(void) {
 #ifdef _DEBUG
@@ -261,6 +232,7 @@ int main(void) {
 
   int T = 1;
   // cin >> T;
+  Init();
 
   while (T--) {
     solve();
@@ -274,42 +246,4 @@ int main(void) {
 #endif
 
   return 0;
-}
-
-void solve() {
-  int n, m;
-  cin >> n >> m;
-
-  queue<PII> q;
-  vector<string> a(n + 1);
-
-  For1(i, 1, n) {
-    string s;
-    cin >> s;
-    a[i] = " " + s;
-
-    For1(j, 1, m) {
-      if (a[i][j] == 'E') {
-        q.push(PII(i, j));
-      }
-    }
-  }
-
-  string dirc = "<>^v";
-
-  while (nemp(q)) {
-    auto [x, y] = q.front();
-    q.pop();
-
-    int x1, y1;
-    For(i, 0, 4) {
-      x1 = x + dir[i][0], y1 = y + dir[i][1];
-      if (x1 >= 1 && x1 <= n && y1 >= 1 && y1 <= m && a[x1][y1] == '.') {
-        a[x1][y1] = dirc[i];
-        q.push(PII(x1, y1));
-      }
-    }
-  }
-
-  For1(i, 1, n) { cout << a[i].substr(1) << '\n'; }
 }
