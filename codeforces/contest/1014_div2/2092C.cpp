@@ -217,4 +217,26 @@ int main(void) {
 
 void Init() { __MultipleTestCase = 1; }
 
-void solve() {}
+void solve() {
+  int n;
+  cin >> n;
+
+  VI a(n + 1);
+  cin >> a;
+
+  int odd{}, even{}, mx{-INF};
+  ll sum{};
+  For1(i, 1, n) {
+    sum += a[i];
+    ckmax(mx, a[i]);
+    if (a[i] & 1)
+      odd++;
+    else
+      even++;
+  }
+
+  if (odd == 0 || even == 0)
+    cout << mx << '\n';
+  else
+    cout << sum - (odd - 1) << '\n';
+}
