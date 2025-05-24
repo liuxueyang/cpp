@@ -203,6 +203,10 @@ int main(void) {
 
   while (T--) {
     solve();
+    if (__MultipleTestCase == 0) {
+      if (cin.eof()) break;
+      T = 1;
+    }
   }
 
 #ifdef _DEBUG

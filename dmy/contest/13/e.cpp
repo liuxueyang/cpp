@@ -203,6 +203,10 @@ int main(void) {
 
   while (T--) {
     solve();
+    if (__MultipleTestCase == 0) {
+      if (cin.eof()) break;
+      T = 1;
+    }
   }
 
 #ifdef _DEBUG
@@ -232,14 +236,14 @@ ll qpow(ll a, ll b, ll c) {
 void solve() {
   ll k;
   string n;
-  while (cin >> n >> k) {
-    ll cur{};
-    for (auto c : n) {
-      cur = (cur * 10 + (c - '0')) % (MOD1 - 1);
-    }
+  if (!(cin >> n >> k)) return;
 
-    ll x1 = qpow(k % MOD1, cur, MOD1), x2 = qpow((k - 1) % MOD1, cur, MOD1);
-    ll x3 = (x1 - x2 + MOD1) % MOD1;
-    cout << x3 << '\n';
+  ll cur{};
+  for (auto c : n) {
+    cur = (cur * 10 + (c - '0')) % (MOD1 - 1);
   }
+
+  ll x1 = qpow(k % MOD1, cur, MOD1), x2 = qpow((k - 1) % MOD1, cur, MOD1);
+  ll x3 = (x1 - x2 + MOD1) % MOD1;
+  cout << x3 << '\n';
 }
