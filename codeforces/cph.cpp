@@ -181,10 +181,8 @@ void Init();
 void solve();
 
 int main(void) {
-#ifdef _DEBUG
-#ifndef _CPH
+#if defined(_DEBUG) && !defined(_CPH)
   freopen("input.txt", "r", stdin);
-#endif
 #endif
 
   std::ios::sync_with_stdio(false);
