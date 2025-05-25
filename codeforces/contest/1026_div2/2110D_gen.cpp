@@ -1,12 +1,12 @@
 #include <algorithm>
 #include <array>
 #include <cassert>
-#include <chrono>
 #include <climits>
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <fstream>
 #include <functional>
 #include <iomanip>
 #include <iostream>
@@ -91,21 +91,6 @@ ostream &operator<<(ostream &os, const vector<T> &a) {
 }
 
 template <class T>
-ostream &operator<<=(ostream &os, const vector<T> &a) {
-  int n = int(a.size());
-  for (int i = 0; i < n; ++i) {
-    os << a[i] << " \n"[i == n - 1];
-  }
-  return os;
-}
-
-template <class T>
-istream &operator>>=(istream &is, vector<T> &a) {
-  for (auto &x : a) is >> x;
-  return is;
-}
-
-template <class T>
 istream &operator>>(istream &is, vector<T> &a) {
   int n = int(a.size()) - 1;
   for (int i = 1; i <= n; ++i) {
@@ -175,115 +160,89 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
-int __MultipleTestCase = 1;
+ofstream Outf("input_tc.txt");
 
-void Init();
-void solve();
+void tprintf(const char *format)  // base function
+{
+  cout << format;
+  Outf << format;
+}
+
+template <typename T, typename... Targs>
+void tprintf(const char *format, T value,
+             Targs... Fargs)  // recursive variadic function
+{
+  for (; *format != '\0'; format++) {
+    if (*format == '%') {
+      cout << value;
+      Outf << value;
+      tprintf(format + 1, Fargs...);  // recursive call
+      return;
+    }
+    cout << *format;
+    Outf << *format;
+  }
+}
+
+void solve() {
+  mt19937 rnd(random_device{}());
+
+  int tc = rnd() % 500 + 1;
+  tc = 5000;
+  tprintf("%\n", tc);
+
+  For1(i1, 1, tc) {
+    Outf << "TestCase " << i1 << '\n';
+
+    int n = rnd() % 10 + 2, m{};
+    if (n > 1) m = rnd() % (min(30, n * (n - 1) / 2));
+
+    tprintf("% %\n", n, m);
+    For(i, 0, n) {
+      int x = rnd() % 10;
+      tprintf("% ", x);
+    }
+    tprintf("\n");
+
+    set<PII> vis;
+
+    For(i, 0, m) {
+      int u = rnd() % n + 1, v = rnd() % n + 1;
+      if (u == v) {
+        i--;
+        continue;
+      }
+      if (u > v) swap(u, v);
+
+      PII p({u, v});
+
+      if (has(vis, p)) {
+        i--;
+        continue;
+      }
+      vis.insert(p);
+
+      int w = rnd() % 10 + 1;
+      tprintf("% % %\n", u, v, w);
+    }
+  }
+}
 
 int main(void) {
 #ifdef _DEBUG
-#ifndef _CPH
-  freopen("input.txt", "r", stdin);
+  freopen("input.txt", "w", stdout);
 #endif
-#endif
-
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
   cout.tie(NULL);
   _m_gen64.seed(Pr);
 
-#ifdef _DEBUG
-  auto _start_ts = std::chrono::high_resolution_clock::now();
-#endif
-
   int T = 1;
-  Init();
-
-  if (__MultipleTestCase) cin >> T;
+  // cin >> T;
 
   while (T--) {
     solve();
-    if (__MultipleTestCase == 0) {
-      if (cin.eof()) break;
-      T = 1;
-    }
   }
-
-#ifdef _DEBUG
-  auto _end_ts = std::chrono::high_resolution_clock::now();
-  std::cerr << "Execution time: "
-            << std::chrono::duration<double>(_end_ts - _start_ts).count()
-            << " seconds." << std::endl;
-#endif
 
   return 0;
-}
-
-void Init() { __MultipleTestCase = 1; }
-
-void solve() {
-  int n;
-  if (!(cin >> n)) return;
-
-  VI d(n + 10);
-  vector<PII> a(n + 10);
-  For1(i, 1, n) cin >> d[i];
-  For1(i, 1, n) cin >> a[i].f1 >> a[i].f2;
-
-  PII cur{};
-  For1(i, 1, n) {
-    if (d[i] == -1) {
-      cur.f2++;
-    } else if (d[i] == 0) {
-    } else if (d[i] == 1) {
-      cur.f2++;
-      cur.f1++;
-    }
-
-    if (cur.f1 > a[i].f2 || cur.f2 < a[i].f1) {
-      cout << "-1\n";
-      return;
-    }
-    ckmax(cur.f1, a[i].f1);
-    ckmin(cur.f2, a[i].f2);
-    a[i] = cur;
-  }
-
-  a[0] = PII{};
-  VI ans;
-
-  // 方法一
-  // int height = a[n].f1;
-  // Rof1(i, 1, n) {
-  //   if (d[i] != -1) {
-  //     ans.pb(d[i]);
-  //     if (d[i] == 1) height--;
-  //   } else {
-  //     if (a[i - 1].f2 + 1 == height) {
-  //       height--;
-  //       ans.pb(1);
-  //     } else {
-  //       ans.pb(0);
-  //     }
-  //   }
-  // }
-
-  // 方法二
-  int height = a[n].f2;
-  Rof1(i, 1, n) {
-    if (d[i] != -1) {
-      ans.pb(d[i]);
-      if (d[i] == 1) height--;
-    } else {
-      if (a[i - 1].f2 + 1 == height) {
-        height--;
-        ans.pb(1);
-      } else
-        ans.pb(0);
-    }
-  }
-
-  reverse(all(ans));
-  for (auto x : ans) cout << x << ' ';
-  NL;
 }

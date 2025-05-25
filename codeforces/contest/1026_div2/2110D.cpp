@@ -175,16 +175,31 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
+// base function
+void tprintf(const char *format) { cout << format; }
+
+template <typename T, typename... Targs>
+void tprintf(const char *format, T value,
+             Targs... Fargs)  // recursive variadic function
+{
+  for (; *format != '\0'; format++) {
+    if (*format == '%') {
+      cout << value;
+      tprintf(format + 1, Fargs...);  // recursive call
+      return;
+    }
+    cout << *format;
+  }
+}
+
 int __MultipleTestCase = 1;
 
 void Init();
 void solve();
 
 int main(void) {
-#ifdef _DEBUG
-#ifndef _CPH
+#if defined(_DEBUG) && !defined(_CPH)
   freopen("input.txt", "r", stdin);
-#endif
 #endif
 
   std::ios::sync_with_stdio(false);
@@ -221,69 +236,47 @@ int main(void) {
 
 void Init() { __MultipleTestCase = 1; }
 
-void solve() {
-  int n;
-  if (!(cin >> n)) return;
+int n, m;
+VI b, a;
+vector<vector<PII>> g;
 
-  VI d(n + 10);
-  vector<PII> a(n + 10);
-  For1(i, 1, n) cin >> d[i];
-  For1(i, 1, n) cin >> a[i].f1 >> a[i].f2;
+bool check(int mx) {
+  a = VI(n + 10);
+  a[1] = min(mx, b[1]);
 
-  PII cur{};
   For1(i, 1, n) {
-    if (d[i] == -1) {
-      cur.f2++;
-    } else if (d[i] == 0) {
-    } else if (d[i] == 1) {
-      cur.f2++;
-      cur.f1++;
-    }
-
-    if (cur.f1 > a[i].f2 || cur.f2 < a[i].f1) {
-      cout << "-1\n";
-      return;
-    }
-    ckmax(cur.f1, a[i].f1);
-    ckmin(cur.f2, a[i].f2);
-    a[i] = cur;
-  }
-
-  a[0] = PII{};
-  VI ans;
-
-  // 方法一
-  // int height = a[n].f1;
-  // Rof1(i, 1, n) {
-  //   if (d[i] != -1) {
-  //     ans.pb(d[i]);
-  //     if (d[i] == 1) height--;
-  //   } else {
-  //     if (a[i - 1].f2 + 1 == height) {
-  //       height--;
-  //       ans.pb(1);
-  //     } else {
-  //       ans.pb(0);
-  //     }
-  //   }
-  // }
-
-  // 方法二
-  int height = a[n].f2;
-  Rof1(i, 1, n) {
-    if (d[i] != -1) {
-      ans.pb(d[i]);
-      if (d[i] == 1) height--;
-    } else {
-      if (a[i - 1].f2 + 1 == height) {
-        height--;
-        ans.pb(1);
-      } else
-        ans.pb(0);
+    for (auto [v, w] : g[i]) {
+      if (w > a[i]) continue;
+      a[v] = min(b[v] + a[i], mx);
     }
   }
 
-  reverse(all(ans));
-  for (auto x : ans) cout << x << ' ';
-  NL;
+  return a[n] > 0;
+}
+
+void solve() {
+  if (!(cin >> n >> m)) return;
+
+  b = VI(n + 10);
+  For1(i, 1, n) cin >> b[i];
+  g = vector<vector<PII>>(n + 10);
+
+  For(i, 0, m) {
+    int u, v, w;
+    cin >> u >> v >> w;
+    g[u].pb(PII(v, w));
+  }
+
+  int l = 0, r = 1e9 + 100, mid;
+  int ans = -1;
+
+  while (l < r) {
+    mid = (l + r) / 2;
+    if (check(mid)) {
+      ans = r = mid;
+    } else
+      l = mid + 1;
+  }
+
+  tprintf("%\n", ans);
 }

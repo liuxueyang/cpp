@@ -140,6 +140,23 @@ void Outputr1(ForwardIterator begin, ForwardIterator end) {
   NL;
 }
 
+// base function
+void tprintf(const char *format) { cout << format; }
+
+template <typename T, typename... Targs>
+void tprintf(const char *format, T value,
+             Targs... Fargs)  // recursive variadic function
+{
+  for (; *format != '\0'; format++) {
+    if (*format == '%') {
+      cout << value;
+      tprintf(format + 1, Fargs...);  // recursive call
+      return;
+    }
+    cout << *format;
+  }
+}
+
 // int128 input and output
 #ifdef _DEBUG
 using lll = __int128;
