@@ -6,6 +6,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <fstream>
 #include <functional>
 #include <iomanip>
 #include <iostream>
@@ -159,11 +160,38 @@ ostream &operator<<(ostream &os, const lll &v) {
 #define dbgr(x...)
 #endif
 
+ofstream Outf("input_tc.txt");
+
+void tprintf(const char *format)  // base function
+{
+  cout << format;
+  Outf << format;
+}
+
+template <typename T, typename... Targs>
+void tprintf(const char *format, T value,
+             Targs... Fargs)  // recursive variadic function
+{
+  for (; *format != '\0'; format++) {
+    if (*format == '%') {
+      cout << value;
+      Outf << value;
+      tprintf(format + 1, Fargs...);  // recursive call
+      return;
+    }
+    cout << *format;
+    Outf << *format;
+  }
+}
+
 void solve() {
   mt19937 rnd(random_device{}());
 
   int tc = rnd() % 500 + 1;
-  cout << tc << '\n';
+
+  tprintf("%\n", tc);
+
+  For1(_tc_num_, 1, tc) { Outf << "TestCase " << _tc_num_ << '\n'; }
 }
 
 int main(void) {
