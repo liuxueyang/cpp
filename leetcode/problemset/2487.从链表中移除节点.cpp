@@ -265,7 +265,7 @@ void PrintList(LNP head) {
 
 #endif
 // End of LeetCode
-class Solution {
+class Solution1 {
  public:
   ListNode *removeNodes(ListNode *head) {
     deque<ListNode *> stk;
@@ -289,6 +289,41 @@ class Solution {
     return ans;
   }
 };
+
+class Solution {
+ public:
+  ListNode *reverse_list(ListNode *head) {
+    ListNode *p1{}, *p2{head}, *p3;
+
+    while (p2) {
+      p3 = p2->next;
+      p2->next = p1;
+      p1 = p2;
+      p2 = p3;
+    }
+    return p1;
+  }
+
+  ListNode *removeNodes(ListNode *head) {
+    ListNode *rhead = reverse_list(head);
+    ListNode *du = new ListNode(0, rhead);
+    ListNode *cur{rhead};
+
+    ListNode *p{rhead->next};
+    while (p) {
+      if (p->val >= cur->val) {
+        cur->next = p;
+        cur = cur->next;
+      }
+      p = p->next;
+    }
+    cur->next = nullptr;
+
+    ListNode *ans = reverse_list(du->next);
+    delete du;
+    return ans;
+  }
+};
 #ifdef _DEBUG
 
 int main(void) {
@@ -302,6 +337,10 @@ int main(void) {
   ListNode *lst, *res;
 
   lst = CreateList({5, 2, 13, 3, 8});
+  res = a.removeNodes(lst);
+  PrintList(res);
+
+  lst = CreateList({1, 1, 1, 1});
   res = a.removeNodes(lst);
   PrintList(res);
 

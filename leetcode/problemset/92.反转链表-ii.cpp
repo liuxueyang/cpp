@@ -258,7 +258,7 @@ void PrintList(LNP head) {
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
-class Solution {
+class Solution1 {
  public:
   ListNode *reverseBetween(ListNode *head, int left, int right) {
     ListNode *dummy = new ListNode(0, head), *B0{dummy}, *t{}, *h{}, *B1{};
@@ -287,6 +287,78 @@ class Solution {
     return dummy->next;
   }
 };
+
+class Solution2 {
+ public:
+  ListNode *reverse_list(ListNode *head) {
+    ListNode *p1{}, *p2{head}, *p3{};
+
+    while (p2) {
+      p3 = p2->next;
+      p2->next = p1;
+      p1 = p2;
+      p2 = p3;
+    }
+    return p1;
+  }
+
+  ListNode *reverseBetween(ListNode *head, int left, int right) {
+    if (left == right) return head;
+
+    ListNode *du = new ListNode(0, head);
+    ListNode *p_start{du}, *p_end{du}, *cur{du};
+
+    for (int i = 0; i < left - 1; i++) cur = cur->next;
+    p_start = cur;
+
+    for (int i = left - 1; i < right; i++) cur = cur->next;
+    p_end = cur;
+
+    ListNode *next_end{p_end->next}, *next_start{p_start->next};
+    p_end->next = nullptr;
+
+    reverse_list(next_start);
+    p_start->next = p_end;
+    next_start->next = next_end;
+
+    ListNode *ans = du->next;
+    delete du;
+    return ans;
+  }
+};
+
+class Solution {
+ public:
+  ListNode *reverseBetween(ListNode *head, int left, int right) {
+    if (left == right) return head;
+
+    ListNode *du = new ListNode(0, head);
+    ListNode *p_start{du}, *p_end{}, *start_next{}, *end_next{}, *cur{du};
+
+    for (int i = 0; i < left - 1; i++) cur = cur->next;
+    p_start = cur;
+    start_next = p_start->next;
+
+    ListNode *p1{}, *p2{start_next}, *p3{};
+    for (int i = left - 1; i < right; i++) {
+      p3 = p2->next;
+      p2->next = p1;
+      p1 = p2;
+      p2 = p3;
+    }
+
+    p_end = p1;
+    end_next = p2;
+
+    p_start->next = p_end;
+    start_next->next = end_next;
+
+    ListNode *ans = du->next;
+    delete du;
+    return ans;
+  }
+};
+
 #ifdef _DEBUG
 
 int main(void) {
@@ -296,6 +368,19 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
+  ListNode *lst, *res;
+  VI arr;
+  int left, right;
+
+  arr = {1, 2, 3, 4, 5}, left = 2, right = 4;
+  lst = CreateList(arr);
+  res = a.reverseBetween(lst, left, right);
+  PrintList(res);
+
+  arr = {5}, left = 1, right = 1;
+  lst = CreateList(arr);
+  res = a.reverseBetween(lst, left, right);
+  PrintList(res);
 
   return 0;
 }
