@@ -1,7 +1,7 @@
 /*
- * @lc app=leetcode.cn id=82 lang=cpp
+ * @lc app=leetcode.cn id=237 lang=cpp
  *
- * [82] 删除排序链表中的重复元素 II
+ * [237] 删除链表中的节点
  */
 
 // @lc code=start
@@ -267,82 +267,31 @@ void PrintList(LNP head) {
 // End of LeetCode
 class Solution1 {
  public:
-  ListNode *deleteDuplicates(ListNode *head) {
-    ListNode *du = new ListNode(0, head);
-    ListNode *cur{du};
-    ListNode *cache{};
-    bool ok{true};
+  void deleteNode(ListNode *node) {
+    ListNode *p1{node}, *p2{node->next};
 
-    while (head) {
-      if (cache) {
-        if (cache->val == head->val) {
-          ok = false;
-          ListNode *bak = head;
-          head = head->next;
-          delete bak;
-        } else {
-          if (ok) {
-            cur->next = cache;
-            cur = cur->next;
-          } else {
-            ok = true;
-            delete cache;
-          }
-          cache = head;
-          head = head->next;
-        }
-      } else {
-        cache = head;
-        ok = true;
-        head = head->next;
+    while (p2) {
+      p1->val = p2->val;
+      if (!p2->next) {
+        p1->next = nullptr;
+        break;
       }
+      p1 = p2;
+      p2 = p2->next;
     }
-
-    if (cache) {
-      if (ok) {
-        cur->next = cache;
-        cur = cur->next;
-      } else {
-        delete cache;
-      }
-    }
-    cur->next = nullptr;
-
-    ListNode *ans = du->next;
-    delete du;
-    return ans;
   }
 };
 
 class Solution {
  public:
-  ListNode *deleteDuplicates(ListNode *head) {
-    ListNode *du = new ListNode(0, head);
-    ListNode *cur{du};
-    ListNode *p2{head}, *p3{};
+  void deleteNode(ListNode *node) {
+    ListNode *p2 = node->next;
 
-    while (p2 && p2->next) {
-      if (p2->val == p2->next->val) {
-        int val = p2->val;
-        while (p2 && p2->val == val) {
-          p3 = p2->next;
-          delete p2;
-          p2 = p3;
-        }
-      } else {
-        cur->next = p2;
-        cur = cur->next;
-        p2 = p2->next;
-      }
-    }
-    cur->next = p2;
-
-    ListNode *ans = du->next;
-    delete du;
-    return ans;
+    node->val = p2->val;
+    node->next = p2->next;
+    // delete node; This statement will cause use-after-free error on LeetCode
   }
 };
-
 #ifdef _DEBUG
 
 int main(void) {
@@ -353,19 +302,6 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
-  vector<int> ve;
-  ListNode *lst;
-  ListNode *res;
-
-  ve = {1, 2, 3, 3, 4, 4, 5};
-  lst = CreateList(ve);
-  res = a.deleteDuplicates(lst);
-  PrintList(res);
-
-  ve = {1, 1, 1, 2, 3};
-  lst = CreateList(ve);
-  res = a.deleteDuplicates(lst);
-  PrintList(res);
 
   return 0;
 }
