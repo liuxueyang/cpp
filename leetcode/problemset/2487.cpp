@@ -1,13 +1,12 @@
 // Date: Sat Aug 24 11:19:00 2024
 
+#include <algorithm>
 #include <cassert>
 #include <climits>
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-
-#include <algorithm>
 #include <functional>
 #include <iomanip>
 #include <iostream>
@@ -28,8 +27,10 @@ typedef unsigned long long ull;
 typedef vector<int> VI;
 typedef pair<int, int> PII;
 typedef pair<ll, ll> PLL;
-template <class T> using pq = priority_queue<T>;
-template <class T> using pqg = priority_queue<T, vector<T>, greater<T>>;
+template <class T>
+using pq = priority_queue<T>;
+template <class T>
+using pqg = priority_queue<T, vector<T>, greater<T>>;
 
 const int INF = 0x3f3f3f3f, MOD = 1e9 + 7, MOD1 = 998'244'353;
 const ll INFL = 0x3f3f3f3f'3f3f3f3f;
@@ -57,21 +58,27 @@ const ull Pr = 131;
 #define SZ(a) int((a).size())
 #define NL cout << '\n';
 
-template <class T> bool ckmin(T &a, const T &b) { return b < a ? a = b, 1 : 0; }
-template <class T> bool ckmax(T &a, const T &b) { return a < b ? a = b, 1 : 0; }
+template <class T>
+bool ckmin(T &a, const T &b) {
+  return b < a ? a = b, 1 : 0;
+}
+template <class T>
+bool ckmax(T &a, const T &b) {
+  return a < b ? a = b, 1 : 0;
+}
 
-template <typename t> istream &operator>>(istream &in, vector<t> &vec) {
-  for (t &x : vec)
-    in >> x;
+template <typename t>
+istream &operator>>(istream &in, vector<t> &vec) {
+  for (t &x : vec) in >> x;
   return in;
 }
 
-template <typename t> ostream &operator<<(ostream &out, vector<t> &vec) {
+template <typename t>
+ostream &operator<<(ostream &out, vector<t> &vec) {
   int n = SZ(vec);
   For(i, 0, n) {
     out << vec[i];
-    if (i < n - 1)
-      out << ' ';
+    if (i < n - 1) out << ' ';
   }
   return out;
 }
@@ -123,10 +130,9 @@ struct TreeNode {
  * };
  */
 class Solution {
-public:
+ public:
   LNP reverse_list(LNP head) {
-    if (!head)
-      return head;
+    if (!head) return head;
 
     LNP ro = new LN(0, head);
     LNP p1{head};
