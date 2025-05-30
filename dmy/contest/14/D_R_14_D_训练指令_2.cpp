@@ -240,23 +240,21 @@ void solve() {
   int n, m, q;
   if (!(cin >> n >> m >> q)) return;
 
-  vector<VI> a(n + 1, VI(m + 1));
-  For1(i, 1, n) {
-    For1(j, 1, m) {
-      a[i][j] = (i - 1) * m + j;
-    }
-  }
+  VI a(n + 1), b(m + 1);
+  For1(i, 1, n) a[i] = i;
+  For1(i, 1, m) b[i] = i;
 
   while (q--) {
     int op, x, y;
     cin >> op >> x >> y;
-    if (op == 1) swap(a[x], a[y]);
+    if (op == 1)
+      swap(a[x], a[y]);
     else if (op == 2) {
-      For1(i, 1, n) {
-        swap(a[i][x], a[i][y]);
-      }
+      swap(b[x], b[y]);
     } else {
-      cout << a[x][y] << '\n';
+      int x1 = a[x], y1 = b[y];
+      ll ans = 1LL * (x1 - 1) * m + y1;
+      cout << ans << '\n';
     }
   }
 }
