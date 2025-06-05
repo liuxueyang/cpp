@@ -274,7 +274,7 @@ class Solution {
 
     for (int i = 0; i < n; i++)
       for (int j = 0; j < m; j++)
-        for (int k = 0; k < energy; k++)
+        for (int k = 0; k <= energy; k++)
           for (int S = 0; S < (1 << cnt); S++) d[i][j][k][S] = INF;
 
     queue<array<int, 4>> q;
@@ -285,45 +285,42 @@ class Solution {
       auto [x, y, k, S] = q.front();
       q.pop();
 
-      if (S == (1 << cnt) - 1) {
-        ckmin(ans, d[x][y][k][S]);
-        continue;
-      }
+      if (S == (1 << cnt) - 1) return d[x][y][k][S];
 
       int cur = d[x][y][k][S];
       int x1, y1;
-      if (a[x][y] == 'R') k = mx_eng;
 
-      if (k == 0) {
-        d[x][y][k][S] = INF;
-        continue;
-      }
-      // dbg(x, y, k, S);
+      if (k == 0) continue;
 
       for (int i = 0; i < 4; i++) {
         x1 = x + dir[i][0];
         y1 = y + dir[i][1];
-        if (x1 >= 0 && x1 < n && y1 >= 0 && y1 < m && a[x1][y1] != 'X') {
-          if (a[x1][y1] == '.' || a[x1][y1] == 'R' || a[x1][y1] == 'S') {
-            int &tmp = d[x1][y1][k - 1][S];
-            if (tmp < INF) continue;
 
-            if (ckmin(tmp, cur + 1)) {
-              q.push({x1, y1, k - 1, S});
-            }
-          } else if (a[x1][y1] == 'L') {
-            int &tmp = d[x1][y1][k - 1][S | (1 << b[x1][y1])];
-            if (tmp < INF) continue;
+        if (!(x1 >= 0 && x1 < n && y1 >= 0 && y1 < m && a[x1][y1] != 'X'))
+          continue;
 
-            if (ckmin(tmp, cur + 1)) {
-              q.push({x1, y1, k - 1, S | (1 << b[x1][y1])});
-            }
+        int k1 = k - 1;
+        if (a[x1][y1] == 'R') k1 = mx_eng;
+
+        if (a[x1][y1] == '.' || a[x1][y1] == 'R' || a[x1][y1] == 'S') {
+          int &tmp = d[x1][y1][k1][S];
+          if (tmp < INF) continue;
+
+          if (ckmin(tmp, cur + 1)) {
+            q.push({x1, y1, k1, S});
+          }
+        } else if (a[x1][y1] == 'L') {
+          int &tmp = d[x1][y1][k1][S | (1 << b[x1][y1])];
+          if (tmp < INF) continue;
+
+          if (ckmin(tmp, cur + 1)) {
+            q.push({x1, y1, k1, S | (1 << b[x1][y1])});
           }
         }
       }
     }
 
-    return ans >= INF ? -1 : ans;
+    return -1;
   }
 };
 
