@@ -1,4 +1,4 @@
-// Date: Thu Jun  5 03:51:15 2025
+// Date: Thu Jun  5 17:01:01 2025
 
 #include <algorithm>
 #include <array>
@@ -240,63 +240,90 @@ void PrintList(LNP head) {
 #endif
 // End of LeetCode
 
-class Solution1 {
- public:
-  bool checkEqualPartitions(vector<int> &a, long long target) {
-    int n = int(a.size());
+const int N = 20, M = 51, L = 10;
 
-    for (int S = 0; S < (1 << n); S++) {
-      long long sum1{}, sum2{};
-
-      bool ok{true};
-
-      for (int i = 0; i < n; i++) {
-        if ((S >> i) & 1) {
-          if (sum1 < target || a[i] == 1) {
-            if (!sum1) sum1 = 1;
-            sum1 *= a[i];
-          } else {
-            ok = false;
-            break;
-          }
-        } else {
-          if (sum2 < target || a[i] == 1) {
-            if (!sum2) sum2 = 1;
-            sum2 *= a[i];
-          } else {
-            ok = false;
-            break;
-          }
-        }
-      }
-      if (ok && sum1 == sum2 && sum1 == target) return true;
-    }
-    return false;
-  }
-};
+int d[N][N][M][1 << L];
+int b[N][N], cnt, ans, mx_eng;
 
 class Solution {
  public:
-  bool checkEqualPartitions(vector<int> &a, long long target) {
-    int n = int(a.size());
+  int n, m;
+  vector<string> a;
 
-    for (int S = 1; S < (1 << n) - 2; S++) {
-      long long sum1{1}, sum2{1};
+  int minMoves(vector<string> &classroom, int energy) {
+    n = int(classroom.size());
+    m = int(classroom[0].size());
+    a = classroom;
+    mx_eng = energy;
+    ans = INF;
 
-      for (int i = 0; i < n; i++) {
-        if ((S >> i) & 1) {
-          sum1 *= a[i];
-        } else {
-          sum2 *= a[i];
+    memset(b, -1, sizeof b);
+
+    cnt = 0;
+    pair<int, int> start{-1, -1};
+
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < m; j++) {
+        if (a[i][j] == 'L') {
+          b[i][j] = cnt++;
+        } else if (a[i][j] == 'S') {
+          start = {i, j};
         }
-
-        if (sum1 > target || sum2 > target) break;
       }
-
-      if (sum1 == sum2 && sum1 == target) return true;
     }
 
-    return false;
+    for (int i = 0; i < n; i++)
+      for (int j = 0; j < m; j++)
+        for (int k = 0; k < energy; k++)
+          for (int S = 0; S < (1 << cnt); S++) d[i][j][k][S] = INF;
+
+    queue<array<int, 4>> q;
+    q.push({start.first, start.second, energy, 0});
+    d[start.first][start.second][energy][0] = 0;
+
+    while (!q.empty()) {
+      auto [x, y, k, S] = q.front();
+      q.pop();
+
+      if (S == (1 << cnt) - 1) {
+        ckmin(ans, d[x][y][k][S]);
+        continue;
+      }
+
+      int cur = d[x][y][k][S];
+      int x1, y1;
+      if (a[x][y] == 'R') k = mx_eng;
+
+      if (k == 0) {
+        d[x][y][k][S] = INF;
+        continue;
+      }
+      // dbg(x, y, k, S);
+
+      for (int i = 0; i < 4; i++) {
+        x1 = x + dir[i][0];
+        y1 = y + dir[i][1];
+        if (x1 >= 0 && x1 < n && y1 >= 0 && y1 < m && a[x1][y1] != 'X') {
+          if (a[x1][y1] == '.' || a[x1][y1] == 'R' || a[x1][y1] == 'S') {
+            int &tmp = d[x1][y1][k - 1][S];
+            if (tmp < INF) continue;
+
+            if (ckmin(tmp, cur + 1)) {
+              q.push({x1, y1, k - 1, S});
+            }
+          } else if (a[x1][y1] == 'L') {
+            int &tmp = d[x1][y1][k - 1][S | (1 << b[x1][y1])];
+            if (tmp < INF) continue;
+
+            if (ckmin(tmp, cur + 1)) {
+              q.push({x1, y1, k - 1, S | (1 << b[x1][y1])});
+            }
+          }
+        }
+      }
+    }
+
+    return ans >= INF ? -1 : ans;
   }
 };
 
@@ -309,13 +336,32 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
-  vector<int> nums;
-  ll target;
-  int res;
+  vector<string> arr;
+  int energy, res;
 
-  nums = {3, 1, 6, 8, 4};
-  target = 24;
-  res = a.checkEqualPartitions(nums, target);
+  arr = {"S.", "XL"};
+  energy = 2;
+  res = a.minMoves(arr, energy);
+  dbg(res);
+
+  arr = {"LS", "RL"};
+  energy = 3;
+  res = a.minMoves(arr, energy);
+  dbg(res);
+
+  arr = {"S", "R", "L", "X"};
+  energy = 2;
+  res = a.minMoves(arr, energy);
+  dbg(res);
+
+  arr = {"L.RX", ".R.S"};
+  energy = 5;
+  res = a.minMoves(arr, energy);
+  dbg(res);
+
+  arr = {"XL..", "SR.R", "LXL.", "RXLX"};
+  energy = 12;
+  res = a.minMoves(arr, energy);
   dbg(res);
 
   return 0;
