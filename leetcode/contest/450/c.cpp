@@ -239,7 +239,8 @@ void PrintList(LNP head) {
 
 #endif
 // End of LeetCode
-class Solution {
+
+class Solution1 {
  public:
   int minMoves(vector<string> &a) {
     int n = int(a.size()), m = int(a[0].size());
@@ -294,6 +295,71 @@ class Solution {
     return d[n - 1][m - 1] >= INF ? -1 : d[n - 1][m - 1];
   }
 };
+
+class Solution {
+ public:
+  int minMoves(vector<string> &a) {
+    int n = int(a.size()), m = int(a[0].size());
+    vector<vector<int>> d(n + 1, vector<int>(m + 1, INF));
+    vector<array<int, 2>> lst[26];
+
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < m; j++) {
+        char ch = a[i][j];
+        if (ch >= 'A' && ch <= 'Z') {
+          lst[ch - 'A'].push_back({i, j});
+        }
+      }
+    }
+
+    d[0][0] = 0;
+    deque<array<int, 2>> q;
+    q.push_back({0, 0});
+    vector<vector<bool>> vis(n + 1, vector<bool>(m + 1));
+
+    while (!q.empty()) {
+      auto [x, y] = q.front();
+      q.pop_front();
+
+      int x1, y1;
+      int cur = d[x][y];
+      if (vis[x][y]) continue;
+      vis[x][y] = true;
+      if (x == n - 1 && y == m - 1) return d[x][y];
+
+      char ch = a[x][y];
+      if (ch >= 'A' && ch <= 'Z') {
+        int id = ch - 'A';
+        if (!lst[id].empty()) {
+          for (auto [x1, y1] : lst[id]) {
+            if (x1 == x && y1 == y) continue;
+
+            if (d[x1][y1] > cur && !vis[x1][y1]) {
+              d[x1][y1] = cur;
+              q.push_front({x1, y1});
+            }
+          }
+          lst[id] = {};
+        }
+      }
+
+      for (int i = 0; i < 4; i++) {
+        x1 = x + dir[i][0];
+        y1 = y + dir[i][1];
+        if (!(x1 >= 0 && x1 < n && y1 >= 0 && y1 < m && a[x1][y1] != '#'))
+          continue;
+        if (d[x1][y1] > cur + 1 && !vis[x1][y1]) {
+          d[x1][y1] = cur + 1;
+          q.push_back({x1, y1});
+        }
+      }
+    }
+
+    if (d[n - 1][m - 1] >= INF) return -1;
+    return d[n - 1][m - 1];
+  }
+};
+
 #ifdef _DEBUG
 
 int main(void) {
@@ -306,13 +372,21 @@ int main(void) {
   vector<string> arr;
   int res;
 
-  arr = {"A..", ".A.", "..."};
+  // arr = {"A..", ".A.", "..."};
+  // res = a.minMoves(arr);
+  // dbg(res);
+
+  // arr = {".#...", ".#.#.", ".#.#.", "...#."};
+  // res = a.minMoves(arr);
+  // dbg(res);
+
+  arr = {"..C.", "C.A."};
   res = a.minMoves(arr);
   dbg(res);
 
-  arr = {".#...", ".#.#.", ".#.#.", "...#."};
-  res = a.minMoves(arr);
-  dbg(res);
+  // arr = {"..G", "C.D", ".EE"};
+  // res = a.minMoves(arr);
+  // dbg(res);
 
   return 0;
 }
