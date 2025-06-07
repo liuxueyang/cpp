@@ -264,7 +264,7 @@ void PrintList(LNP head) {
 const int N = 305, T = 605;
 int d[N][N][T];
 
-class Solution {
+class Solution1 {
  public:
   vector<vector<array<int, 2>>> g;
   int edge_cnt, mx_sum, ans;
@@ -296,6 +296,45 @@ class Solution {
     for (int i = 0; i <= n; i++)
       for (int j = 0; j <= k; j++)
         for (int j1 = 0; j1 <= t; j1++) d[i][j][j1] = -1;
+
+    ans = -1;
+    for (int i = 0; i < n; i++) dfs(i, 0, 0);
+
+    return ans;
+  }
+};
+
+class Solution {
+ public:
+  vector<vector<array<int, 2>>> g;
+  int edge_cnt, mx_sum, ans;
+  unordered_set<int> vis;
+
+  void dfs(int u, int cnt, int sum) {
+    if (cnt == edge_cnt && sum < mx_sum) {
+      ans = max(ans, sum);
+    }
+    int state = (sum) | (cnt << 9) | (u << 18);
+    if (has(vis, state)) return;
+
+    vis.insert(state);
+    for (auto [v, w] : g[u]) {
+      if (sum + w < mx_sum && cnt + 1 <= edge_cnt) {
+        dfs(v, cnt + 1, sum + w);
+      }
+    }
+  }
+
+  int maxWeight(int n, vector<vector<int>> &edges, int k, int t) {
+    mx_sum = t;
+    edge_cnt = k;
+    vis = {};
+
+    g = vector<vector<array<int, 2>>>(n + 1);
+    for (auto &ed : edges) {
+      int u = ed[0], v = ed[1], w = ed[2];
+      g[u].push_back({v, w});
+    }
 
     ans = -1;
     for (int i = 0; i < n; i++) dfs(i, 0, 0);
