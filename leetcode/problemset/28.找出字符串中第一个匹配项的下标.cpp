@@ -247,7 +247,7 @@ void PrintList(LNP head) {
 #endif
 // End of LeetCode
 
-class Solution {
+class Solution1 {
  public:
   int strStr(string s, string t) {
     int n{SZ(s)};
@@ -276,6 +276,33 @@ class Solution {
   }
 };
 
+class Solution {
+ public:
+  int strStr(string s, string t) {
+    s = t + "#" + s;
+    int lent = int(t.size());
+    int n = int(s.size());
+    vector<int> pi(n);
+
+    for (int i = 1; i < n; i++) {
+      int len = pi[i - 1];
+      while (len && s[len] != s[i]) {
+        len = pi[len - 1];
+      }
+
+      if (s[len] == s[i]) {
+        pi[i] = len + 1;
+
+        if (pi[i] == lent) {
+          return i - lent * 2;
+        }
+      }
+    }
+
+    return -1;
+  }
+};
+
 #ifdef _DEBUG
 
 int main(void) {
@@ -285,6 +312,18 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
+  string s, t;
+  int res;
+
+  s = "sadbutsad";
+  t = "sad";
+  res = a.strStr(s, t);
+  dbg(res);
+
+  s = "leetcode";
+  t = "leeto";
+  res = a.strStr(s, t);
+  dbg(res);
 
   return 0;
 }
