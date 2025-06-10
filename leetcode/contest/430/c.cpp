@@ -16,6 +16,8 @@
 #include <sstream>
 #include <stack>
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -25,6 +27,8 @@ typedef long long ll;
 typedef unsigned long long ull;
 typedef vector<int> VI;
 typedef vector<VI> VVI;
+typedef vector<ll> VL;
+typedef vector<VL> VVL;
 typedef vector<string> VS;
 typedef vector<vector<string>> VVS;
 typedef vector<bool> VB;
@@ -71,20 +75,37 @@ bool ckmax(T &a, const T &b) {
   return a < b ? a = b, 1 : 0;
 }
 
-template <typename t>
-istream &operator>>(istream &in, vector<t> &vec) {
-  for (t &x : vec) in >> x;
-  return in;
+template <class T>
+ostream &operator<<(ostream &os, const vector<T> &a) {
+  int n = int(a.size()) - 1;
+  for (int i = 1; i <= n; ++i) {
+    os << a[i] << " \n"[i == n];
+  }
+  return os;
 }
 
-template <typename t>
-ostream &operator<<(ostream &out, vector<t> &vec) {
-  int n = SZ(vec);
-  For(i, 0, n) {
-    out << vec[i];
-    if (i < n - 1) out << ' ';
+template <class T>
+istream &operator>>(istream &is, vector<T> &a) {
+  int n = int(a.size()) - 1;
+  for (int i = 1; i <= n; ++i) {
+    is >> a[i];
   }
-  return out;
+  return is;
+}
+
+template <class T>
+ostream &operator<<=(ostream &os, const vector<T> &a) {
+  int n = int(a.size());
+  for (int i = 0; i < n; ++i) {
+    os << a[i] << " \n"[i == n - 1];
+  }
+  return os;
+}
+
+template <class T>
+istream &operator>>=(istream &is, vector<T> &a) {
+  for (auto &x : a) is >> x;
+  return is;
 }
 
 #ifdef _DEBUG
@@ -215,7 +236,7 @@ class LCCodec {
   }
 };
 
-LNP CreateList(VI &a) {
+LNP CreateList(VI a) {
   LN *du{new LN(0)}, *cur{}, *pre{du};
 
   for (auto x : a) {
@@ -239,30 +260,28 @@ void PrintList(LNP head) {
 
 #endif
 // End of LeetCode
-
 class Solution {
  public:
-  string answerString(string s, int k) {
-    if (k == 1) return s;
+  int gcd(int a, int b) { return b == 0 ? a : gcd(b, a % b); }
+  PII getp(int a, int b) {
+    int g = gcd(a, b);
+    return {a / g, b / g};
+  }
 
-    int n{SZ(s)};
-    string ans;
-    char ch = 'a';
+  long long numberOfSubsequences(vector<int> &nums) {
+    map<PII, int> mp;
+    int n = int(nums.size());
+    ll ans{};
 
-    for (auto c : s) {
-      ckmax(ch, c);
-    }
+    for (int i = 4; i + 2 < n; i++) {
+      int b = nums[i - 2];
+      for (int j = 0; j <= i - 4; j++) {
+        mp[getp(nums[j], b)]++;
+      }
 
-    For1(len1, 0, n - 1) {
-      if (s[len1] != ch) continue;
-      if (len1 >= k - 1) {
-        string tmp = s.substr(len1);
-        ckmax(ans, tmp);
-      } else {
-        int rem = k - len1 - 1;
-        int len = n - rem - len1;
-        string tmp = s.substr(len1, len);
-        ckmax(ans, tmp);
+      for (int j = i + 2; j < n; j++) {
+        auto dc = getp(nums[j], nums[i]);
+        ans += mp[dc];
       }
     }
     return ans;
@@ -272,18 +291,21 @@ class Solution {
 #ifdef _DEBUG
 
 int main(void) {
+  freopen("input.txt", "r", stdin);
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
   cout.tie(NULL);
   _m_gen64.seed(Pr);
 
   Solution a;
-  string in;
-  string res;
+  int n;
+  while (cin >> n) {
+    VI arr(n);
+    cin >>= arr;
 
-  in = "aann";
-  res = a.answerString(in, 2);
-  dbg(res);
+    ll res = a.numberOfSubsequences(arr);
+    dbg(res);
+  }
 
   return 0;
 }
