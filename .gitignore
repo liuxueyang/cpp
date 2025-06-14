@@ -6,6 +6,10 @@ input.txt
 *.bin
 *.dSYM/
 *__tests
-output/
-*.output
+
+# Ignore all files in any output directory
+**/output/*
+
+# But include input_*.txt files in any output directory
+!**/output/input_*.txt
 

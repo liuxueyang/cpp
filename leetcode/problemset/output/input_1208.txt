@@ -1,0 +1,9 @@
+abcd
+bcdf
+3
+abcd
+cdef
+3
+abcd
+acde
+0
