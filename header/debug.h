@@ -69,10 +69,10 @@ void dbgr(ForwardIterator begin, ForwardIterator end) {
   cerr << "]" << _END_COLOR << '\n';
 }
 
-#define dbg(x...)                                                   \
-  cerr << _BEGIN_COLOR << __func__ << ":" << __LINE__ << " [" << #x \
+#define dbg(...)                                                   \
+  cerr << _BEGIN_COLOR << __func__ << ":" << __LINE__ << " [" << #__VA_ARGS__ \
        << "] = [";                                                  \
-  _print(x);                                                        \
+  _print(__VA_ARGS__);                                                        \
   cerr << _END_COLOR;
 #define dbgi(x) cerr << _BEGIN_COLOR << x << ' ' << _END_COLOR;
 #define dbgln() cerr << '\n';
