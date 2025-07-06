@@ -1,0 +1,12 @@
+4
+SAVE20  PHARMA5 SAVE@20
+4
+restaurant grocery pharmacy restaurant
+4
+true true true true
+3
+GROCERY15 ELECTRONICS_50 DISCOUNT10
+3
+grocery electronics invalid
+3
+false true true
