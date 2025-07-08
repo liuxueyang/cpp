@@ -263,27 +263,24 @@ void PrintList(LNP head) {
 
 class Solution {
  public:
-  long long repairCars(vector<int> &ranks, int cars) {
-    auto check = [&](ll x) {
-      ll sum{};
-      for (auto i : ranks) {
-        sum += sqrtl(x / i);
-        if (sum >= cars) return true;
+  int maxDistance(vector<int> &a, vector<int> &b) {
+    int n = int(a.size()), m = int(b.size()), ans{}, len = min(n, m);
+
+    for (int i = 0; i < len; i++) {
+      int l = i, r = m - 1, mid;
+
+      while (l < r) {
+        mid = (l + r + 1) / 2;
+        if (b[mid] >= a[i])
+          l = mid;
+        else
+          r = mid - 1;
       }
-      return false;
-    };
 
-    ll l = 1, r = 1e18, mid;
-
-    while (l < r) {
-      mid = (l + r) / 2;
-      if (check(mid))
-        r = mid;
-      else
-        l = mid + 1;
+      if (b[l] >= a[i]) ans = max(ans, l - i);
     }
 
-    return r;
+    return ans;
   }
 };
 
@@ -297,16 +294,16 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
-  int n;
-
+  int n, m;
   while (cin >> n) {
     VI arr(n);
     cin >>= arr;
 
-    int K;
-    cin >> K;
+    cin >> m;
+    VI brr(m);
+    cin >>= brr;
 
-    ll res = a.repairCars(arr, K);
+    int res = a.maxDistance(arr, brr);
     dbg(res);
   }
 
