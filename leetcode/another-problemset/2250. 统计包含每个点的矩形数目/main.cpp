@@ -331,13 +331,11 @@ class Solution {
         ans[idx] = 0;
       } else {
         while (cur >= r && cur >= 0) {
-          dbg("update", a[cur].second);
           update(a[cur].second);
           cur--;
         }
 
         int tot = n - 1 - cur, sum = query(y - 1);
-        dbg(cur, tot, sum, x, y);
 
         ans[idx] = tot - sum;
       }
