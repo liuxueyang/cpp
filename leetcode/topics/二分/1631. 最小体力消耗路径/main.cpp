@@ -307,14 +307,12 @@ class Solution1 {
   }
 };
 
-class Solution {
+class Solution2 {
  public:
   int n, m;
   struct node {
     int w, u, v;
-    bool operator<(const node& rh) const {
-      return w < rh.w;
-    }
+    bool operator<(const node &rh) const { return w < rh.w; }
   };
   vector<node> adj;
   vector<int> fa;
@@ -323,9 +321,7 @@ class Solution {
     for (int i = 0; i < n * m; i++) fa[i] = i;
   }
 
-  int Find(int u) {
-    return fa[u] == u ? u : fa[u] = Find(fa[u]);
-  }
+  int Find(int u) { return fa[u] == u ? u : fa[u] = Find(fa[u]); }
   void Union(int u, int v) {
     int ru = Find(u), rv = Find(v);
     fa[ru] = rv;
@@ -352,7 +348,7 @@ class Solution {
 
     int target = n * m - 1;
     sort(adj.begin(), adj.end());
-    
+
     fa = vector<int>(n * m);
     Init();
 
@@ -361,6 +357,44 @@ class Solution {
     for (auto [w, u, v] : adj) {
       if (Find(u) != Find(v)) Union(u, v);
       if (Find(0) == Find(target)) return w;
+    }
+
+    return 0;
+  }
+};
+
+class Solution {
+ public:
+  int minimumEffortPath(vector<vector<int>> &a) {
+    int n = int(a.size()), m = int(a[0].size());
+    vector<vector<bool>> vis(n, vector<bool>(m));
+    vector<vector<int>> dis(n, vector<int>(m, INF));
+
+    dis[0][0] = 0;
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> q;
+    q.push({0, 0});
+
+    while (!q.empty()) {
+      auto [base, ver] = q.top();
+      q.pop();
+
+      int x = ver / m, y = ver % m;
+      if (vis[x][y]) continue;
+
+      vis[x][y] = true;
+      if (x == n - 1 && y == m - 1) return base;
+
+      for (int i = 0; i < 4; i++) {
+        int x1 = x + dir[i][0], y1 = y + dir[i][1];
+        
+        if (x1 >= 0 && x1 < n && y1 >= 0 && y1 < m) {
+          int tmp = max(base, abs(a[x][y] - a[x1][y1]));
+          if (tmp < dis[x1][y1]) {
+            dis[x1][y1] = tmp;
+            q.push({tmp, x1 * m + y1});
+          }
+        }
+      }
     }
 
     return 0;
