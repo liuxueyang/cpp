@@ -263,55 +263,66 @@ void PrintList(LNP head) {
 
 class Solution1 {
  public:
-  int smallestDifference(vector<int> &a, vector<int> &b) {
-    int n = int(a.size()), m = int(b.size());
-    ll ans = INT_MAX;
-    
+  ll qmod(ll x, ll y, ll m) {
+    ll res = 1;
+
+    while (y) {
+      if (y & 1) res = res * x % m;
+      x = x * x % m;
+      y >>= 1;
+    }
+    return res;
+  }
+
+  int numSubseq(vector<int> &a, int target) {
     sort(a.begin(), a.end());
-    sort(b.begin(), b.end());
+    int n = int(a.size());
+    ll ans{};
 
-    int i = 0, j = 0;
-    while (i < n && j < m) {
-      ll tmp = abs(1LL * a[i] - b[j]);
-      ans = min(ans, tmp);
-
-      if (a[i] > b[j]) {
-        if (j < m) j++;
-        else break;
+    for (int i = 0; i < n; i++) {
+      int l = i, r = n - 1, mid;
+      while (l < r) {
+        mid = (l + r + 1) / 2;
+        if (a[mid] <= target - a[i])
+          l = mid;
+        else
+          r = mid - 1;
       }
-      else if (a[i] < b[j]) {
-        if (i < n) i++;
-        else break;
-      } else {
-        break;
+
+      if (a[l] <= target - a[i]) {
+        int cnt = l - i;
+        ans = (ans + qmod(2, cnt, MOD)) % MOD;
       }
     }
-
     return ans;
   }
 };
 
 class Solution {
  public:
-  int smallestDifference(vector<int> &a, vector<int> &b) {
+  ll qmod(ll a, ll b, ll m) {
+    ll res{1};
+
+    while (b) {
+      if (b & 1) res = res * a % m;
+      a = a * a % m;
+      b >>= 1;
+    }
+    return res;
+  }
+
+  int numSubseq(vector<int> &a, int target) {
     sort(a.begin(), a.end());
-    sort(b.begin(), b.end());
+    int n = int(a.size());
+    ll ans{};
 
-    int ans = INT_MAX;
-
-    for (auto x : a) {
-      auto it = lower_bound(b.begin(), b.end(), x);
-      if (it == b.end()) {
-        ll tmp = *prev(it);
-        ans = min(ll(ans), x - tmp);
-      } else {
-        ans = min(ll(ans), ll(*it) - x);
-        if (it != b.begin()) {
-          ans = min(ll(ans), ll(x) - *prev(it));
-        }
+    for (int i = 0, j = n - 1; i <= j; i++) {
+      while (j >= i && a[i] + a[j] > target) --j;
+      if (i <= j && a[i] + a[j] <= target) {
+        int cnt = j - i;
+        ans = (ans + qmod(2, cnt, MOD)) % MOD;
       }
     }
-
     return ans;
   }
 };
@@ -326,17 +337,15 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
-  int n, m;
-
+  int n;
   while (cin >> n) {
-    VI arr1(n);
-    cin >>= arr1;
+    VI arr(n);
+    cin >>= arr;
 
-    cin >> m;
-    VI arr2(m);
-    cin >>= arr2;
+    int target;
+    cin >> target;
 
-    int res = a.smallestDifference(arr1, arr2);
+    int res = a.numSubseq(arr, target);
     dbg(res);
   }
 

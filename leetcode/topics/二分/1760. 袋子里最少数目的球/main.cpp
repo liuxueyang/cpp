@@ -261,58 +261,28 @@ void PrintList(LNP head) {
 #endif
 // End of LeetCode
 
-class Solution1 {
- public:
-  int smallestDifference(vector<int> &a, vector<int> &b) {
-    int n = int(a.size()), m = int(b.size());
-    ll ans = INT_MAX;
-    
-    sort(a.begin(), a.end());
-    sort(b.begin(), b.end());
-
-    int i = 0, j = 0;
-    while (i < n && j < m) {
-      ll tmp = abs(1LL * a[i] - b[j]);
-      ans = min(ans, tmp);
-
-      if (a[i] > b[j]) {
-        if (j < m) j++;
-        else break;
-      }
-      else if (a[i] < b[j]) {
-        if (i < n) i++;
-        else break;
-      } else {
-        break;
-      }
-    }
-
-    return ans;
-  }
-};
-
 class Solution {
  public:
-  int smallestDifference(vector<int> &a, vector<int> &b) {
-    sort(a.begin(), a.end());
-    sort(b.begin(), b.end());
-
-    int ans = INT_MAX;
-
-    for (auto x : a) {
-      auto it = lower_bound(b.begin(), b.end(), x);
-      if (it == b.end()) {
-        ll tmp = *prev(it);
-        ans = min(ll(ans), x - tmp);
-      } else {
-        ans = min(ll(ans), ll(*it) - x);
-        if (it != b.begin()) {
-          ans = min(ll(ans), ll(x) - *prev(it));
-        }
+  int minimumSize(vector<int> &nums, int maxOperations) {
+    auto check = [&](int d) {
+      int sum{};
+      for (auto x : nums) {
+        sum += (x + d - 1) / d - 1;
+        if (sum > maxOperations) return false;
       }
+      return true;
+    };
+
+    int l = 1, r = 1e9, mid;
+    while (l < r) {
+      mid = (l + r) / 2;
+      if (check(mid))
+        r = mid;
+      else
+        l = mid + 1;
     }
 
-    return ans;
+    return r;
   }
 };
 
@@ -326,17 +296,15 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
-  int n, m;
-
+  int n;
   while (cin >> n) {
-    VI arr1(n);
-    cin >>= arr1;
+    VI arr(n);
+    cin >>= arr;
 
-    cin >> m;
-    VI arr2(m);
-    cin >>= arr2;
+    int k;
+    cin >> k;
 
-    int res = a.smallestDifference(arr1, arr2);
+    int res = a.minimumSize(arr, k);
     dbg(res);
   }
 
