@@ -285,13 +285,6 @@ int popcount_depth(ll x) {
   return res;
 }
 
-VI getpopl(ll x) {
-  int d = popcount_depth(x);
-  VI ans(6);
-  ans[d] = 1;
-  return ans;
-}
-
 struct info {
   int val;
 

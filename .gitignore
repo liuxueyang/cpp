@@ -1,7 +1,8 @@
 *.xcodeproj/
 *.exe
 *~
-input.txt
+output/input.txt
+# input.txt
 # .cph/
 *.bin
 *.dSYM/
@@ -17,7 +18,7 @@ c_cpp_properties.json
 
 # But include input.txt files in another-problemset directories.
 # I place visual studio projects in this directory.
-!**/another-problemset/**/input.txt
+# !**/another-problemset/**/input.txt
 
 leetcode/problemset/raw.txt
 
