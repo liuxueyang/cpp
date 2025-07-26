@@ -127,3 +127,5 @@ cmake_install.cmake
 CMakeSettings.json
 CTestTestfile.cmake
 Makefile
+
+.editorconfig
