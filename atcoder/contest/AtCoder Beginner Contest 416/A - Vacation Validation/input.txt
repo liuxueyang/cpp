@@ -1,0 +1,4 @@
+10 6 8
+xoxxooooxo
+9 6 8
+xoxxoxoox
