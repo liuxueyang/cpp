@@ -233,25 +233,21 @@ void Init() {}
 void solve() {
   int n;
   cin >> n;
-  VI a(n + 10);
-  For1(i, 1, n) cin >> a[i];
 
-  VI b(n + 10);
-  b[0] = INF;
-  For1(i, 1, n) b[i] = min(b[i - 1], a[i]);
+  VI a(n);
+  cin >>= a;
 
-  bool ok{true};
-  Rof1(i, 1, n) {
-    if (a[i] == 1) continue;
-    int x = a[i];
-    int pmin = b[i - 1];
-    if (pmin > x - pmin)
-      continue;
-    else {
-      ok = false;
-      break;
+  ll ans{1};
+  ll len = 1, pre = 1;
+
+  For(i, 1, n) {
+    if (a[i] < a[i - 1]) {
+      pre = pre + i + 1;
+      len++;
+    } else {
+      pre = pre + 1;
     }
+    ans += pre;
   }
-
-  ok ? YES() : NO();
+  cout << ans << '\n';
 }
