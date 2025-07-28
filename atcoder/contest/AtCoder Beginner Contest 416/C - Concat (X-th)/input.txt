@@ -1,0 +1,10 @@
+3 2 6
+abc
+xxx
+abc
+5 5 416
+a
+aa
+aaa
+aa
+a
