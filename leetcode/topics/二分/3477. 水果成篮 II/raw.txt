@@ -1,0 +1,25 @@
+示例 1
+
+输入： fruits = [4,2,5], baskets = [3,5,4]
+
+输出： 1
+
+解释：
+
+fruits[0] = 4 放入 baskets[1] = 5。
+fruits[1] = 2 放入 baskets[0] = 3。
+fruits[2] = 5 无法放入 baskets[2] = 4。
+由于有一种水果未放置，我们返回 1。
+
+示例 2
+
+输入： fruits = [3,6,1], baskets = [6,4,7]
+
+输出： 0
+
+解释：
+
+fruits[0] = 3 放入 baskets[0] = 6。
+fruits[1] = 6 无法放入 baskets[1] = 4（容量不足），但可以放入下一个可用的篮子 baskets[2] = 7。
+fruits[2] = 1 放入 baskets[1] = 4。
+由于所有水果都已成功放置，我们返回 0。
