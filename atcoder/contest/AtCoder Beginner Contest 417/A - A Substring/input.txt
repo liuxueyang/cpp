@@ -1,0 +1,6 @@
+7 1 3
+atcoder
+1 0 0
+a
+20 4 8
+abcdefghijklmnopqrst
