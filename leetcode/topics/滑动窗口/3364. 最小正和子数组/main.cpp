@@ -263,34 +263,35 @@ void PrintList(LNP head) {
 
 class Solution {
  public:
-  int minTime(string s, vector<int> &a, int k) {
-    set<PII> b;
-    int n = SZ(s);
-    ll sum{};
+  int minimumSumSubarray(vector<int> &a, int l, int r) {
+    int n = int(a.size()), ans{INF};
+    vector<int> p(n + 1);
 
-    b.insert({1, n});
-    for (int i = 0; i < n; i++) {
-      int x = a[i] + 1;
+    for (int i = 0; i < n; i++) p[i + 1] = p[i] + a[i];
+    multiset<int> s;
 
-      auto it = b.lower_bound({x, -1});
-      if (it == b.end() || it->first > x) it = prev(it);
-
-      auto [l, r] = *it;
-      b.erase(it);
-
-      if (x - 1 >= l) {
-        b.insert({l, x - 1});
+    for (int i = 1; i <= n; i++) {
+      if (i < l) {
+        continue;
       }
-      if (x + 1 <= r) {
-        b.insert({x + 1, r});
+      // 加入窗口右端点
+      s.insert(p[i - l]);
+
+      // 维护左端点，如果左端点是合法的，那么把它移出窗口
+      if (i - r - 1 >= 0) {
+        auto it = s.find(p[i - r - 1]);
+        s.erase(it);
       }
 
-      ll left = x - l, right = r - x;
-      ll tmp = left + right + left * right + 1;
-      sum += tmp;
-      if (sum >= k) return i;
+      // 求出窗口内部的答案
+      auto it = s.lower_bound(p[i]);
+      if (it != s.begin()) {
+        int tmp = p[i] - *prev(it);
+        ans = min(ans, tmp);
+      }
     }
-    return -1;
+
+    return ans == INF ? -1 : ans;
   }
 };
 
@@ -304,18 +305,12 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
-  string s;
-  while (cin >> s) {
-    int n;
-    cin >> n;
-
+  int n, l, r;
+  while (cin >> n) {
     VI arr(n);
     cin >>= arr;
-
-    int k;
-    cin >> k;
-
-    auto res = a.minTime(s, arr, k);
+    cin >> l >> r;
+    auto res = a.minimumSumSubarray(arr, l, r);
     dbg(res);
   }
 
