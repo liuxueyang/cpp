@@ -261,7 +261,7 @@ void PrintList(LNP head) {
 #endif
 // End of LeetCode
 
-class Solution {
+class Solution1 {
  public:
   vector<int> findAnagrams(string s, string p) {
     vector<int> visp(26), vis(26), ans{};
@@ -285,6 +285,61 @@ class Solution {
         }
       }
       if (ok) {
+        ans.push_back(i);
+      }
+    }
+
+    return ans;
+  }
+};
+
+class Solution2 {
+ public:
+  vector<int> findAnagrams(string s, string p) {
+    vector<int> visp(26), vis(26), ans{};
+    int n = int(s.size());
+
+    for (auto c : p) visp[c - 'a']++;
+
+    for (int i = 0, j = 0; j < n; j++) {
+      int idx = s[j] - 'a';
+      vis[idx]++;
+      while (i <= j && vis[idx] > visp[idx]) {
+        vis[s[i++] - 'a']--;
+      }
+
+      bool ok{true};
+      for (int k = 0; k < 26; k++) {
+        if (vis[k] != visp[k]) {
+          ok = false;
+          break;
+        }
+      }
+      if (ok) {
+        ans.push_back(i);
+      }
+    }
+
+    return ans;
+  }
+};
+
+class Solution {
+ public:
+  vector<int> findAnagrams(string s, string p) {
+    vector<int> visp(26), vis(26), ans{};
+    int n = int(s.size()), len = int(p.size());
+
+    for (auto c : p) visp[c - 'a']++;
+
+    for (int i = 0, j = 0; j < n; j++) {
+      int idx = s[j] - 'a';
+      vis[idx]++;
+      while (i <= j && vis[idx] > visp[idx]) {
+        vis[s[i++] - 'a']--;
+      }
+
+      if (len == j - i + 1) {
         ans.push_back(i);
       }
     }
