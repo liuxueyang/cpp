@@ -1,0 +1,14 @@
+示例 1：
+
+输入：s = "abcabc"
+输出：10
+解释：包含 a，b 和 c 各至少一次的子字符串为 "abc", "abca", "abcab", "abcabc", "bca", "bcab", "bcabc", "cab", "cabc" 和 "abc" (相同字符串算多次)。
+示例 2：
+
+输入：s = "aaacb"
+输出：3
+解释：包含 a，b 和 c 各至少一次的子字符串为 "aaacb", "aacb" 和 "acb" 。
+示例 3：
+
+输入：s = "abc"
+输出：1
