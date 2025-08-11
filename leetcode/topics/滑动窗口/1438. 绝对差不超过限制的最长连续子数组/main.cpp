@@ -261,7 +261,7 @@ void PrintList(LNP head) {
 #endif
 // End of LeetCode
 
-class Solution {
+class Solution1 {
  public:
   int longestSubarray(vector<int> &a, int limit) {
     int n = int(a.size()), ans{};
@@ -277,6 +277,30 @@ class Solution {
       ans = max(ans, j - i + 1);
     }
 
+    return ans;
+  }
+};
+
+class Solution {
+ public:
+  int longestSubarray(vector<int> &a, int limit) {
+    int n = int(a.size()), ans{};
+    deque<int> q1{}, q2{};
+
+    for (int i = 0, j = 0; j < n; j++) {
+      while (!q1.empty() && a[j] >= a[q1.back()]) q1.pop_back();
+      q1.push_back(j);
+      while (!q2.empty() && a[j] <= a[q2.back()]) q2.pop_back();
+      q2.push_back(j);
+
+      while (i < j && a[q1.front()] - a[q2.front()] > limit) {
+        i++;
+        while (!q1.empty() && q1.front() < i) q1.pop_front();
+        while (!q2.empty() && q2.front() < i) q2.pop_front();
+      }
+
+      ans = max(ans, j - i + 1);
+    }
     return ans;
   }
 };
