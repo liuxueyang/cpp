@@ -1,0 +1,19 @@
+示例 1：
+
+输入：s = "011010", minJump = 2, maxJump = 3
+输出：true
+解释：
+第一步，从下标 0 移动到下标 3 。
+第二步，从下标 3 移动到下标 5 。
+示例 2：
+
+输入：s = "01101110", minJump = 2, maxJump = 3
+输出：false
+
+s =
+"0000000000"
+minJump =
+8
+maxJump =
+8
+Expect false
