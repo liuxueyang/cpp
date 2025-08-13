@@ -1,0 +1,31 @@
+示例 1：
+
+输入：word1 = "bcca", word2 = "abc"
+
+输出：1
+
+解释：
+
+唯一合法的子字符串是 "bcca" ，可以重新排列得到 "abcc" ，"abc" 是它的前缀。
+
+示例 2：
+
+输入：word1 = "abcabc", word2 = "abc"
+
+输出：10
+
+解释：
+
+除了长度为 1 和 2 的所有子字符串都是合法的。
+
+示例 3：
+
+输入：word1 = "abcabc", word2 = "aaabc"
+
+输出：0
+
+word1 =
+"bbbb"
+word2 =
+"b"
+Expect 10
