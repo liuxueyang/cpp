@@ -1,0 +1,20 @@
+示例 1：
+
+输入：text = "ababa"
+输出：3
+示例 2：
+
+输入：text = "aaabaaa"
+输出：6
+示例 3：
+
+输入：text = "aaabbaaa"
+输出：4
+示例 4：
+
+输入：text = "aaaaa"
+输出：5
+示例 5：
+
+输入：text = "abcdef"
+输出：1
