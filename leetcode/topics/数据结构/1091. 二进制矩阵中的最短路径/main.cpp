@@ -282,7 +282,8 @@ class Solution {
       for (int i = 0; i < 8; i++) {
         x1 = x + dir[i][0];
         y1 = y + dir[i][1];
-        if (x1 >= 0 && x1 < n && y1 >= 0 && y1 < n && !vis[x1][y1] && g[x1][y1] == 0) {
+        if (x1 >= 0 && x1 < n && y1 >= 0 && y1 < n && !vis[x1][y1] &&
+            g[x1][y1] == 0) {
           vis[x1][y1] = true;
           d[x1][y1] = 1 + d[x][y];
           q.push({x1, y1});
