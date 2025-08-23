@@ -261,7 +261,7 @@ void PrintList(LNP head) {
 #endif
 // End of LeetCode
 
-class Solution {
+class Solution1 {
  public:
   bool checkInclusion(string s1, string s2) {
     vector<int> p1(26), p2(26);
@@ -285,6 +285,27 @@ class Solution {
       }
 
       if (cnt == s1cnt && j - i + 1 == m) return true;
+    }
+    return false;
+  }
+};
+
+class Solution {
+ public:
+  bool checkInclusion(string s1, string s2) {
+    vector<int> p1(26), p2(26);
+    int n = int(s2.size()), m = int(s1.size());
+
+    for (auto c : s1) p1[c - 'a']++;
+
+    for (int i = 0, j = 0; j < n; j++) {
+      int idx = s2[j] - 'a';
+      p2[idx]++;
+      while (i <= j && p2[idx] > p1[idx]) {
+        p2[s2[i++] - 'a']--;
+      }
+
+      if (j - i + 1 == m) return true;
     }
     return false;
   }
