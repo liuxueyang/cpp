@@ -129,3 +129,6 @@ CTestTestfile.cmake
 Makefile
 
 .editorconfig
+
+.vscode
+
