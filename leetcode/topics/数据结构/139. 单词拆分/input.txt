@@ -1,0 +1,15 @@
+leetcode
+2
+leet code
+applepenapple
+2
+apple pen
+catsandog
+5
+cats dog sand and cat
+bb
+4
+a b bbb bbbb
+cars
+3
+car ca rs
