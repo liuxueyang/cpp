@@ -1,0 +1,16 @@
+示例 1：
+
+输入：word = "internationalization", abbr = "i12iz4n"
+输出：true
+解释：单词 "internationalization" 可以缩写为 "i12iz4n" ("i nternational iz atio n") 。
+示例 2：
+
+输入：word = "apple", abbr = "a2e"
+输出：false
+解释：单词 "apple" 无法缩写为 "a2e" 。
+
+word =
+"abbde"
+abbr =
+"a1b01e"
+Expect false
