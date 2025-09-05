@@ -261,7 +261,7 @@ void PrintList(LNP head) {
 #endif
 // End of LeetCode
 
-class Solution {
+class Solution1 {
  public:
   bool partitionArray(vector<int> &a, int k) {
     unordered_map<int, int> mp;
@@ -291,6 +291,26 @@ class Solution {
     }
 
     return true;
+  }
+};
+
+// 对于 k=2 的情况，先填偶数位置，再填奇数位置
+// 类比，把位置分成 k 个一组，每一组先填第一个位置；把所有组填完之后，再对每一组的第二个位置填。
+class Solution {
+ public:
+  bool partitionArray(vector<int> &a, int k) {
+    int n = int(a.size());
+    if (n % k) return false;
+    if (k == 1) return true;
+
+    vector<int> mp(1e5 + 10);
+    int mx{};
+    for (auto x : a) {
+      ckmax(mx, ++mp[x]);
+    }
+
+    if (1LL * mx * k <= n) return true;
+    return false;
   }
 };
 
