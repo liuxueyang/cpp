@@ -1,0 +1,12 @@
+4
+aa ab ba ac
+a
+3
+aa ab ba
+a
+4
+aa ab ba ac
+b
+3
+aa ba ba
+a
