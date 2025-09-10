@@ -261,25 +261,6 @@ void PrintList(LNP head) {
 #endif
 // End of LeetCode
 
-const int N = 100100;
-int m, s[N];
-void Init() { memset(s, 0, sizeof s); }
-int lowbit(int x) { return x & -x; }
-void update(int x, int val) {
-  while (x <= m) {
-    ckmax(s[x], val);
-    x += lowbit(x);
-  }
-}
-int query(int x) {
-  int res{};
-  while (x) {
-    ckmax(res, s[x]);
-    x -= lowbit(x);
-  }
-  return res;
-}
-
 class Solution {
  public:
   vector<int> maxValue(vector<int> &a) {
