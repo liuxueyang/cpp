@@ -261,7 +261,33 @@ void PrintList(LNP head) {
 #endif
 // End of LeetCode
 
+class Solution {
+ public:
+  long long perfectPairs(vector<int> &nums) {
+    int n = int(nums.size());
 
+    for (auto &x : nums) x = abs(x);
+    sort(nums.begin(), nums.end());
+
+    ll ans{};
+
+    for (int i = 0; i < n; i++) {
+      int l = i + 1, r = n - 1, mid;
+      while (l < r) {
+        mid = (l + r + 1) / 2;
+        if (nums[mid] <= 2 * nums[i])
+          l = mid;
+        else
+          r = mid - 1;
+      }
+
+      if (l < n && nums[l] <= 2 * nums[i]) {
+        ans += l - (i + 1) + 1;
+      }
+    }
+    return ans;
+  }
+};
 
 #ifdef _DEBUG
 
@@ -273,6 +299,13 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
+  int n;
+  while (cin >> n) {
+    VI arr(n);
+    cin >>= arr;
+    auto res = a.perfectPairs(arr);
+    dbg(res);
+  }
 
   return 0;
 }
