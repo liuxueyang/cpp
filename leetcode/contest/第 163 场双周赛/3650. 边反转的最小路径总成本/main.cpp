@@ -263,9 +263,44 @@ void PrintList(LNP head) {
 
 class Solution {
  public:
-
   int minCost(int n, vector<vector<int>> &edges) {
-  
+    vector<vector<pair<int, int>>> g(n + 10), gv(n + 10);
+
+    for (auto &vec : edges) {
+      int u = vec[0], v = vec[1], w = vec[2];
+      g[u].push_back({v, w});
+      gv[v].push_back({u, w});
+    }
+
+    priority_queue<pair<int, int>, vector<pair<int, int>>,
+                   greater<pair<int, int>>>
+        q;
+    q.push({0, 0});
+    vector<int> d(n + 10, INF);
+    vector<bool> vis(n + 10);
+
+    while (!q.empty()) {
+      auto [base, ver] = q.top();
+      q.pop();
+
+      if (vis[ver]) continue;
+      vis[ver] = true;
+
+      for (auto [v, w] : g[ver]) {
+        if (ckmin(d[v], base + w)) {
+          q.push({d[v], v});
+        }
+      }
+
+      for (auto [u, w] : gv[ver]) {
+        if (ckmin(d[u], base + 2 * w)) {
+          q.push({d[u], u});
+        }
+      }
+    }
+
+    if (d[n - 1] == INF) return -1;
+    return d[n - 1];
   }
 };
 
@@ -279,6 +314,15 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
+  int n;
+  while (cin >> n) {
+    int n1, m1;
+    cin >> n1 >> m1;
+    VVI arr(n1, VI(m1));
+    For(i, 0, n1) cin >>= arr[i];
+    auto res = a.minCost(n, arr);
+    dbg(res);
+  }
 
   return 0;
 }
