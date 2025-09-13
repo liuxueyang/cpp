@@ -1,0 +1,384 @@
+#include <algorithm>
+#include <array>
+#include <cassert>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <functional>
+#include <iomanip>
+#include <iostream>
+#include <map>
+#include <queue>
+#include <random>
+#include <set>
+#include <sstream>
+#include <stack>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <vector>
+
+using namespace std;
+
+typedef long long ll;
+typedef unsigned long long ull;
+typedef vector<int> VI;
+typedef vector<VI> VVI;
+typedef vector<ll> VL;
+typedef vector<VL> VVL;
+typedef vector<string> VS;
+typedef vector<vector<string>> VVS;
+typedef vector<bool> VB;
+typedef vector<vector<bool>> VVB;
+typedef pair<int, int> PII;
+typedef pair<ll, ll> PLL;
+template <class T>
+using pq = priority_queue<T>;
+template <class T>
+using pqg = priority_queue<T, vector<T>, greater<T>>;
+
+const int INF = 0x3f3f3f3f, MOD = 1e9 + 7, MOD1 = 998'244'353;
+const ll INFL = 0x3f3f3f3f'3f3f3f3f;
+const double eps = 1e-8;
+const int dir[8][2] = {
+    {0, 1}, {0, -1}, {1, 0}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1},
+};
+mt19937_64 _m_gen64;
+
+const ull Pr = 131, Pr1 = 13331;
+
+#define For(i, a, b) for (int i = int(a); i < int(b); ++i)
+#define Rof(i, a, b) for (int i = int(b) - 1; i >= int(a); --i)
+#define For1(i, a, b) for (int i = int(a); i <= int(b); ++i)
+#define Rof1(i, a, b) for (int i = int(b); i >= int(a); --i)
+#define ForE(i, j) for (int i = h[j]; i != -1; i = ne[i])
+
+#define f1 first
+#define f2 second
+#define pb push_back
+#define has(a, x) (a.find(x) != a.end())
+#define nemp(a) (!a.empty())
+#define all(a) (a).begin(), (a).end()
+#define all1(a, len) (a + 1), (a + 1 + len)
+#define SZ(a) int((a).size())
+#define NL cout << '\n';
+
+template <class T>
+bool ckmin(T &a, const T &b) {
+  return b < a ? a = b, 1 : 0;
+}
+template <class T>
+bool ckmax(T &a, const T &b) {
+  return a < b ? a = b, 1 : 0;
+}
+
+template <class T>
+ostream &operator<<(ostream &os, const vector<T> &a) {
+  int n = int(a.size()) - 1;
+  for (int i = 1; i <= n; ++i) {
+    os << a[i] << " \n"[i == n];
+  }
+  return os;
+}
+
+template <class T>
+istream &operator>>(istream &is, vector<T> &a) {
+  int n = int(a.size()) - 1;
+  for (int i = 1; i <= n; ++i) {
+    is >> a[i];
+  }
+  return is;
+}
+
+template <class T>
+ostream &operator<<=(ostream &os, const vector<T> &a) {
+  int n = int(a.size());
+  for (int i = 0; i < n; ++i) {
+    os << a[i] << " \n"[i == n - 1];
+  }
+  return os;
+}
+
+template <class T>
+istream &operator>>=(istream &is, vector<T> &a) {
+  for (auto &x : a) is >> x;
+  return is;
+}
+
+#ifdef _DEBUG
+#include "debug.h"
+#else
+#define dbg(x...)
+#define dbgi(x)
+#define dbgln()
+#define dbgr(x...)
+#endif
+
+// For LeetCode
+#define LN ListNode
+#define LNP ListNode *
+#define TN TreeNode
+#define TNP TreeNode *
+
+#ifdef _DEBUG
+struct ListNode {
+  int val;
+  ListNode *next;
+  ListNode() : val(0), next(nullptr) {}
+  ListNode(int val) : val(val), next(nullptr) {}
+  ListNode(int val, ListNode *next) : val(val), next(next) {}
+};
+
+struct TreeNode {
+  int val;
+  TreeNode *left;
+  TreeNode *right;
+  TreeNode() : val(0), left(nullptr), right(nullptr) {}
+  TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+  TreeNode(int x, TreeNode *left, TreeNode *right)
+      : val(x), left(left), right(right) {}
+};
+
+void PrePrintLCTree(TNP root) {
+  if (!root) return;
+  dbgi(root->val);
+  PrePrintLCTree(root->left);
+  PrePrintLCTree(root->right);
+}
+
+class LCCodec {
+ public:
+  // Encodes a tree to a single string.
+  string serialize(TreeNode *root) {
+    if (!root) return "";
+
+    vector<TNP> a;
+    a.pb(root);
+    string ans;
+
+    while (nemp(a)) {
+      vector<TNP> b;
+
+      string tmp;
+      for (auto x : a) {
+        if (nemp(ans)) {
+          ans += ',';
+        }
+
+        if (x)
+          ans += to_string(x->val);
+        else
+          ans += "null";
+      }
+
+      bool ok{false};
+      for (auto x : a) {
+        if (x) {
+          b.pb(x->left);
+          b.pb(x->right);
+
+          if (x->left || x->right) {
+            ok = true;
+          }
+        }
+      }
+
+      if (ok)
+        a = std::move(b);
+      else
+        a = {};
+    }
+
+    return ans;
+  }
+
+  // Decodes your encoded data to tree.
+  TreeNode *deserialize(string data) {
+    vector<TNP> a;
+    int n = SZ(data);
+    vector<string> b;
+
+    if (!n) return nullptr;
+
+    string t;
+    for (auto x : data) {
+      if (x == ',') {
+        b.pb(t);
+        t = "";
+      } else
+        t += x;
+    }
+    b.pb(t);
+
+    for (auto x : b) {
+      if (x == "null")
+        a.pb(nullptr);
+      else
+        a.pb(new TN(stoi(x)));
+    }
+
+    int m = SZ(a);
+    int i = 0, j = 1;
+
+    while (i < m) {
+      while (i < m && !a[i]) ++i;
+      if (i >= n) break;
+
+      if (j < m) a[i]->left = a[j++];
+      if (j < m) a[i]->right = a[j++];
+      ++i;
+    }
+
+    return a[0];
+  }
+};
+
+LNP CreateList(VI a) {
+  LN *du{new LN(0)}, *cur{}, *pre{du};
+
+  for (auto x : a) {
+    cur = new LN(x);
+    pre->next = cur;
+    pre = cur;
+  }
+
+  auto res = du->next;
+  delete du;
+  return res;
+}
+
+void PrintList(LNP head) {
+  while (head) {
+    dbgi(head->val);
+    head = head->next;
+  }
+  dbgln();
+}
+
+#endif
+// End of LeetCode
+
+class Solution {
+ public:
+  struct node {
+    int from, len, val;
+    node() : from(0), len(0), val(0) {}
+    node(int from_, int len_) : from(from_), len(len_), val(from + len) {}
+
+    bool operator<(const node &rh) const {
+      if (from != rh.from) return from < rh.from;
+      return val < rh.val;
+    }
+  };
+
+  int earliestFinishTime(vector<int> &landStartTime, vector<int> &landDuration,
+                         vector<int> &waterStartTime,
+                         vector<int> &waterDuration) {
+    int n = int(landStartTime.size()), m = int(waterStartTime.size());
+    vector<node> a(n), b(m);
+
+    for (int i = 0; i < n; i++) {
+      a[i] = {landStartTime[i], landDuration[i]};
+    }
+    for (int i = 0; i < m; i++) {
+      b[i] = {waterStartTime[i], waterDuration[i]};
+    }
+    sort(a.begin(), a.end());
+    sort(b.begin(), b.end());
+
+    vector<int> prea(n), sufa(n), preb(m), sufb(m);
+
+    prea[0] = a[0].len;
+    for (int i = 1; i < n; i++) {
+      prea[i] = min(prea[i - 1], a[i].len);
+    }
+
+    preb[0] = b[0].len;
+    for (int i = 1; i < m; i++) preb[i] = min(preb[i - 1], b[i].len);
+
+    sufa[n - 1] = a[n - 1].val;
+    for (int i = n - 2; i >= 0; i--) {
+      sufa[i] = min(sufa[i + 1], a[i].val);
+    }
+
+    sufb[m - 1] = b[m - 1].val;
+    for (int i = m - 2; i >= 0; i--) sufb[i] = min(sufb[i + 1], b[i].val);
+
+    int ans{INF};
+    for (int i = 0; i < n; i++) {
+      int l = 0, r = m - 1, mid, x = a[i].val;
+      while (l < r) {
+        mid = (l + r) / 2;
+        if (b[mid].from >= x)
+          r = mid;
+        else
+          l = mid + 1;
+      }
+
+      if (b[r].from >= x) {
+        ckmin(ans, sufb[r]);
+        if (r > 0) {
+          ckmin(ans, x + preb[r - 1]);
+        }
+      } else {
+        ckmin(ans, x + preb[r]);
+      }
+    }
+
+    for (int i = 0; i < m; i++) {
+      int l = 0, r = n - 1, mid, x = b[i].val;
+      while (l < r) {
+        mid = (l + r) / 2;
+        if (a[mid].from >= x)
+          r = mid;
+        else
+          l = mid + 1;
+      }
+
+      if (a[r].from >= x) {
+        ckmin(ans, sufa[r]);
+        if (r > 0) {
+          ckmin(ans, x + prea[r - 1]);
+        }
+      } else {
+        ckmin(ans, x + prea[r]);
+      }
+    }
+
+    return ans;
+  }
+};
+
+#ifdef _DEBUG
+
+int main(void) {
+  freopen("input.txt", "r", stdin);
+  std::ios::sync_with_stdio(false);
+  cin.tie(NULL);
+  cout.tie(NULL);
+  _m_gen64.seed(Pr);
+
+  Solution a;
+  int n, m;
+  while (cin >> n) {
+    VI arr1(n), arr2(n);
+    cin >>= arr1;
+    cin >> n;
+    cin >>= arr2;
+
+    cin >> m;
+    VI brr1(m), brr2(m);
+    cin >>= brr1;
+    cin >> m;
+    cin >>= brr2;
+    auto res = a.earliestFinishTime(arr1, arr2, brr1, brr2);
+    dbg(res);
+  }
+
+  return 0;
+}
+
+#endif
