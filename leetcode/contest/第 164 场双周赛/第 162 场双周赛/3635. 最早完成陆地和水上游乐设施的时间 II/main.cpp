@@ -261,7 +261,7 @@ void PrintList(LNP head) {
 #endif
 // End of LeetCode
 
-class Solution {
+class Solution1 {
  public:
   struct node {
     int from, len, val;
@@ -349,6 +349,36 @@ class Solution {
     }
 
     return ans;
+  }
+};
+
+class Solution {
+ public:
+  int solve(vector<int> &a1, vector<int> &a2, vector<int> &b1,
+            vector<int> &b2) {
+    int fin{INF}, n = int(a1.size()), m = int(b1.size()), ans{INF};
+
+    for (int i = 0; i < n; i++) {
+      ckmin(fin, a1[i] + a2[i]);
+    }
+    for (int i = 0; i < m; i++) {
+      int tmp{fin};
+      if (fin >= b1[i])
+        tmp += b2[i];
+      else
+        tmp = b1[i] + b2[i];
+      ckmin(ans, tmp);
+    }
+    return ans;
+  }
+  int earliestFinishTime(vector<int> &landStartTime, vector<int> &landDuration,
+                         vector<int> &waterStartTime,
+                         vector<int> &waterDuration) {
+    int res1 =
+            solve(landStartTime, landDuration, waterStartTime, waterDuration),
+        res2 =
+            solve(waterStartTime, waterDuration, landStartTime, landDuration);
+    return min(res1, res2);
   }
 };
 
