@@ -1,0 +1,37 @@
+示例 1:
+
+输入：landStartTime = [2,8], landDuration = [4,1], waterStartTime = [6], waterDuration = [3]
+
+输出：9
+
+解释：
+
+方案 A（陆地游乐设施 0 → 水上游乐设施 0）：
+在时间 landStartTime[0] = 2 开始陆地游乐设施 0。在 2 + landDuration[0] = 6 结束。
+水上游乐设施 0 在时间 waterStartTime[0] = 6 开放。立即在时间 6 开始，在 6 + waterDuration[0] = 9 结束。
+方案 B（水上游乐设施 0 → 陆地游乐设施 1）：
+在时间 waterStartTime[0] = 6 开始水上游乐设施 0。在 6 + waterDuration[0] = 9 结束。
+陆地游乐设施 1 在 landStartTime[1] = 8 开放。在时间 9 开始，在 9 + landDuration[1] = 10 结束。
+方案 C（陆地游乐设施 1 → 水上游乐设施 0）：
+在时间 landStartTime[1] = 8 开始陆地游乐设施 1。在 8 + landDuration[1] = 9 结束。
+水上游乐设施 0 在 waterStartTime[0] = 6 开放。在时间 9 开始，在 9 + waterDuration[0] = 12 结束。
+方案 D（水上游乐设施 0 → 陆地游乐设施 0）：
+在时间 waterStartTime[0] = 6 开始水上游乐设施 0。在 6 + waterDuration[0] = 9 结束。
+陆地游乐设施 0 在 landStartTime[0] = 2 开放。在时间 9 开始，在 9 + landDuration[0] = 13 结束。
+方案 A 提供了最早的结束时间 9。
+
+示例 2:
+
+输入：landStartTime = [5], landDuration = [3], waterStartTime = [1], waterDuration = [10]
+
+输出：14
+
+解释：
+
+方案 A（水上游乐设施 0 → 陆地游乐设施 0）：
+在时间 waterStartTime[0] = 1 开始水上游乐设施 0。在 1 + waterDuration[0] = 11 结束。
+陆地游乐设施 0 在 landStartTime[0] = 5 开放。立即在时间 11 开始，在 11 + landDuration[0] = 14 结束。
+方案 B（陆地游乐设施 0 → 水上游乐设施 0）：
+在时间 landStartTime[0] = 5 开始陆地游乐设施 0。在 5 + landDuration[0] = 8 结束。
+水上游乐设施 0 在 waterStartTime[0] = 1 开放。立即在时间 8 开始，在 8 + waterDuration[0] = 18 结束。
+方案 A 提供了最早的结束时间 14。
