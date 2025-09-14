@@ -263,7 +263,7 @@ void PrintList(LNP head) {
 
 #include <numeric>
 
-class Solution {
+class Solution1 {
  public:
   int smallestAbsent(vector<int> &nums) {
     set<int> vis(nums.begin(), nums.end());
@@ -272,6 +272,24 @@ class Solution {
 
     For1(i, 1, 110) {
       if (i > avg && !has(vis, i)) return i;
+    }
+    return 0;
+  }
+};
+
+class Solution {
+ public:
+  int smallestAbsent(vector<int> &nums) {
+    int n{SZ(nums)}, sum = accumulate(nums.begin(), nums.end(), 0LL);
+    double avg = 1.0 * sum / n;
+    vector<bool> vis(110);
+
+    for (auto x : nums) {
+      if (x >= 0) vis[x] = true;
+    }
+
+    for (int i = max(1.0, avg); i < 110; i++) {
+      if (i > avg && !vis[i]) return i;
     }
     return 0;
   }
