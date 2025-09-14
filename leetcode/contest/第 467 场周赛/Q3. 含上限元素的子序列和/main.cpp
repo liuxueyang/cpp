@@ -282,8 +282,6 @@ class Solution {
       }
     }
 
-    dbg(a);
-
     For1(x, 1, n) {
       int l = 1, r = n, mid;
       while (l < r) {
@@ -300,8 +298,6 @@ class Solution {
       } else {
         left = r;
       }
-
-      dbg(x, left, cnt);
 
       if (d[left][k])
         ans.pb(true);

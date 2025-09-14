@@ -283,7 +283,6 @@ class Solution {
         p[i][0] = p[i - 1][0];
         p[i][1] = p[i - 1][1];
       }
-      dbg(i, d[i], p[i]);
     }
     ans = (p[n][0] + p[n][1] + d[n][0] + d[n][1]) % MOD;
 
