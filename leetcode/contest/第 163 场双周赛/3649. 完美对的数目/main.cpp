@@ -261,7 +261,7 @@ void PrintList(LNP head) {
 #endif
 // End of LeetCode
 
-class Solution {
+class Solution1 {
  public:
   long long perfectPairs(vector<int> &nums) {
     int n = int(nums.size());
@@ -285,6 +285,25 @@ class Solution {
         ans += l - (i + 1) + 1;
       }
     }
+    return ans;
+  }
+};
+
+class Solution {
+ public:
+  long long perfectPairs(vector<int> &nums) {
+    int n = int(nums.size());
+
+    for (auto &x : nums) x = abs(x);
+    sort(nums.begin(), nums.end());
+
+    ll ans{};
+    for (int i = 0, j = i + 1; i < n; i++) {
+      j = max(j, i + 1);
+      while (j < n && nums[j] <= 2 * nums[i]) j++;
+      ans += j - i - 1;
+    }
+
     return ans;
   }
 };
