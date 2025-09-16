@@ -308,7 +308,6 @@ class Solution1 {
 };
 
 // https://www.nowcoder.com/practice/b58434e200a648c589ca2063f1faf58c
-// TODO: Submit
 class Solution {
  public:
   /**
@@ -326,7 +325,7 @@ class Solution {
     du->next = head;
 
     ListNode *s1 = du;
-    for (int i = 0; i < m; i++) s1 = s1->next;
+    for (int i = 0; i < m - 1; i++) s1 = s1->next;
     ListNode *pre = s1;
     s1 = s1->next;
 
