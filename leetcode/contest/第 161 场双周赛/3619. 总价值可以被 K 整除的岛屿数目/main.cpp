@@ -285,7 +285,7 @@ class Solution {
     a = grid;
     n = int(a.size()), m = int(a[0].size());
     vis = vector<vector<bool>>(n, vector<bool>(m));
-    int ans {};
+    int ans{};
 
     for (int i = 0; i < n; i++) {
       for (int j = 0; j < m; j++) {

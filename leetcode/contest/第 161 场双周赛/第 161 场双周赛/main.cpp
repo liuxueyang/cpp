@@ -261,43 +261,7 @@ void PrintList(LNP head) {
 #endif
 // End of LeetCode
 
-const int N = 100100;
-int n;
-bool st[N], initted = false;
 
-void Init() {
-  if (initted) return;
-
-  initted = true;
-  memset(st, false, sizeof st);
-  st[0] = st[1] = true;
-
-  for (int i = 2; i < N; i++) {
-    if (!st[i]) {
-      for (int j = i + i; j < N; j += i) {
-        st[j] = true;
-      }
-    }
-  }
-}
-
-class Solution {
- public:
-  long long splitArray(vector<int> &nums) {
-    n = int(nums.size());
-    Init();
-
-    ll ans1{}, ans2{};
-    for (int i = 0; i < n; i++) {
-      if (!st[i]) {
-        ans1 += nums[i];
-      } else
-        ans2 += nums[i];
-    }
-
-    return labs(ans1 - ans2);
-  }
-};
 
 #ifdef _DEBUG
 
@@ -309,13 +273,6 @@ int main(void) {
   _m_gen64.seed(Pr);
 
   Solution a;
-  int n;
-  while (cin >> n) {
-    VI arr(n);
-    cin >>= arr;
-    ll res = a.splitArray(arr);
-    dbg(res);
-  }
 
   return 0;
 }

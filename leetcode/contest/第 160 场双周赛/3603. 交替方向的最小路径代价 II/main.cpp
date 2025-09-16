@@ -261,7 +261,7 @@ void PrintList(LNP head) {
 #endif
 // End of LeetCode
 
-class Solution {
+class Solution1 {
  public:
   long long minCost(int n, int m, vector<vector<int>> &a) {
     vector<vector<ll>> d0(n, vector<ll>(m, INFL)), d1(n, vector<ll>(m, INFL));
@@ -288,6 +288,29 @@ class Solution {
 
     ll ans = min(d0[n - 1][m - 1], d1[n - 1][m - 1]);
     return ans;
+  }
+};
+
+class Solution {
+ public:
+  long long minCost(int n, int m, vector<vector<int>> &a) {
+    vector<vector<ll>> d(n, vector<ll>(m, INFL));
+
+    d[0][0] = 1;
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < m; j++) {
+        int cost = (i + 1) * (j + 1);
+
+        if (j) {
+          ckmin(d[i][j], d[i][j - 1] + cost + a[i][j]);
+        }
+        if (i) {
+          ckmin(d[i][j], d[i - 1][j] + cost + a[i][j]);
+        }
+      }
+    }
+
+    return d[n - 1][m - 1] - a[n - 1][m - 1];
   }
 };
 
