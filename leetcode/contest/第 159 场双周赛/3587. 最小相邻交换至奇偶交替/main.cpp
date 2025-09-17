@@ -261,7 +261,7 @@ void PrintList(LNP head) {
 #endif
 // End of LeetCode
 
-class Solution {
+class Solution1 {
  public:
   int minSwaps(vector<int> &a) {
     int n = int(a.size());
@@ -323,6 +323,46 @@ class Solution {
       return -1;
     else
       return res;
+  }
+};
+
+class Solution {
+ public:
+  int minSwaps(vector<int> &a) {
+    vector<int> b, c;
+    int n = int(a.size());
+
+    for (int i = 0; i < n; i++) {
+      if (a[i] % 2 == 0)
+        b.push_back(i);
+      else
+        c.push_back(i);
+    }
+    int cnt0 = int(b.size()), cnt1 = n - cnt0;
+
+    if (abs(cnt0 - cnt1) > 1) return -1;
+    int ans{INF};
+
+    auto calc = [&](vector<int> &arr) {
+      int res{};
+      for (int i = 0, j = 0; i < n && j < SZ(arr); i += 2, j++) {
+        res += abs(i - arr[j]);
+      }
+      return res;
+    };
+
+    if (cnt0 > cnt1) {
+      // 0, even
+      ans = calc(b);
+    } else if (cnt0 < cnt1) {
+      // 1, even
+      ans = calc(c);
+    } else {
+      // both
+      int tmp1 = calc(b), tmp2 = calc(c);
+      ans = min(tmp1, tmp2);
+    }
+    return ans;
   }
 };
 
