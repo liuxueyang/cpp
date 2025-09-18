@@ -264,13 +264,15 @@ void PrintList(LNP head) {
 class Solution {
  public:
   long long maxArea(vector<vector<int>> &a) {
-    map<int, pair<int, int>> mp1{}, mp2{};
-    set<int> row{}, col{};
+    unordered_map<int, pair<int, int>> mp1{}, mp2{};
+    int x1{INF}, x2{-INF}, y1{INF}, y2{-INF};
 
     for (auto &vec : a) {
       int x = vec[0], y = vec[1];
-      row.insert(x);
-      col.insert(y);
+      ckmin(x1, x);
+      ckmax(x2, x);
+      ckmin(y1, y);
+      ckmax(y2, y);
 
       if (mp1.find(x) == mp1.end()) {
         mp1[x] = {y, y};
@@ -286,14 +288,6 @@ class Solution {
         mp2[y].second = max(mp2[y].second, x);
       }
     }
-
-    int x1 = *row.begin(), x2 = x1;
-    if (row.size() > 1) {
-      x2 = *prev(row.end());
-    }
-
-    int y1 = *col.begin(), y2 = y1;
-    if (col.size() > 1) y2 = *prev(col.end());
 
     ll ans{};
 
