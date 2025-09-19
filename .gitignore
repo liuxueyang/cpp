@@ -15,6 +15,7 @@ c_cpp_properties.json
 
 # But include input_*.txt files in any output directory
 !**/output/input_*.txt
+**/output/input_tc.txt
 
 # But include input.txt files in another-problemset directories.
 # I place visual studio projects in this directory.
