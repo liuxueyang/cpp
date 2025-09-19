@@ -290,6 +290,8 @@ void solve() {
   int n, p;
   while (cin >> n >> p) {
     ll res1 = solve1(n, p), res2 = solve2(n, p), res3 = solve3(n, p);
-    dbg(res1, res2, res3);
+    if (!(res1 == res2 && res2 == res3)) {
+      dbg(n, p, res1, res2, res3);
+    }
   }
 }
