@@ -6,7 +6,7 @@ echo Cleaning up Visual Studio solution files...
 rm-vs.exe .
 
 echo Cleaning up executable files...
-rm_exec.exe -non-interactive .
+clean-exec.exe -non-interactive .
 
 echo Cleanup complete!
 pause
