@@ -1,12 +1,12 @@
 #include <algorithm>
 #include <array>
 #include <cassert>
-#include <chrono>
 #include <climits>
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <fstream>
 #include <functional>
 #include <iomanip>
 #include <iostream>
@@ -73,16 +73,16 @@ const ull Pr = 131, Pr1 = 13331;
 #define YES() cout << "YES\n"
 
 template <class T>
-bool ckmin(T& a, const T& b) {
+bool ckmin(T &a, const T &b) {
   return b < a ? a = b, 1 : 0;
 }
 template <class T>
-bool ckmax(T& a, const T& b) {
+bool ckmax(T &a, const T &b) {
   return a < b ? a = b, 1 : 0;
 }
 
 template <class T>
-ostream& operator<<(ostream& os, const vector<T>& a) {
+ostream &operator<<(ostream &os, const vector<T> &a) {
   int n = int(a.size()) - 1;
   for (int i = 1; i <= n; ++i) {
     os << a[i] << " \n"[i == n];
@@ -91,22 +91,7 @@ ostream& operator<<(ostream& os, const vector<T>& a) {
 }
 
 template <class T>
-ostream& operator<<=(ostream& os, const vector<T>& a) {
-  int n = int(a.size());
-  for (int i = 0; i < n; ++i) {
-    os << a[i] << " \n"[i == n - 1];
-  }
-  return os;
-}
-
-template <class T>
-istream& operator>>=(istream& is, vector<T>& a) {
-  for (auto& x : a) is >> x;
-  return is;
-}
-
-template <class T>
-istream& operator>>(istream& is, vector<T>& a) {
+istream &operator>>(istream &is, vector<T> &a) {
   int n = int(a.size()) - 1;
   for (int i = 1; i <= n; ++i) {
     is >> a[i];
@@ -140,61 +125,30 @@ void Outputr1(ForwardIterator begin, ForwardIterator end) {
   NL;
 }
 
-template <typename T>
-inline void PRINT_ELEMENTS(const T& coll, const string& optstr = "") {
-  cout << optstr;
-  copy(coll.begin(), coll.end(),
-       ostream_iterator<typename T::value_type>(cout, " "));
-  cout << '\n';
-}
-
-template <typename T>
-inline void INPUT_ELEMENTS(T& coll, const int n, const int start = 0) {
-  if (start) coll.push_back(typename T::value_type{});
-  copy_n(istream_iterator<typename T::value_type>(cin), n, back_inserter(coll));
-}
-
-// base function
-void tprintf(const char* format) { cout << format; }
-
-template <typename T, typename... Targs>
-void tprintf(const char* format, T value,
-             Targs... Fargs)  // recursive variadic function
-{
-  for (; *format != '\0'; format++) {
-    if (*format == '%') {
-      cout << value;
-      tprintf(format + 1, Fargs...);  // recursive call
-      return;
-    }
-    cout << *format;
-  }
-}
-
 // int128 input and output
-// #ifdef _DEBUG
-// using lll = __int128;
-//
-// istream& operator>>(istream& is, lll& v) {
-//  string s;
-//  is >> s;
-//  v = 0;
-//  for (auto& it : s)
-//    if (isdigit(it)) v = v * 10 + it - '0';
-//  if (s[0] == '-') v *= -1;
-//  return is;
-//}
-//
-// ostream& operator<<(ostream& os, const lll& v) {
-//  if (v == 0) return (os << "0");
-//  lll num = v;
-//  if (v < 0) os << '-', num = -num;
-//  string s;
-//  for (; num > 0; num /= 10) s.pb((char)(num % 10) + '0');
-//  reverse(all(s));
-//  return (os << s);
-//}
-// #endif
+#ifdef _DEBUG
+using lll = __int128;
+
+istream &operator>>(istream &is, lll &v) {
+  string s;
+  is >> s;
+  v = 0;
+  for (auto &it : s)
+    if (isdigit(it)) v = v * 10 + it - '0';
+  if (s[0] == '-') v *= -1;
+  return is;
+}
+
+ostream &operator<<(ostream &os, const lll &v) {
+  if (v == 0) return (os << "0");
+  lll num = v;
+  if (v < 0) os << '-', num = -num;
+  string s;
+  for (; num > 0; num /= 10) s.pb((char)(num % 10) + '0');
+  reverse(all(s));
+  return (os << s);
+}
+#endif
 // end of int128
 
 #ifdef _DEBUG
@@ -206,72 +160,64 @@ void tprintf(const char* format, T value,
 #define dbgr(x...)
 #endif
 
-void Init();
-void solve();
+ofstream Outf("input_tc.txt");
+
+void tprintf(const char *format)  // base function
+{
+  cout << format;
+  Outf << format;
+}
+
+template <typename T, typename... Targs>
+void tprintf(const char *format, T value,
+             Targs... Fargs)  // recursive variadic function
+{
+  for (; *format != '\0'; format++) {
+    if (*format == '%') {
+      cout << value;
+      Outf << value;
+      tprintf(format + 1, Fargs...);  // recursive call
+      return;
+    }
+    cout << *format;
+    Outf << *format;
+  }
+}
+
+void solve() {
+  mt19937 rnd(random_device{}());
+
+  int tc = rnd() % 500 + 1;
+
+  // tprintf("%\n", tc);
+
+  For1(_tc_num_, 1, tc) {
+    Outf << "TestCase " << _tc_num_ << '\n';
+    int n = rnd() % 50 + 1, f = rnd() % n + 1;
+    tprintf("% %\n", n, f);
+    For1(i, 1, n) {
+      int x = rnd() % 200 + 1;
+      tprintf("% ", x);
+    }
+    tprintf("\n");
+  }
+}
 
 int main(void) {
-#if defined(_DEBUG) && !defined(_CPH)
-  freopen("input.txt", "r", stdin);
+#ifdef _DEBUG
+  freopen("input.txt", "w", stdout);
 #endif
-
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
   cout.tie(NULL);
   _m_gen64.seed(Pr);
 
-#ifdef _DEBUG
-  auto _start_ts = std::chrono::high_resolution_clock::now();
-#endif
+  int T = 1;
+  // cin >> T;
 
-  Init();
-  solve();
-
-#ifdef _DEBUG
-  auto _end_ts = std::chrono::high_resolution_clock::now();
-  std::cerr << "Execution time: "
-            << std::chrono::duration<double>(_end_ts - _start_ts).count()
-            << " seconds." << std::endl;
-#endif
+  while (T--) {
+    solve();
+  }
 
   return 0;
-}
-
-void Init() {}
-
-void solve() {
-  int n, f;
-  while (cin >> n >> f) {
-    VL a(n + 10), p(n + 10);
-    For1(i, 1, n) { cin >> a[i]; }
-
-    auto check = [&](ll avg) {
-      VL b(n + 10);
-      For1(i, 1, n) b[i] = a[i] * 1000 - avg;
-      For1(i, 1, n) p[i] = p[i - 1] + b[i];
-
-      ll pre = 0;
-      For1(i, f, n) {
-        if (p[i] - pre >= 0) return true;
-        ckmin(pre, p[i - f + 1]);
-      }
-      return false;
-
-      /*ll pre = INFL, res{-INFL};
-      For1(i, f, n) {
-        ckmin(pre, p[i - f]);
-        ckmax(res, p[i] - pre);
-      }
-      return res >= 0;*/
-    };
-
-    ll l = 1, r = 1e9, mid;
-    while (l < r) {
-      mid = (l + r + 1) >> 1;
-      if (check(mid))
-        l = mid;
-      else
-        r = mid - 1;
-    }
-    cout << l << '\n';
-  }
 }

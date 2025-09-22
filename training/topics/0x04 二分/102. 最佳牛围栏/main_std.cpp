@@ -241,37 +241,29 @@ void Init() {}
 void solve() {
   int n, f;
   while (cin >> n >> f) {
-    VL a(n + 10), p(n + 10);
-    For1(i, 1, n) { cin >> a[i]; }
+    VI a(n + 10);
+    For1(i, 1, n) cin >> a[i];
 
-    auto check = [&](ll avg) {
-      VL b(n + 10);
-      For1(i, 1, n) b[i] = a[i] * 1000 - avg;
+    auto check = [&](double avg) {
+      vector<double> b(n + 10), p(n + 10);
+      For1(i, 1, n) b[i] = a[i] - avg;
       For1(i, 1, n) p[i] = p[i - 1] + b[i];
-
-      ll pre = 0;
-      For1(i, f, n) {
-        if (p[i] - pre >= 0) return true;
-        ckmin(pre, p[i - f + 1]);
-      }
-      return false;
-
-      /*ll pre = INFL, res{-INFL};
+      double pre{INFL * 1.0};
       For1(i, f, n) {
         ckmin(pre, p[i - f]);
-        ckmax(res, p[i] - pre);
+        if (p[i] - pre >= 0) return true;
       }
-      return res >= 0;*/
+      return false;
     };
 
-    ll l = 1, r = 1e9, mid;
-    while (l < r) {
-      mid = (l + r + 1) >> 1;
+    double l = -1e6, r = 1e6, mid;
+    while (r - l > 1e-7) {
+      mid = (l + r) / 2;
       if (check(mid))
         l = mid;
       else
-        r = mid - 1;
+        r = mid;
     }
-    cout << l << '\n';
+    cout << int(r * 1000) << '\n';
   }
 }
