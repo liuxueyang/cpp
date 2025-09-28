@@ -1,0 +1,30 @@
+[
+	{
+		"correct_answers":
+		[
+			"2"
+		],
+		"test": "LUL\n1\n"
+	},
+	{
+		"correct_answers":
+		[
+			"1"
+		],
+		"test": "UDLR\n4\n"
+	},
+	{
+		"correct_answers":
+		[
+			"1"
+		],
+		"test": "UU\n1\n"
+	},
+	{
+		"correct_answers":
+		[
+			"1"
+		],
+		"test": "UDU\n2\n"
+	}
+]
