@@ -7,6 +7,7 @@ output/input.txt
 *.bin
 *.dSYM/
 # *__tests
+__tests1
 
 c_cpp_properties.json
 
