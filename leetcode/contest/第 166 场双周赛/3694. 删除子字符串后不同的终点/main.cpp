@@ -293,12 +293,7 @@ class Solution {
         p.f1--;
     }
 
-    // dbg(vis);
-    int len = SZ(vis);
-    if (len == 0)
-      return 1;
-    else
-      return len;
+    return SZ(vis);
   }
 };
 
