@@ -239,24 +239,20 @@ int main(void) {
 void Init() {}
 
 struct BigNum {
-  string s;
-  VI a;
   int len, sign;
+  VI a;
 
-  BigNum() : s("0"), a{0} { sign = 1; }
-  BigNum(string& s_) : s(s_) {
-    len = SZ(s);
-    a = VI(len);
-    sign = 1;
+  BigNum() : len(1), sign(1), a(VI(len, 0)) {}
+
+  BigNum(string s) : len(SZ(s)), sign(1), a(VI(len)) {
     Rof(i, 0, len) a[len - 1 - i] = s[i] - '0';
   }
-  BigNum(VI& a_) {
-    a = a_;
-    len = SZ(a);
-    sign = 1;
-  }
 
-  bool operator<(BigNum& rh) const {
+  BigNum(VI& a_) : len(SZ(a_)), sign(1), a(a_) {}
+
+  BigNum(ll x) : BigNum(to_string(x)) {}
+
+  bool operator<(const BigNum& rh) const {
     if (len != rh.len) return len < rh.len;
 
     Rof(i, 0, len) {
@@ -299,7 +295,59 @@ struct BigNum {
       t = (t < 0);
     }
     while (SZ(res) > 1 && res.back() == 0) res.pop_back();
+    return BigNum(res);
+  }
 
+  BigNum operator*(BigNum& rh) {
+    if (*this < rh) {
+      return rh * *this;
+    }
+
+    int len1 = rh.len, t = 0;
+    auto& b = rh.a;
+    VI res(len + len1 + 1);
+
+    For(j, 0, len1) {
+      For(i, 0, len) {
+        t += res[i + j] + a[i] * b[j];
+        res[i + j] = t % 10;
+        t /= 10;
+      }
+      if (t) {
+        res[j + len] = t;
+        t = 0;
+      }
+    }
+
+    while (res.size() > 1 && res.back() == 0) res.pop_back();
+    return BigNum(res);
+  }
+
+  BigNum operator*(ll b) {
+    VI res;
+    ll t = 0;
+
+    for (int i = 0; i < len || t; i++) {
+      if (i < len) t += a[i] * b;
+      res.pb(t % 10);
+      t /= 10;
+    }
+    while (res.size() > 1 && res.back() == 0) res.pop_back();
+    return BigNum(res);
+  }
+
+  BigNum operator/(ll b) {
+    assert(b != 0);
+    VI res;
+    ll t = 0;
+
+    Rof(i, 0, len) {
+      t = t * 10 + a[i];
+      res.pb(t / b);
+      t %= b;
+    }
+    reverse(all(res));
+    while (res.size() > 1 && res.back() == 0) res.pop_back();
     return BigNum(res);
   }
 };
