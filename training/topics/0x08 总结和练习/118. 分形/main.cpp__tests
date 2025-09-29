@@ -1,0 +1,17 @@
+[
+	{
+		"correct_answers":
+		[
+			"X\n-\nX X\n X \nX X\n-\nX X   X X\n X     X \nX X   X X\n   X X   \n    X    \n   X X   \nX X   X X\n X     X \nX X   X X\n-\nX X   X X         X X   X X\n X     X           X     X \nX X   X X         X X   X X\n   X X               X X   \n    X                 X    \n   X X               X X   \nX X   X X         X X   X X\n X     X           X     X \nX X   X X         X X   X X\n         X X   X X         \n          X     X          \n         X X   X X         \n            X X            \n             X             \n            X X            \n         X X   X X         \n          X     X          \n         X X   X X         \nX X   X X         X X   X X\n X     X           X     X \nX X   X X         X X   X X\n   X X               X X   \n    X                 X    \n   X X               X X   \nX X   X X         X X   X X\n X     X           X     X \nX X   X X         X X   X X\n-",
+			"X\n-\nX X\n X\nX X\n-\nX X   X X\n X     X\nX X   X X\n   X X\n    X\n   X X\nX X   X X\n X     X\nX X   X X\n-\nX X   X X         X X   X X\n X     X           X     X\nX X   X X         X X   X X\n   X X               X X\n    X                 X\n   X X               X X\nX X   X X         X X   X X\n X     X           X     X\nX X   X X         X X   X X\n         X X   X X\n          X     X\n         X X   X X\n            X X\n             X\n            X X\n         X X   X X\n          X     X\n         X X   X X\nX X   X X         X X   X X\n X     X           X     X\nX X   X X         X X   X X\n   X X               X X\n    X                 X\n   X X               X X\nX X   X X         X X   X X\n X     X           X     X\nX X   X X         X X   X X\n-"
+		],
+		"test": "1\n2\n3\n4\n-1\n"
+	},
+	{
+		"correct_answers":
+		[
+			"X X\n X \nX X\n-"
+		],
+		"test": "2\n-1\n"
+	}
+]
