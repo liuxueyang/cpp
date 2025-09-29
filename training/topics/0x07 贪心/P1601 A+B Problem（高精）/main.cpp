@@ -238,36 +238,6 @@ int main(void) {
 
 void Init() {}
 
-VI add(VI a, VI b) {
-  reverse(all(a));
-  reverse(all(b));
-  VI ans;
-  int len1{SZ(a)}, len2{SZ(b)}, i = 0, j = 0, carry{};
-
-  while (i < len1 && j < len2) {
-    int x = carry + a[i] + b[j];
-    i++, j++;
-    ans.pb(x % 10);
-    carry = x / 10;
-  }
-  while (i < len1) {
-    int x = carry + a[i];
-    ans.pb(x % 10);
-    carry = x / 10;
-    i++;
-  }
-  while (j < len2) {
-    int x = carry + b[j];
-    ans.pb(x % 10);
-    carry = x / 10;
-    j++;
-  }
-  if (carry) ans.pb(carry);
-
-  reverse(all(ans));
-  return ans;
-}
-
 struct BigNum {
   string s;
   VI a;
@@ -318,22 +288,6 @@ istream& operator>>(istream& is, BigNum& num) {
   is >> s;
   num = BigNum(s);
   return is;
-}
-
-void solve1() {
-  string s, t;
-  cin >> s >> t;
-
-  VI a, b;
-  int len1{SZ(s)}, len2{SZ(t)};
-  For(i, 0, len1) a.pb(s[i] - '0');
-  For(i, 0, len2) b.pb(t[i] - '0');
-
-  auto ans = add(a, b);
-  for (auto x : ans) {
-    cout << x;
-  }
-  cout << '\n';
 }
 
 void solve() {

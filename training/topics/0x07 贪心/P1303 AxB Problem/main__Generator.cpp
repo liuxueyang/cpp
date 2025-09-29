@@ -210,10 +210,6 @@ void Init();
 void solve();
 
 int main(void) {
-#if defined(_DEBUG) && !defined(_CPH) && !defined(_SUB)
-  freopen("input.txt", "r", stdin);
-#endif
-
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
   cout.tie(NULL);
@@ -238,88 +234,12 @@ int main(void) {
 
 void Init() {}
 
-struct BigNum {
-  string s;
-  VI a;
-  int len, sign;
+mt19937 rnd(random_device{}());
 
-  BigNum() : s("0"), a{0} { sign = 1; }
-  BigNum(string& s_) : s(s_) {
-    len = SZ(s);
-    a = VI(len);
-    sign = 1;
-    Rof(i, 0, len) a[len - 1 - i] = s[i] - '0';
-  }
-  BigNum(VI& a_) {
-    a = a_;
-    len = SZ(a);
-    sign = 1;
-  }
-
-  bool operator<(BigNum& rh) const {
-    if (len != rh.len) return len < rh.len;
-
-    Rof(i, 0, len) {
-      if (a[i] != rh.a[i]) return a[i] < rh.a[i];
-    }
-    return false;
-  }
-
-  BigNum operator+(BigNum& rh) {
-    if (*this < rh) return rh + *this;
-    VI res;
-    int t = 0, len1 = rh.len;
-
-    For(i, 0, len) {
-      t += a[i];
-      if (i < len1) t += rh.a[i];
-      res.pb(t % 10);
-      t /= 10;
-    }
-
-    if (t) res.pb(t);
-    return BigNum(res);
-  }
-
-  BigNum operator-(BigNum& rh) {
-    if (*this < rh) {
-      auto ans = rh - *this;
-      ans.sign = -1;
-      return ans;
-    }
-
-    int len1 = rh.len, t = 0;
-    auto& b = rh.a;
-    VI res;
-
-    For(i, 0, len) {
-      t = a[i] - t;
-      if (i < len1) t -= b[i];
-      res.pb((t + 10) % 10);
-      t = (t < 0);
-    }
-    while (SZ(res) > 1 && res.back() == 0) res.pop_back();
-
-    return BigNum(res);
-  }
-};
-
-ostream& operator<<(ostream& os, BigNum& num) {
-  if (num.sign < 0) os << '-';
-  Rof(i, 0, num.len) { os << num.a[i]; }
-  return os;
-}
-istream& operator>>(istream& is, BigNum& num) {
-  string s;
-  is >> s;
-  num = BigNum(s);
-  return is;
-}
+ll rng1(ll n) { return rnd() % n + 1; }
+ll rng(ll n) { return rnd() % n; }
 
 void solve() {
-  BigNum s, t;
-  cin >> s >> t;
-
-  auto res = s - t;
-  cout << res << '\n';
+  ll x = rng(10000), y = rng(10000);
+  cout << x << ' ' << y << '\n';
 }

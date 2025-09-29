@@ -302,6 +302,31 @@ struct BigNum {
 
     return BigNum(res);
   }
+
+  BigNum operator*(BigNum& rh) {
+    if (*this < rh) {
+      return rh * *this;
+    }
+
+    int len1 = rh.len, t = 0;
+    auto& b = rh.a;
+    VI res(len + len1 + 1);
+
+    For(j, 0, len1) {
+      For(i, 0, len) {
+        t += res[i + j] + a[i] * b[j];
+        res[i + j] = t % 10;
+        t /= 10;
+      }
+      if (t) {
+        res[j + len] = t;
+        t = 0;
+      }
+    }
+
+    while (res.size() > 1 && res.back() == 0) res.pop_back();
+    return BigNum(res);
+  }
 };
 
 ostream& operator<<(ostream& os, BigNum& num) {
@@ -320,6 +345,6 @@ void solve() {
   BigNum s, t;
   cin >> s >> t;
 
-  auto res = s - t;
+  auto res = s * t;
   cout << res << '\n';
 }
