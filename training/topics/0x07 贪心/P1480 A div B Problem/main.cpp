@@ -339,6 +339,21 @@ struct BigNum {
     while (res.size() > 1 && res.back() == 0) res.pop_back();
     return BigNum(res);
   }
+
+  BigNum operator/(ll b) {
+    assert(b != 0);
+    VI res;
+    ll t = 0;
+
+    Rof(i, 0, len) {
+      t = t * 10 + a[i];
+      res.pb(t / b);
+      t %= b;
+    }
+    reverse(all(res));
+    while (res.size() > 1 && res.back() == 0) res.pop_back();
+    return BigNum(res);
+  }
 };
 
 ostream& operator<<(ostream& os, BigNum& num) {
@@ -354,17 +369,9 @@ istream& operator>>(istream& is, BigNum& num) {
 }
 
 void solve() {
-  BigNum s, t;
-  cin >> s >> t;
-
-  auto res = s * t;
-  cout << res << '\n';
-}
-
-void solve_test() {
   BigNum s;
   int t;
   cin >> s >> t;
-  auto res = s * t;
+  auto res = s / t;
   cout << res << '\n';
 }
