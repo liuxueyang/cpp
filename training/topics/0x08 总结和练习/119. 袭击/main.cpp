@@ -239,7 +239,6 @@ int main(void) {
 
   return 0;
 }
-double ans;
 
 struct Node {
   double x, y;
@@ -267,7 +266,7 @@ ostream& operator<<(ostream& os, Node& node) {
   return os;
 }
 
-void Init() { ans = INFL; }
+void Init() {}
 
 double dfs(int l, int r) {
   if (l == r) return INFL;
@@ -292,11 +291,10 @@ double dfs(int l, int r) {
   }
 
   For(i, 0, id) {
-    for (int j = i - 1; ~j && c[i].y - c[j].y + eps <= res; j--) {
+    for (int j = i + 1; j < id && c[j].y - c[i].y < res; j++) {
       ckmin(res, c[i].dist(c[j]));
     }
   }
-  ckmin(ans, res);
   return res;
 }
 
@@ -311,11 +309,10 @@ void solve() {
     else
       a[i] = {x, y, false};
   }
-  ans = INFL;
 
   shuffle(a + 1, a + 1 + n, mt19937_64(random_device{}()));
   sort(a + 1, a + 1 + n);
 
-  ans = dfs(1, n);
+  double ans = dfs(1, n);
   cout << fixed << setprecision(3) << ans << '\n';
 }
