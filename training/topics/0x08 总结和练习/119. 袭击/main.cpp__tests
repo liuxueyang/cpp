@@ -2,57 +2,36 @@
 	{
 		"correct_answers":
 		[
-			"1.414\n0.000"
+			"3.000"
 		],
-		"test": "2\n4\n0 0\n0 1\n1 0\n1 1\n2 2\n2 3\n3 2\n3 3\n4\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n"
+		"test": "1\n2\n3 7\n1 9\n0 3\n6 7\n"
 	},
 	{
 		"correct_answers":
 		[
-			"0.000"
+			"2.000"
 		],
-		"test": "1\n4\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n"
+		"test": "1\n2\n0 9\n9 5\n6 1\n2 9\n"
 	},
 	{
 		"correct_answers":
 		[
-			"2.236"
+			"4.000"
 		],
-		"test": "  1\n  4\n  0 19\n  13 5\n  19 10\n  18 17\n  18 0\n  1 1\n  7 13\n  11 4\n"
-	},
-	{
-		"correct_answers":
-		[
-			"3.162"
-		],
-		"test": "  1\n  2\n  8 19\n  16 4\n  15 7\n  18 13\n"
-	},
-	{
-		"correct_answers":
-		[
-			"7.071"
-		],
-		"test": "  1\n  1\n  2 10\n  3 17\n"
-	},
-	{
-		"correct_answers":
-		[
-			"1.414"
-		],
-		"test": "  1\n  7\n  2 17\n  6 2\n  12 16\n  18 0\n  8 11\n  6 0\n  15 2\n  5 1\n  17 2\n  3 19\n  10 4\n  10 0\n  0 13\n  5 12\n"
+		"test": "1\n2\n9 7\n1 0\n5 0\n6 1\n"
 	},
 	{
 		"correct_answers":
 		[
 			"1.000"
 		],
-		"test": "  1\n  2\n  1 1\n  6 4\n  6 3\n  8 1\n"
+		"test": "  1\n  2\n  0 2\n  1 5\n  8 8\n  1 4\n"
 	},
 	{
 		"correct_answers":
 		[
-			"0.000"
+			"1.000"
 		],
-		"test": "  1\n  2\n  0 0\n  0 0\n  0 0\n  0 0\n"
+		"test": "  1\n  2\n  4 7\n  3 7\n  4 6\n  6 6\n"
 	}
 ]

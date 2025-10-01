@@ -1,0 +1,44 @@
+[
+	{
+		"correct_answers":
+		[
+			"1.414\n0.000"
+		],
+		"test": "2\n4\n0 0\n0 1\n1 0\n1 1\n2 2\n2 3\n3 2\n3 3\n4\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n"
+	},
+	{
+		"correct_answers":
+		[
+			"0.000"
+		],
+		"test": "1\n4\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n0 0\n"
+	},
+	{
+		"correct_answers":
+		[
+			"1.414"
+		],
+		"test": "  1\n  7\n  2 17\n  6 2\n  12 16\n  18 0\n  8 11\n  6 0\n  15 2\n  5 1\n  17 2\n  3 19\n  10 4\n  10 0\n  0 13\n  5 12\n"
+	},
+	{
+		"correct_answers":
+		[
+			"0.000"
+		],
+		"test": "  1\n  2\n  0 0\n  0 0\n  0 0\n  0 0\n"
+	},
+	{
+		"correct_answers":
+		[
+			"3.000"
+		],
+		"test": "  1\n  2\n  3 7\n  1 9\n  0 3\n  6 7\n"
+	},
+	{
+		"correct_answers":
+		[
+			"4.000"
+		],
+		"test": "  1\n  2\n  9 7\n  1 0\n  5 0\n  6 1\n"
+	}
+]
