@@ -7,6 +7,10 @@
 		"test": "8\nI 2\nI -1\nI 1\nQ 3\nL\nD\nR\nQ 2\n"
 	},
 	{
+		"correct_answers":
+		[
+			"-256\n-256\n540\n-157\n-114\n612\n-157\n540\n540\n-157\n-157\n-157\n540\n-256"
+		],
 		"test": "50\nI 654\nL\nI -256\nI -838\nQ 2\nI 937\nI -34\nI -892\nI 969\nR\nI -444\nI -310\nQ 2\nL\nI 421\nQ 8\nI 95\nR\nQ 4\nR\nQ 6\nI -568\nI -977\nL\nQ 11\nQ 4\nQ 7\nL\nL\nD\nI 948\nQ 7\nQ 4\nQ 5\nQ 3\nL\nD\nI -736\nI 162\nD\nR\nI -256\nI -847\nI 795\nI -475\nQ 7\nI 246\nI 804\nR\nQ 1\n"
 	}
 ]
