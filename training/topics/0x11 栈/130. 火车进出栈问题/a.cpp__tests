@@ -1,0 +1,31 @@
+[
+	{
+		"correct_answers":
+		[
+			"5",
+			"10"
+		],
+		"test": "3\n"
+	},
+	{
+		"correct_answers":
+		[
+			"1978261657756160653623774456"
+		],
+		"test": "50\n"
+	},
+	{
+		"correct_answers":
+		[
+			"1"
+		],
+		"test": "1\n"
+	},
+	{
+		"correct_answers":
+		[
+			"2"
+		],
+		"test": "2\n"
+	}
+]
