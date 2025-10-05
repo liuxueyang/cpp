@@ -42,14 +42,22 @@ void __print(const pair<T, V>& x) {
   __print(x.second);
   cerr << '}';
 }
+
 template <typename T>
 void __print(const T& x) {
+  cerr << x;
+}
+
+template <typename T>
+auto __print(const T& x) -> decltype(begin(x), end(x), void()) {
   int f = 0;
   cerr << '{';
   for (auto& i : x) cerr << (f++ ? ", " : ""), __print(i);
   cerr << "}";
 }
+
 void _print() { cerr << "]\n"; }
+
 template <typename T, typename... V>
 void _print(T t, V... v) {
   __print(t);
@@ -74,6 +82,7 @@ void dbgr(ForwardIterator begin, ForwardIterator end) {
        << "] = [";                                                            \
   _print(__VA_ARGS__);                                                        \
   cerr << _END_COLOR;
+
 #define dbgi(x) cerr << _BEGIN_COLOR << x << ' ' << _END_COLOR;
 #define dbgI(x) cerr << _BEGIN_COLOR << x << ' ' << _END_COLOR << '\n';
 #define dbgln() cerr << '\n';
