@@ -1,0 +1,16 @@
+[
+	{
+		"correct_answers":
+		[
+			"45"
+		],
+		"test": "5 6\nR F F F F F\nF F F F F F\nR R R F F F\nF F F F F F\nF F F F F F\n"
+	},
+	{
+		"correct_answers":
+		[
+			"270"
+		],
+		"test": "20 20\nF F F F F F F F F F F F F F F R R R F F\nF F F F F F F F F F F F F F F R R R F F\nF F F F F F F F F F F F F F F R R R F F\nR R R R R F F F F F F F F F F R R R F F\nR R R R R F F F F F F F F F F R R R F F\nR R R R R F F F F F F F F F F R R R F F\nR R R F F F F F F F F F F F F R R R F F\nR R F F F F F F F F F F F F F R R R F F\nR F F F F F F F F F F F F F F R R R F F\nR R R R R R R R R F F F F F F R R R F F\nR R R R R R R R R R R R R R R R R R F F\nR R R R R R R R R R R R R R R R R R F F\nR R R R R R R R R R R R R R R R R R F F\nR R R R R R R R R R R R R R R R R R F F\nR R R R R R R R R R R R R R R R R R F F\nR R R R R R R R R R R R R R R R R R F F\nR R R R R R R R R R R R R R R R R R F F\nR R R R R R R R R R R R R R R R R R F F\nR R R R R R R R R R R R R R R R R R F F\nR R R R R R R R R R R R R R R R R R F F\n"
+	}
+]
