@@ -1,0 +1,51 @@
+[
+	{
+		"correct_answers":
+		[
+			"1"
+		],
+		"test": "(2+2)^(-(1+1)+2)\n"
+	},
+	{
+		"correct_answers":
+		[
+			"-1"
+		],
+		"test": "((((((-1)\n"
+	},
+	{
+		"correct_answers":
+		[
+			"16"
+		],
+		"test": "(2+2)^(1+1)\n"
+	},
+	{
+		"correct_answers":
+		[
+			"244"
+		],
+		"test": "(6^3)+(2^10)+(2^2)^(1^1)-1000\n"
+	},
+	{
+		"correct_answers":
+		[
+			"-1"
+		],
+		"test": "5/-3\n"
+	},
+	{
+		"correct_answers":
+		[
+			"0"
+		],
+		"test": "1+-1\n"
+	},
+	{
+		"correct_answers":
+		[
+			"0"
+		],
+		"test": "3/-5\n"
+	}
+]
