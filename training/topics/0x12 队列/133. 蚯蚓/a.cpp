@@ -206,14 +206,57 @@ void tprintf(const char* format, T value,
 #define dbgr(x...)
 #endif
 
+void read(int& x) {
+  bool neg = false;
+  x = 0;
+  char ch = 0;
+  while (ch < '0' || ch > '9') {
+    if (ch == '-') neg = true;
+    ch = getchar();
+  }
+  if (neg) {
+    while (ch >= '0' && ch <= '9') {
+      x = x * 10 + ('0' - ch);
+      ch = getchar();
+    }
+  } else {
+    while (ch >= '0' && ch <= '9') {
+      x = x * 10 + (ch - '0');
+      ch = getchar();
+    }
+  }
+}
+
+void write(int x) {
+  bool neg = false;
+  if (x < 0) {
+    neg = true;
+    putchar('-');
+  }
+  static int sta[40];
+  int top = 0;
+  do {
+    sta[top++] = x % 10;
+    x /= 10;
+  } while (x);
+  if (neg)
+    while (top) putchar('0' - sta[--top]);
+  else
+    while (top) putchar('0' + sta[--top]);
+}
+
 void Init();
 void solve();
 
 int main(void) {
-  std::ios::sync_with_stdio(false);
-  cin.tie(NULL);
-  cout.tie(NULL);
-  _m_gen64.seed(Pr);
+#if defined(_DEBUG) && !defined(_CPH) && !defined(_SUB)
+  freopen("input.txt", "r", stdin);
+#endif
+
+  // std::ios::sync_with_stdio(false);
+  // cin.tie(NULL);
+  // cout.tie(NULL);
+  // _m_gen64.seed(Pr);
 
 #if defined(_DEBUG) && !defined(_SUB)
   auto _start_ts = std::chrono::high_resolution_clock::now();
@@ -234,16 +277,64 @@ int main(void) {
 
 void Init() {}
 
-mt19937 rnd(random_device{}());
-
-ll rng1(ll n) { return rnd() % n + 1; }
-ll rng(ll n) { return rnd() % n; }
+const int N = 100100, M = 7000100;
+int a[N];
+ll Q0[N + M], Q1[N + M], Q2[N + M];
+int hh[3] = {0, 0, 0}, tt[3] = {-1, -1, -1};
 
 void solve() {
-  int seed;
-  cin >> seed;
-  rnd = mt19937(seed);
+  int n, m, q, u, v, t;
+  read(n), read(m), read(q), read(u), read(v), read(t);
 
-  int x = rng(100), y = rng(100);
-  cout << x << ' ' << y << '\n';
+  For(i, 0, n) read(a[i]);
+  sort(a, a + n, greater<int>());
+
+  For(i, 0, n) Q0[++tt[0]] = a[i];
+
+  auto qrrs = vector<ll*>{Q0, Q1, Q2};
+
+  ll delta{};
+  For1(i, 1, m) {
+    int idx = -1;
+    ll cur = -INFL;
+
+    For(j, 0, 3) {
+      if (hh[j] <= tt[j] && ckmax(cur, qrrs[j][hh[j]])) {
+        idx = j;
+      }
+    }
+
+    cur += delta;
+
+    if (i % t == 0) {
+      write(cur);
+      printf(" ");
+    }
+    hh[idx]++;
+    ll x1 = 1 * cur * u / v;
+    ll x2 = cur - x1;
+    Q1[++tt[1]] = (x1 - q - delta);
+    Q2[++tt[2]] = (x2 - q - delta);
+
+    delta += q;
+  }
+  printf("\n");
+
+  For1(i, 1, n + m) {
+    int idx = -1;
+    ll cur = -INFL;
+    For(j, 0, 3) {
+      if (hh[j] <= tt[j] && ckmax(cur, qrrs[j][hh[j]])) {
+        idx = j;
+      }
+    }
+
+    cur += delta;
+    if (i % t == 0) {
+      write(cur);
+      printf(" ");
+    }
+    hh[idx]++;
+  }
+  printf("\n");
 }
