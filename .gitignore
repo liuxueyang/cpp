@@ -18,6 +18,9 @@ c_cpp_properties.json
 !**/output/input_*.txt
 **/output/input_tc.txt
 
+# ignore executable files on Linux
+*.out
+
 # But include input.txt files in another-problemset directories.
 # I place visual studio projects in this directory.
 # !**/another-problemset/**/input.txt
