@@ -47,7 +47,6 @@ const double eps = 1e-8;
 const int dir[8][2] = {
     {0, 1}, {0, -1}, {1, 0}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1},
 };
-mt19937_64 _m_gen64;
 
 const ull Pr = 131, Pr1 = 13331;
 
@@ -171,6 +170,45 @@ void tprintf(const char* format, T value,
   }
 }
 
+void read(int& x) {
+  bool neg = false;
+  x = 0;
+  char ch = 0;
+  while (ch < '0' || ch > '9') {
+    if (ch == '-') neg = true;
+    ch = getchar();
+  }
+  if (neg) {
+    while (ch >= '0' && ch <= '9') {
+      x = x * 10 + ('0' - ch);
+      ch = getchar();
+    }
+  } else {
+    while (ch >= '0' && ch <= '9') {
+      x = x * 10 + (ch - '0');
+      ch = getchar();
+    }
+  }
+}
+
+void write(int x) {
+  bool neg = false;
+  if (x < 0) {
+    neg = true;
+    putchar('-');
+  }
+  static int sta[40];
+  int top = 0;
+  do {
+    sta[top++] = x % 10;
+    x /= 10;
+  } while (x);
+  if (neg)
+    while (top) putchar('0' - sta[--top]);
+  else
+    while (top) putchar('0' + sta[--top]);
+}
+
 // int128 input and output
 // #ifdef _DEBUG
 // using lll = __int128;
@@ -217,7 +255,6 @@ int main(void) {
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
   cout.tie(NULL);
-  _m_gen64.seed(Pr);
 
 #if defined(_DEBUG) && !defined(_SUB)
   auto _start_ts = std::chrono::high_resolution_clock::now();
@@ -239,44 +276,23 @@ int main(void) {
 void Init() {}
 
 void solve() {
-  int n;
-  cin >> n;
-  vector<PII> a(n);
+  int n, m;
+  cin >> n >> m;
 
-  For(i, 0, n) {
-    int& x = a[i].f1;
-    cin >> x;
-    a[i].f2 = i;
+  VI a(n);
+  For(i, 0, n) cin >> a[i];
+  ll ans{-INFL};
+  VL p(n + 10);
+  For1(i, 1, n) p[i] = p[i - 1] + a[i - 1];
+
+  deque<int> q;
+  q.push_back(0);
+  for (int i = 0, j = 1; j <= n; j++) {
+    while (nemp(q) && j - q.front() > m) q.pop_front();
+    ckmax(ans, p[j] - p[q.front()]);
+    while (nemp(q) && p[q.back()] >= p[j]) q.pop_back();
+    q.push_back(j);
   }
 
-  sort(all(a));
-  int res{1}, pre = INF, dir = -1;
-
-  for (int i = 0; i < n;) {
-    int j = i, val = a[i].f1;
-    while (j < n && a[j].f1 == val) ++j;
-
-    int cur = a[j - 1].f2;
-
-    if (dir == -1) {
-      if (cur < pre) {
-        pre = a[i].f2;
-      } else {
-        dir = 1;
-        pre = cur;
-      }
-    } else {
-      if (a[i].f2 > pre) {
-        pre = cur;
-      } else {
-        res++;
-        dir = -1;
-        pre = a[i].f2;
-      }
-    }
-
-    i = j;
-  }
-
-  cout << res << '\n';
+  cout << ans << '\n';
 }
