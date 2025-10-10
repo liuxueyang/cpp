@@ -210,27 +210,19 @@ void Init();
 void solve();
 
 int main(void) {
-#if defined(_DEBUG) && !defined(_CPH)
-  freopen("input.txt", "r", stdin);
-#endif
-
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
   cout.tie(NULL);
   _m_gen64.seed(Pr);
 
-#ifdef _DEBUG
+#if defined(_DEBUG) && !defined(_SUB)
   auto _start_ts = std::chrono::high_resolution_clock::now();
 #endif
 
-  int T;
-  cin >> T;
-  while (T--) {
-    Init();
-    solve();
-  }
+  Init();
+  solve();
 
-#ifdef _DEBUG
+#if defined(_DEBUG) && !defined(_SUB)
   auto _end_ts = std::chrono::high_resolution_clock::now();
   std::cerr << "Execution time: "
             << std::chrono::duration<double>(_end_ts - _start_ts).count()
@@ -242,55 +234,26 @@ int main(void) {
 
 void Init() {}
 
-priority_queue<int> small;
-priority_queue<int, VI, greater<int>> big;
+mt19937 rnd(random_device{}());
+
+ll rng1(ll n) { return rnd() % n + 1; }
+ll rng(ll n) { return rnd() % n; }
 
 void solve() {
-  int T, n;
-  cin >> T >> n;
+  int seed;
+  cin >> seed;
+  rnd = mt19937(seed);
 
-  small = {};
-  big = {};
-  VI res;
-
-  auto adjust = [&]() {
-    int len = SZ(small) + SZ(big), mid = (len + 1) / 2;
-    while (SZ(small) > mid) {
-      auto x = small.top();
-      small.pop();
-      big.push(x);
-    }
-
-    while (SZ(big) > mid - 1) {
-      auto x = big.top();
-      big.pop();
-      small.push(x);
-    }
-  };
-
-  auto push = [&](int x) {
-    if (small.empty() || x <= small.top()) {
-      small.push(x);
-    } else {
-      big.push(x);
-    }
-    adjust();
-  };
+  int tc = 1;
+  cout << tc << '\n';
+  cout << tc << ' ';
+  int n = rng1(5);
+  if (n % 2 == 0) n++;
+  cout << n << '\n';
 
   For1(i, 1, n) {
-    int x;
-    cin >> x;
-    push(x);
-    if (i & 1) res.push_back(small.top());
+    int x = rng1(10);
+    cout << x << ' ';
   }
-
-  int len = SZ(res);
-  cout << T << ' ' << len << '\n';
-  For(i, 0, len) {
-    cout << res[i];
-    if ((i + 1) % 10 == 0 || i == len - 1)
-      cout << '\n';
-    else
-      cout << ' ';
-  }
+  cout << '\n';
 }

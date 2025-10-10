@@ -19,20 +19,28 @@ void __print(const char* x) { cerr << '\"' << x << '\"'; }
 void __print(const string& x) { cerr << '\"' << x << '\"'; }
 void __print(bool x) { cerr << (x ? "true" : "false"); }
 
-#ifndef _WIN64
-
-#ifdef _CPH
+#if defined(_SUB) || defined(_CPH) || defined(_WIN64)
 #define _BEGIN_COLOR ""
 #define _END_COLOR ""
 #else
 #define _BEGIN_COLOR "\e[91m"
 #define _END_COLOR "\e[39m"
-#endif  // endof _CPH
+#endif  // endof defined
 
-#else
-#define _BEGIN_COLOR ""
-#define _END_COLOR ""
-#endif  // endof _WIN64
+// #ifndef _WIN64
+
+// #ifdef _CPH
+// #define _BEGIN_COLOR ""
+// #define _END_COLOR ""
+// #else
+// #define _BEGIN_COLOR "\e[91m"
+// #define _END_COLOR "\e[39m"
+// #endif  // endof _CPH
+
+// #else
+// #define _BEGIN_COLOR ""
+// #define _END_COLOR ""
+// #endif  // endof _WIN64
 
 template <typename T, typename V>
 void __print(const pair<T, V>& x) {

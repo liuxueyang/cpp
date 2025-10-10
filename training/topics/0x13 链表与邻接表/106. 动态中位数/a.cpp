@@ -210,7 +210,7 @@ void Init();
 void solve();
 
 int main(void) {
-#if defined(_DEBUG) && !defined(_CPH)
+#if defined(_DEBUG) && !defined(_CPH) && !defined(_SUB)
   freopen("input.txt", "r", stdin);
 #endif
 
@@ -219,18 +219,20 @@ int main(void) {
   cout.tie(NULL);
   _m_gen64.seed(Pr);
 
-#ifdef _DEBUG
+#if defined(_DEBUG) && !defined(_SUB)
   auto _start_ts = std::chrono::high_resolution_clock::now();
 #endif
 
-  int T;
+  int T, tc;
   cin >> T;
   while (T--) {
     Init();
+    cin >> tc;
+    cout << tc << ' ';
     solve();
   }
 
-#ifdef _DEBUG
+#if defined(_DEBUG) && !defined(_SUB)
   auto _end_ts = std::chrono::high_resolution_clock::now();
   std::cerr << "Execution time: "
             << std::chrono::duration<double>(_end_ts - _start_ts).count()
@@ -240,54 +242,91 @@ int main(void) {
   return 0;
 }
 
-void Init() {}
+const int N = 500100;
+struct Node {
+  int val, pre, next, idx;
+};
 
-priority_queue<int> small;
-priority_queue<int, VI, greater<int>> big;
+ostream& operator<<(ostream& os, Node no) {
+  os << "(" << no.val << ", " << no.pre << ", " << no.next << ", " << no.idx
+     << ")";
+  return os;
+}
+
+int head, tail, tot;
+Node lst[N];
+
+void Init() {
+  head = 1, tail = 2;
+  lst[head].next = tail;
+  lst[tail].pre = head;
+  tot = 2;
+}
+
+int Insert(int pos, int val, int idx) {
+  int p1 = lst[pos].pre, cur = ++tot;
+  lst[cur].val = val, lst[cur].idx = idx;
+  lst[p1].next = cur, lst[cur].pre = p1;
+  lst[cur].next = pos, lst[pos].pre = cur;
+  return cur;
+}
+void Delete(int pos) {
+  int p1 = lst[pos].pre, p2 = lst[pos].next;
+  lst[p1].next = p2, lst[p2].pre = p1;
+}
 
 void solve() {
-  int T, n;
-  cin >> T >> n;
-
-  small = {};
-  big = {};
-  VI res;
-
-  auto adjust = [&]() {
-    int len = SZ(small) + SZ(big), mid = (len + 1) / 2;
-    while (SZ(small) > mid) {
-      auto x = small.top();
-      small.pop();
-      big.push(x);
-    }
-
-    while (SZ(big) > mid - 1) {
-      auto x = big.top();
-      big.pop();
-      small.push(x);
-    }
-  };
-
-  auto push = [&](int x) {
-    if (small.empty() || x <= small.top()) {
-      small.push(x);
-    } else {
-      big.push(x);
-    }
-    adjust();
-  };
+  int n;
+  cin >> n;
+  vector<PII> a(n + 1);
 
   For1(i, 1, n) {
-    int x;
+    int& x = a[i].f1;
     cin >> x;
-    push(x);
-    if (i & 1) res.push_back(small.top());
+    a[i].f2 = i;
+  }
+  sort(a.begin() + 1, a.begin() + 1 + n);
+  vector<PII> b(n + 1);
+  int mid = -1;
+
+  For1(i, 1, n) {
+    auto [val, idx] = a[i];
+    int pos = Insert(tail, val, idx);
+    if (i == (n + 1) / 2) mid = pos;
+    b[idx] = {pos, val};
   }
 
-  int len = SZ(res);
-  cout << T << ' ' << len << '\n';
+  VI ans;
+
+  Rof1(i, 1, n) {
+    auto [pos, val] = b[i];
+    int midval = lst[mid].val;
+
+    if (pos < mid) {
+      if (i % 2 == 0) {
+        mid = lst[mid].next;
+      }
+    } else if (pos == mid) {
+      if (i & 1)
+        mid = lst[mid].pre;
+      else
+        mid = lst[mid].next;
+    } else {
+      if (i & 1) {
+        mid = lst[mid].pre;
+      }
+    }
+    Delete(pos);
+
+    if (i & 1) {
+      ans.pb(midval);
+    }
+  }
+  reverse(all(ans));
+  int len = SZ(ans);
+  cout << len << '\n';
   For(i, 0, len) {
-    cout << res[i];
+    cout << ans[i];
     if ((i + 1) % 10 == 0 || i == len - 1)
       cout << '\n';
     else

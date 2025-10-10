@@ -210,7 +210,7 @@ void Init();
 void solve();
 
 int main(void) {
-#if defined(_DEBUG) && !defined(_CPH)
+#if defined(_DEBUG) && !defined(_CPH) && !defined(_SUB)
   freopen("input.txt", "r", stdin);
 #endif
 
@@ -219,7 +219,7 @@ int main(void) {
   cout.tie(NULL);
   _m_gen64.seed(Pr);
 
-#ifdef _DEBUG
+#if defined(_DEBUG) && !defined(_SUB)
   auto _start_ts = std::chrono::high_resolution_clock::now();
 #endif
 
@@ -230,7 +230,7 @@ int main(void) {
     solve();
   }
 
-#ifdef _DEBUG
+#if defined(_DEBUG) && !defined(_SUB)
   auto _end_ts = std::chrono::high_resolution_clock::now();
   std::cerr << "Execution time: "
             << std::chrono::duration<double>(_end_ts - _start_ts).count()
