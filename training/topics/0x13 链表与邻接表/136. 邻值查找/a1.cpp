@@ -273,26 +273,97 @@ int main(void) {
   return 0;
 }
 
-void Init() {}
+const int N = 100100;
+int tot, head, tail;
+
+struct Node {
+  int val, pre, next, idx;
+};
+
+Node lst[N];
+
+void Init() {
+  tot = 2;
+  head = 1, tail = 2;
+  lst[head].next = tail;
+  lst[tail].pre = head;
+}
+
+int Insert(int pos, int val, int idx) {
+  int cur = ++tot;
+  lst[cur].val = val;
+  lst[cur].idx = idx;
+  int p1 = lst[pos].pre;
+
+  lst[p1].next = cur;
+  lst[cur].pre = p1;
+
+  lst[pos].pre = cur;
+  lst[cur].next = pos;
+  return cur;
+}
+void Delete(int pos) {
+  int p1 = lst[pos].pre, p2 = lst[pos].next;
+  lst[p2].pre = p1;
+  lst[p1].next = p2;
+}
 
 void solve() {
-  int n, m;
-  cin >> n >> m;
+  int n;
+  cin >> n;
+  vector<PII> a(n);
 
-  VI a(n);
-  For(i, 0, n) cin >> a[i];
-  ll ans{-INFL};
-  VL p(n + 10);
-  For1(i, 1, n) p[i] = p[i - 1] + a[i - 1];
+  For(i, 0, n) {
+    int& x = a[i].f1;
+    cin >> x;
+    a[i].f2 = i;
+  }
+  sort(all(a));
+  vector<PII> b(n);
 
-  deque<int> q;
-  q.push_back(0);
-  for (int j = 1; j <= n; j++) {
-    while (nemp(q) && j - q.front() > m) q.pop_front();
-    ckmax(ans, p[j] - p[q.front()]);
-    while (nemp(q) && p[q.back()] >= p[j]) q.pop_back();
-    q.push_back(j);
+  For(i, 0, n) {
+    int idx = a[i].f2;
+    int pos = Insert(tail, a[i].f1, idx);
+    b[idx] = {pos, a[i].f1};
   }
 
-  cout << ans << '\n';
+  vector<PII> ans(n);
+  Rof(i, 1, n) {
+    auto [pos, val] = b[i];
+
+    int tmp = INT_MAX, tmpj = INT_MAX, tmpaj = INT_MAX;
+    int p1 = lst[pos].next;
+
+    if (p1 != tail) {
+      int g = abs(lst[p1].val - val);
+      if (ckmin(tmp, g)) {
+        tmpj = lst[p1].idx;
+        tmpaj = lst[p1].val;
+      } else if (tmp == g) {
+        if (ckmin(tmpaj, lst[p1].val)) {
+          tmpj = lst[p1].idx;
+        }
+      }
+    }
+
+    int p2 = lst[pos].pre;
+    if (p2 != head) {
+      int g = abs(lst[p2].val - val);
+      if (ckmin(tmp, g)) {
+        tmpj = lst[p2].idx;
+        tmpaj = lst[p2].val;
+      } else if (tmp == g) {
+        if (ckmin(tmpaj, lst[p2].val)) {
+          tmpj = lst[p2].idx;
+        }
+      }
+    }
+    Delete(pos);
+
+    ans[i] = PII(tmp, tmpj);
+  }
+  For(i, 1, n) {
+    auto [g, j] = ans[i];
+    cout << g << ' ' << j + 1 << '\n';
+  }
 }

@@ -276,23 +276,40 @@ int main(void) {
 void Init() {}
 
 void solve() {
-  int n, m;
-  cin >> n >> m;
+  int n;
+  cin >> n;
+  VI a(n + 1);
+  For1(i, 1, n) cin >> a[i];
 
-  VI a(n);
-  For(i, 0, n) cin >> a[i];
-  ll ans{-INFL};
-  VL p(n + 10);
-  For1(i, 1, n) p[i] = p[i - 1] + a[i - 1];
+  set<PII> vis;
+  vis.insert({a[1], 1});
 
-  deque<int> q;
-  q.push_back(0);
-  for (int j = 1; j <= n; j++) {
-    while (nemp(q) && j - q.front() > m) q.pop_front();
-    ckmax(ans, p[j] - p[q.front()]);
-    while (nemp(q) && p[q.back()] >= p[j]) q.pop_back();
-    q.push_back(j);
+  For1(i, 2, n) {
+    auto p1 = PII(a[i], -INF);
+    auto it = vis.lower_bound(p1);
+    if (it == vis.end()) {
+      it--;
+      auto [x, pos] = *it;
+      cout << abs(x - a[i]) << ' ' << pos << '\n';
+    } else {
+      auto [x, pos] = *it;
+      int cur = abs(x - a[i]);
+
+      if (it != vis.begin()) {
+        it--;
+        auto [x1, pos1] = *it;
+        int tmp = abs(x1 - a[i]);
+        if (ckmin(cur, tmp)) {
+          pos = pos1;
+        } else if (cur == tmp) {
+          if (x1 < x) {
+            pos = pos1;
+          }
+        }
+      }
+      cout << cur << ' ' << pos << '\n';
+    }
+
+    vis.insert({a[i], i});
   }
-
-  cout << ans << '\n';
 }
