@@ -1,0 +1,4 @@
+abcbabcbabcba
+abacacbaaaab
+babaaaa
+END
