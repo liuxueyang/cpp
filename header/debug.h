@@ -38,11 +38,6 @@ void __print(const pair<T, V>& x) {
 
 template <typename T>
 void __print(const T& x) {
-  cerr << x;
-}
-
-template <typename T>
-auto __print(const T& x) -> decltype(begin(x), end(x), void()) {
   int f = 0;
   cerr << '{';
   for (auto& i : x) cerr << (f++ ? ", " : ""), __print(i);
