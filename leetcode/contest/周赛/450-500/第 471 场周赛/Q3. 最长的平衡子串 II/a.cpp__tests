@@ -1,0 +1,26 @@
+[
+	{
+		"correct_answers":
+		[
+			"4"
+		],
+		"test": "abbac\n"
+	},
+	{
+		"correct_answers":
+		[
+			"3"
+		],
+		"test": "aabcc\n"
+	},
+	{
+		"correct_answers":
+		[
+			"2"
+		],
+		"test": "aba\n"
+	},
+	{
+		"test": "abcbc\n"
+	}
+]
