@@ -211,7 +211,7 @@ void solve();
 
 int main(void) {
 #if defined(_DEBUG) && !defined(_CPH) && !defined(_SUB)
-  freopen("input.txt", "r", stdin);
+  // freopen("input.txt", "r", stdin);
 #endif
 
   std::ios::sync_with_stdio(false);
@@ -240,79 +240,77 @@ int main(void) {
   return 0;
 }
 
-void Init() {}
+const int N = 310;
+int n, cnt, idx;
+VI a;
 
-string to_bin(int n) {
-  string res;
-  while (n) {
-    if (n & 1)
-      res += '1';
-    else
-      res += '0';
-    n >>= 1;
+void Init() { cnt = 0; }
+
+void query(VI& b) {
+  cout << "? " << SZ(b);
+  for (auto x : b) {
+    cout << " " << x;
   }
-  if (res.empty()) res = "0";
-  reverse(all(res));
-  return res;
+  cout << endl;
+
+  int res;
+  cin >> res;
+  if (res != 0) {
+    cnt++;
+    int idx = b.back();
+    a[idx] = res;
+    b.pop_back();
+    b.pb(idx + 1);
+  } else {
+    b.pb(b.back() + 1);
+  }
 }
 
-bool check(int n) {
-  int cnt = __builtin_popcount(n);
-  if (cnt & 1) return false;
-
-  string res;
-  while (n) {
-    if (n & 1)
-      res += '1';
-    else
-      res += '0';
-    n >>= 1;
+void query1(VI& b) {
+  cout << "? " << SZ(b);
+  for (auto x : b) {
+    cout << " " << x;
   }
-  if (res.empty()) res += '0';
+  cout << endl;
+  int res;
+  cin >> res;
 
-  int len = SZ(res), i = 0;
-  while (i < len - 1 && res[i] == '0') i++;
-  for (int j = len - 1; i < j; i++, j--) {
-    if (res[i] != res[j]) return false;
+  if (res != 0) {
+    cnt++;
+    int pos = b.back();
+    b.pop_back();
+    a[pos] = res;
+
+    while (idx <= 2 * n && a[idx] != -1) idx++;
+
+    b.pb(idx);
   }
-  return true;
 }
 
 void solve() {
-  int n;
   cin >> n;
+  a = VI(2 * n + 1, -1);
 
-  cout << (check(n) ? "YES" : "NO") << '\n';
-}
-
-void solve1() {
-  int n;
-  cin >> n;
-
-  string s1 = to_bin(n);
-  int len = SZ(s1);
-  bool ok = true;
-  int i = 0, j = len - 1;
-  while (j > 0 && s1[j] == '0') j--;
-
-  for (; i < j; i++, j--) {
-    if (s1[i] == s1[j])
-      continue;
-    else {
-      ok = false;
-      break;
-    }
+  VI b{1, 2};
+  while (cnt < n) {
+    query(b);
   }
 
-  int cnt{};
-  while (n) {
-    if (n & 1) cnt++;
-    n >>= 1;
+  b = {};
+  For1(i, 1, 2 * n) {
+    if (a[i] != -1) b.pb(i);
   }
-  if (cnt & 1) ok = false;
 
-  if (!ok)
-    cout << "NO\n";
-  else
-    cout << "YES\n";
+  cnt = 0;
+  idx = 1;
+  while (idx <= 2 * n && a[idx] != -1) idx++;
+  b.pb(idx);
+
+  while (cnt < n) {
+    query1(b);
+  }
+
+  cout << "!";
+  For1(i, 1, 2 * n) cout << " " << a[i];
+  cout << endl;
 }
