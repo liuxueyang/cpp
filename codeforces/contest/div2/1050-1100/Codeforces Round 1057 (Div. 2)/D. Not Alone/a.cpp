@@ -246,62 +246,30 @@ void solve() {
   int n;
   cin >> n;
 
-  VI a(n);
-  cin >>= a;
+  VI a(n + 10);
+  For1(i, 1, n) { cin >> a[i]; }
+  a[n + 1] = a[1];
+  a[n + 2] = a[2];
+  ll ans{INFL};
 
-  ll sum{};
-  map<int, int> mp;
-  ll ans{};
-  for (auto x : a) {
-    mp[x]++;
-  }
-  VI b;
-  int even_cnt = 0;
+  auto calc = [&](int l, int r) {
+    VI b(a.begin() + l, a.begin() + r + 1);
+    sort(all(b));
+    int co = b.back() - *b.begin();
+    return b.back() - *b.begin();
+  };
 
-  for (auto [x, cnt] : mp) {
-    // all same edges, at most 3
-    if (cnt >= 3) ckmax(ans, 1LL * cnt * x);
+  For1(j, 1, 3) {
+    VL d(n + 10, INFL);
 
-    if (cnt & 1) {
-      b.pb(x);
-      cnt--;
+    int l = j, r = l + n - 1;
+    d[l - 1] = 0;
+
+    For1(i, l + 1, r) {
+      if (i - 2 >= l - 1) ckmin(d[i], d[i - 2] + abs(a[i] - a[i - 1]));
+      if (i - 3 >= l - 1) ckmin(d[i], d[i - 3] + calc(i - 2, i));
     }
-
-    if (cnt && cnt % 2 == 0) {
-      sum += 1LL * cnt * x;
-      even_cnt++;
-    }
+    ckmin(ans, d[r]);
   }
-  // all even
-  if (even_cnt > 1) ckmax(ans, sum);
-
-  int len = SZ(b);
-
-  if (sum > 0) {
-    For(i, 0, len) {
-      // one odd
-      if (sum > b[i]) {
-        ckmax(ans, sum + b[i]);
-      }
-      // two odd
-      if (i && b[i] - b[i - 1] < sum) {
-        ckmax(ans, sum + b[i] + b[i - 1]);
-      }
-
-      // int l = i + 1, r = len - 1, mid;
-      // ll target = sum + b[i];
-      // while (l < r) {
-      //   mid = (l + r + 1) / 2;
-      //   if (b[mid] < target)
-      //     l = mid;
-      //   else
-      //     r = mid - 1;
-      // }
-      // if (l >= 0 && l < len && b[l] < target) {
-      //   ckmax(ans, target + b[l]);
-      // }
-    }
-  }
-
   cout << ans << '\n';
 }
