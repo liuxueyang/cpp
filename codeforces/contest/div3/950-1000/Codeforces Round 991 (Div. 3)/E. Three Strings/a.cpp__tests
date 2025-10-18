@@ -1,0 +1,16 @@
+[
+	{
+		"correct_answers":
+		[
+			"1\n0\n2\n0\n3\n2\n3"
+		],
+		"test": "7\na\nb\ncb\nab\ncd\nacbd\nab\nba\naabb\nxxx\nyyy\nxyxyxy\na\nbcd\ndecf\ncodes\nhorse\ncodeforces\negg\nannie\negaegaeg\n"
+	},
+	{
+		"correct_answers":
+		[
+			"0"
+		],
+		"test": "1\nab\ncd\nacbd\n"
+	}
+]
