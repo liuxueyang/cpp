@@ -210,6 +210,10 @@ void Init();
 void solve();
 
 int main(void) {
+#if defined(_DEBUG) && !defined(_CPH) && !defined(_SUB)
+  freopen("input.txt", "r", stdin);
+#endif
+
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
   cout.tie(NULL);
@@ -219,8 +223,12 @@ int main(void) {
   auto _start_ts = std::chrono::high_resolution_clock::now();
 #endif
 
-  Init();
-  solve();
+  int T;
+  cin >> T;
+  while (T--) {
+    Init();
+    solve();
+  }
 
 #if defined(_DEBUG) && !defined(_SUB)
   auto _end_ts = std::chrono::high_resolution_clock::now();
@@ -234,35 +242,42 @@ int main(void) {
 
 void Init() {}
 
-mt19937 rnd(random_device{}());
-
-ll rng1(ll n) {
-  assert(n > 0);
-  return rnd() % n + 1;
-}
-ll rng1(ll l, ll r) {
-  assert(l <= r);
-  if (l == r) return l;
-  ll len = r - l + 1;
-  assert(len > 0);
-  return l + rng1(len) - 1;
-}
-ll rng(ll n) { return rnd() % n; }
-
 void solve() {
-  cout << "1 ";
-  int n = rng1(5) + 1;
-  int q = rng1(n * (n - 1) / 2);
-  cout << n << ' ' << q << '\n';
+  int n, k;
+  cin >> n >> k;
 
-  For(i, 0, n) {
-    int x = rng1(5);
-    cout << x << ' ';
+  VI a(n + 10);
+  VB vis(n + 10);
+
+  For1(i, 1, n) {
+    cin >> a[i];
+    vis[a[i]] = true;
   }
+
+  int x = -1, y{-1}, z{-1};
+  bool ok{};
+
+  For1(i, 1, n) {
+    if (!vis[i]) {
+      ok = true;
+      x = i;
+      y = a[n];
+      For1(j, 1, n) {
+        if (j != x && j != y) {
+          z = j;
+          break;
+        }
+      }
+      break;
+    }
+  }
+  if (!ok) {
+    y = a[n], x = a[1], z = a[2];
+  }
+  assert(x >= 1 && y >= 1 && z >= 1);
+
+  VI b{y, x, z};
+
+  For1(i, 1, k) { cout << b[i % 3] << ' '; }
   cout << '\n';
-  For(i, 0, q) {
-    int l = rng1(n);
-    int r = rng1(l, n);
-    cout << l << ' ' << r << '\n';
-  }
 }
