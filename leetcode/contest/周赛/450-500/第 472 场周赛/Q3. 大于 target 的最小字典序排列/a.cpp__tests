@@ -1,0 +1,26 @@
+[
+	{
+		"correct_answers":
+		[
+			"bca"
+		],
+		"test": "abc\nbba\n"
+	},
+	{
+		"correct_answers":
+		[
+			"eelt"
+		],
+		"test": "leet\ncode\n"
+	},
+	{
+		"test": "baba\nbbaa\n"
+	},
+	{
+		"correct_answers":
+		[
+			"aaaaxayz"
+		],
+		"test": "aaaaazyx\naaaaazyx\n"
+	}
+]
