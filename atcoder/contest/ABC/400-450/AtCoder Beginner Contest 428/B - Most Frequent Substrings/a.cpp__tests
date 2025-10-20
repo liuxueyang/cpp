@@ -1,0 +1,23 @@
+[
+	{
+		"correct_answers":
+		[
+			"2\novo owo"
+		],
+		"test": "9 3\novowowovo\n"
+	},
+	{
+		"correct_answers":
+		[
+			"5\no"
+		],
+		"test": "9 1\novowowovo\n"
+	},
+	{
+		"correct_answers":
+		[
+			"2\nthe"
+		],
+		"test": "35 3\nthequickbrownfoxjumpsoverthelazydog\n"
+	}
+]
