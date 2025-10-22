@@ -242,30 +242,61 @@ int main(void) {
 
 void Init() {}
 
+const int N = 200100;
+int n, m1, m2;
+
+struct UnionSet {
+  int fa[N];
+
+  UnionSet() { For1(i, 1, n) fa[i] = i; }
+
+  int Find(int u) { return fa[u] = (fa[u] == u) ? u : Find(fa[u]); }
+
+  void Union(int u, int v) {
+    int ru = Find(u), rv = Find(v);
+    fa[rv] = ru;
+  }
+};
+
+struct Edge {
+  int u, v;
+};
+
 void solve() {
-  int n;
-  cin >> n;
+  cin >> n >> m1 >> m2;
 
-  vector<int> a(n);
-  for (int i = 0; i < n; i++) {
-    cin >> a[i];
+  vector<Edge> g1(m1), g2(m2);
+  UnionSet us1, us2;
+
+  For(i, 0, m1) {
+    int u, v;
+    cin >> u >> v;
+    g1[i] = {u, v};
+  }
+  For(i, 0, m2) {
+    int u, v;
+    cin >> u >> v;
+    g2[i] = {u, v};
+    us2.Union(u, v);
   }
 
-  for (int i = 1; i < n; i++) {
-    int x = min(a[i - 1], a[i]);
-    a[i - 1] -= x;
-    a[i] -= x;
-  }
+  int ans{};
 
-  bool ok = true;
-  for (int i = 1; i < n; i++) {
-    if (a[i] < a[i - 1]) {
-      ok = false;
-      break;
+  for (auto [u, v] : g1) {
+    int ru = us2.Find(u), rv = us2.Find(v);
+    if (ru == rv) {
+      us1.Union(u, v);
+    } else {
+      ans++;
     }
   }
-  if (ok)
-    YES();
-  else
-    NO();
+  For(i, 0, m2) {
+    auto [u, v] = g2[i];
+    int ru = us1.Find(u), rv = us1.Find(v);
+    if (ru == rv) continue;
+    ans++;
+    us1.Union(u, v);
+  }
+
+  cout << ans << '\n';
 }
