@@ -19,7 +19,7 @@ void __print(const char* x) { cerr << '\"' << x << '\"'; }
 void __print(const string& x) { cerr << '\"' << x << '\"'; }
 void __print(bool x) { cerr << (x ? "true" : "false"); }
 
-#if defined(_SUB) || defined(_CPH) || defined(_WIN64) || defined(_SUBL)
+#if defined(MYNOCOLOR)
 #define _BEGIN_COLOR ""
 #define _END_COLOR ""
 #else
