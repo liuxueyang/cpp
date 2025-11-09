@@ -264,8 +264,41 @@ void PrintList(LNP head) {
 const int N = 205, K = 1005;
 int d[N][N][K];
 int n, m, k;
+int f[2][N][K];
 
 class Solution {
+ public:
+  int maxPathScore(vector<vector<int>>& grid, int K) {
+    n = SZ(grid), m = SZ(grid[0]);
+
+    For(i, 0, n) {
+      int cur = i & 1, nxt = cur ^ 1;
+      For(j, 0, m) For1(k, 0, K) f[cur][j][k] = -INF;
+
+      if (i == 0) {
+        int cost00 = (grid[0][0] >= 1);
+        f[cur][0][cost00] = grid[0][0];
+      }
+
+      For(j, 0, m) {
+        if (i == 0 && j == 0) continue;
+
+        int cost = (grid[i][j] >= 1);
+        For1(k, cost, K) {
+          if (i > 0) ckmax(f[cur][j][k], f[nxt][j][k - cost] + grid[i][j]);
+          if (j > 0) ckmax(f[cur][j][k], f[cur][j - 1][k - cost] + grid[i][j]);
+        }
+      }
+    }
+
+    int ans = -INF, cur = (n - 1) & 1;
+    For1(k, 0, K) ckmax(ans, f[cur][m - 1][k]);
+    if (ans >= 0) return ans;
+    return -1;
+  }
+};
+
+class Solution1 {
  public:
   VVI a;
   bool check(int x, int y) { return x >= 1 && x <= n && y >= 1 && y <= m; }
