@@ -361,7 +361,6 @@ class Solution {
       int l = queries[i][0], r = queries[i][1];
       l++, r++;
       auto res = query(1, 1, n, l, r);
-      // cerr << res << '\n';
       ans[i] = res.val;
     }
     return ans;
