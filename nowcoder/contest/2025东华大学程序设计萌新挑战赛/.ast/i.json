@@ -1,0 +1,1 @@
+{"tests":[{"time_taken":0.605,"status":"AC","output":"3 \n","input":"5\n1 0 1 0 0\n0 1 0 0 0\n0 1 0 1 1\n1 0 0 1 0\n0 0 0 0 0","stdout":"3\n","stderr":"Execution time: 0.00012975 seconds.\n"}]}

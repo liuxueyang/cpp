@@ -1,0 +1,1 @@
+{"tests":[{"time_taken":0.465,"input":"3 2 5","output":"0\n","status":"AC","stdout":"0\n","stderr":"Execution time: 5.4208e-05 seconds.\n"},{"time_taken":0.731,"input":"2 2 1","output":"499122177","status":"AC","stdout":"499122177\n","stderr":"Execution time: 5.1583e-05 seconds.\n"}]}
