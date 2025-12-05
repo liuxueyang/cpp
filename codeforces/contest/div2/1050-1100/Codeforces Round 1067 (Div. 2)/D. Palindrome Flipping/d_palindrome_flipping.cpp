@@ -231,75 +231,77 @@ int main(void) {
 
 void Init() {}
 
-void solve1() {
-  int n;
-  cin >> n;
-  n *= 2;
+vector<PII> reset(string s) {
+  int n = SZ(s), l = -1, r = -1;
+  vector<PII> ans;
+  s = " " + s;
 
-  VI a;
-  INPUT_ELEMENTS(a, n);
-
-  map<int, int> mp;
-  for (auto i : a)
-    mp[i]++;
-
-  int ans = 0, odd = 0, even = 0;
-
-  for (auto [x, y] : mp) {
-    if (y & 1) {
-      odd++;
-      ans++;
-    } else {
-      if ((y / 2) & 1) {
-        ans += 2;
-      } else {
-        even++;
-      }
-    }
-  }
-
-  while (even > 0) {
-    if (even >= 2) {
-      even -= 2;
-      ans += 4;
-    } else if (odd >= 2) {
-      odd -= 2;
-      ans += 2;
-      even--;
-    } else {
+  For(i, 1, n) {
+    if (i + 1 <= n && s[i] == s[i + 1]) {
+      l = i;
+      r = i + 1;
       break;
     }
   }
 
-  cout << ans << '\n';
+  auto flip_range = [&](int l, int r) {
+    For1(i, l, r) {
+      if (s[i] == '1')
+        s[i] = '0';
+      else
+        s[i] = '1';
+    }
+  };
+
+  if (l == -1) {
+    ans.push_back({2, 4});
+    flip_range(2, 4);
+    l = 1, r = 2;
+  }
+  while (r + 1 <= n && s[r] == s[r + 1])
+    r++;
+
+  // extend right
+  while (r < n) {
+    ans.push_back({l, r});
+    flip_range(l, r);
+    while (r + 1 <= n && s[r] == s[r + 1])
+      r++;
+  }
+  // extend left
+  while (l > 1) {
+    ans.push_back({l, r});
+    flip_range(l, r);
+    while (l - 1 >= 1 && s[l - 1] == s[l])
+      l--;
+  }
+
+  if (s[l] == '1') {
+    ans.push_back({l, r});
+    flip_range(l, r);
+  }
+
+  return ans;
 }
 
 void solve() {
   int n;
   cin >> n;
-  n *= 2;
+  string s, t;
+  cin >> s >> t;
 
-  VI a;
-  INPUT_ELEMENTS(a, n);
-
-  map<int, int> mp;
-  for (auto i : a)
-    mp[i]++;
-
-  int ans = 0, x = 0, y = 0, z = 0;
-
-  for (auto [_, cnt] : mp) {
-    if (cnt & 1) {
-      x++;
-    } else if (cnt % 4 == 0) {
-      z++;
-    } else if (cnt % 4 == 2)
-      y++;
+  if (s == t) {
+    cout << "0\n";
+    return;
   }
 
-  ans = x + 2 * y + 2 * z;
-  if (x == 0 && (z & 1))
-    ans -= 2;
+  auto path_s = reset(s), path_t = reset(t);
+  reverse(all(path_t));
 
-  cout << ans << '\n';
+  int len = SZ(path_s) + SZ(path_t);
+  cout << len << '\n';
+  for (auto [i, j] : path_s)
+    cout << i << ' ' << j << '\n';
+  for (auto [i, j] : path_t)
+    cout << i << ' ' << j << '\n';
 }
