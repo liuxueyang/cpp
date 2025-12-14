@@ -364,14 +364,10 @@ class Solution {
       if (op == 1) {
         int idx = ve[1];
         idx++;
-        char tar = s[idx];
-        if (tar == 'A')
-          tar = 'B';
-        else
-          tar = 'A';
-        s[idx] = tar;
 
-        change(1, 1, n, idx, tar);
+        char& ch = s[idx];
+        ch = (ch == 'A' ? 'B' : 'A');
+        change(1, 1, n, idx, ch);
       } else {
         int l = ve[1], r = ve[2];
         l++, r++;
@@ -391,7 +387,7 @@ int main(void) {
   cin.tie(NULL);
   cout.tie(NULL);
 
-  Solution a;
+  // Solution a;
 
   return 0;
 }

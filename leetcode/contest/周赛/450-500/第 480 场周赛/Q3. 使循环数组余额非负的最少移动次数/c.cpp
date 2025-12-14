@@ -261,7 +261,7 @@ void PrintList(LNP head) {
 #endif
 // End of LeetCode
 
-class Solution {
+class Solution1 {
  public:
   long long minMoves(vector<int>& balance) {
     ll ans = 0, sum1 = 0;
@@ -300,6 +300,44 @@ class Solution {
         ans += 1LL * tmp * disr;
         r++;
       }
+    }
+
+    return ans;
+  }
+};
+
+class Solution {
+ public:
+  long long minMoves(vector<int>& a) {
+    int n = SZ(a), pos = -1;
+    ll ans = 0, sum = 0;
+
+    For(i, 0, n) {
+      if (a[i] < 0) {
+        pos = i;
+      } else {
+        sum += a[i];
+      }
+    }
+
+    if (pos == -1) return 0;
+    if (sum + a[pos] < 0) return -1;
+    int target = abs(a[pos]);
+
+    auto calc = [&](int len) {
+      int i = (pos + len + n) % n;
+
+      ll tmp = min(target, a[i]);
+      target -= tmp;
+      a[i] -= tmp;
+      ans += 1LL * abs(len) * tmp;
+    };
+
+    int len = 1;
+    while (target > 0) {
+      calc(len);
+      calc(-len);
+      len++;
     }
 
     return ans;
