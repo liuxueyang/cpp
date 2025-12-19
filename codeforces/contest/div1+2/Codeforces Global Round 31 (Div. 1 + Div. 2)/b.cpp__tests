@@ -1,0 +1,12 @@
+[
+	{
+		"correct_answers":
+		[
+			"aminamirrimanima\ncodeforces\naababc"
+		],
+		"test": "3\n4\namir rima amin nima\n1\ncodeforces\n3\na ab abc\n"
+	},
+	{
+		"test": "1\n2\ncba cb\n"
+	}
+]
