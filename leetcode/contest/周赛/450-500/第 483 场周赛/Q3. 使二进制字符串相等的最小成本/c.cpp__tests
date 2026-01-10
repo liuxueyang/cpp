@@ -1,0 +1,30 @@
+[
+	{
+		"correct_answers":
+		[
+			"16"
+		],
+		"test": "01000\n10111\n10\n2\n2\n"
+	},
+	{
+		"correct_answers":
+		[
+			"6"
+		],
+		"test": "001\n110\n2\n100\n100\n"
+	},
+	{
+		"correct_answers":
+		[
+			"0"
+		],
+		"test": "1010\n1010\n5\n5\n5\n"
+	},
+	{
+		"correct_answers":
+		[
+			"214"
+		],
+		"test": "100101\n111110\n66\n82\n237798794\n"
+	}
+]
