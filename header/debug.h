@@ -2,6 +2,7 @@
 #define DEBUG_H_
 
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -15,8 +16,8 @@ void __print(float x) { cerr << x; }
 void __print(double x) { cerr << x; }
 void __print(long double x) { cerr << x; }
 void __print(char x) { cerr << '\'' << x << '\''; }
-void __print(const char *x) { cerr << '\"' << x << '\"'; }
-void __print(const string &x) { cerr << '\"' << x << '\"'; }
+void __print(const char* x) { cerr << '\"' << x << '\"'; }
+void __print(const string& x) { cerr << '\"' << x << '\"'; }
 void __print(bool x) { cerr << (x ? "true" : "false"); }
 
 #if defined(MYNOCOLOR)
@@ -28,7 +29,7 @@ void __print(bool x) { cerr << (x ? "true" : "false"); }
 #endif  // endof defined
 
 template <typename T, typename V>
-void __print(const pair<T, V> &x) {
+void __print(const pair<T, V>& x) {
   cerr << '{';
   __print(x.first);
   cerr << ", ";
@@ -37,10 +38,10 @@ void __print(const pair<T, V> &x) {
 }
 
 template <typename T>
-void __print(const T &x) {
+void __print(const T& x) {
   int f = 0;
   cerr << '{';
-  for (auto &i : x) cerr << (f++ ? ", " : ""), __print(i);
+  for (auto& i : x) cerr << (f++ ? ", " : ""), __print(i);
   cerr << "}";
 }
 
@@ -69,29 +70,33 @@ void dbgr(ForwardIterator begin, ForwardIterator end) {
   cerr << _BEGIN_COLOR << __func__ << ":" << __LINE__ << " [" << #__VA_ARGS__ \
        << "] = [";                                                            \
   _print(__VA_ARGS__);                                                        \
-  cerr << _END_COLOR;
+  cerr << _END_COLOR
 
-#define dbgi(x) cerr << _BEGIN_COLOR << x << ' ' << _END_COLOR;
-#define dbgI(x) cerr << _BEGIN_COLOR << x << ' ' << _END_COLOR << '\n';
-#define dbgln() cerr << '\n';
+#define dbgi(x) cerr << _BEGIN_COLOR << x << ' ' << _END_COLOR
+#define dbgI(x) cerr << _BEGIN_COLOR << x << ' ' << _END_COLOR << '\n'
+#define dbgln() cerr << '\n'
 
-#if defined(MYLEETCODE)
+// Beginning of LeetCode section
+#define LN ListNode
+#define LNP ListNode*
+#define TN TreeNode
+#define TNP TreeNode*
 
 struct ListNode {
   int val;
-  ListNode *next;
+  ListNode* next;
   ListNode() : val(0), next(nullptr) {}
   ListNode(int val) : val(val), next(nullptr) {}
-  ListNode(int val, ListNode *next) : val(val), next(next) {}
+  ListNode(int val, ListNode* next) : val(val), next(next) {}
 };
 
 struct TreeNode {
   int val;
-  TreeNode *left;
-  TreeNode *right;
+  TreeNode* left;
+  TreeNode* right;
   TreeNode() : val(0), left(nullptr), right(nullptr) {}
   TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-  TreeNode(int x, TreeNode *left, TreeNode *right)
+  TreeNode(int x, TreeNode* left, TreeNode* right)
       : val(x), left(left), right(right) {}
 };
 
@@ -105,7 +110,7 @@ void PrePrintLCTree(TNP root) {
 class LCCodec {
  public:
   // Encodes a tree to a single string.
-  string serialize(TreeNode *root) {
+  string serialize(TreeNode* root) {
     if (!root) return "";
 
     vector<TNP> a;
@@ -149,7 +154,7 @@ class LCCodec {
   }
 
   // Decodes your encoded data to tree.
-  TreeNode *deserialize(string data) {
+  TreeNode* deserialize(string data) {
     vector<TNP> a;
     int n = SZ(data);
     vector<string> b;
@@ -189,7 +194,7 @@ class LCCodec {
   }
 };
 
-LNP CreateList(VI a) {
+LNP CreateList(std::vector<int> a) {
   LN *du{new LN(0)}, *cur{}, *pre{du};
 
   for (auto x : a) {
@@ -210,6 +215,6 @@ void PrintList(LNP head) {
   }
   dbgln();
 }
-#endif  // endof MYLEETCODE
+// End of LeetCode section
 
 #endif  // DEBUG_H_
