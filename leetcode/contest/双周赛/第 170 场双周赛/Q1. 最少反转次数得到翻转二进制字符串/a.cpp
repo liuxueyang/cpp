@@ -274,6 +274,7 @@ class Solution {
     }
     string s1 = s;
     reverse(all(s));
+    dbg(s);
 
     int len = SZ(s), ans{};
     For(i, 0, len) ans += s[i] != s1[i];
@@ -284,7 +285,6 @@ class Solution {
 #ifdef _DEBUG
 
 int main(void) {
-  // freopen("input.txt", "r", stdin);
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
   cout.tie(NULL);
@@ -293,5 +293,7 @@ int main(void) {
 
   return 0;
 }
+
+int foo() {}
 
 #endif

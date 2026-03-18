@@ -46,7 +46,6 @@ const double eps = 1e-8;
 const int dir[8][2] = {
     {0, 1}, {0, -1}, {1, 0}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1},
 };
-mt19937_64 _m_gen64;
 
 const ull Pr = 131, Pr1 = 13331;
 
@@ -112,9 +111,6 @@ istream& operator>>=(istream& is, vector<T>& a) {
 #include "debug.h"
 #else
 #define dbg(x...)
-#define dbgi(x)
-#define dbgln()
-#define dbgr(x...)
 #endif
 
 // For LeetCode
@@ -123,149 +119,12 @@ istream& operator>>=(istream& is, vector<T>& a) {
 #define TN TreeNode
 #define TNP TreeNode*
 
-#ifdef _DEBUG
-struct ListNode {
-  int val;
-  ListNode* next;
-  ListNode() : val(0), next(nullptr) {}
-  ListNode(int val) : val(val), next(nullptr) {}
-  ListNode(int val, ListNode* next) : val(val), next(next) {}
-};
-
-struct TreeNode {
-  int val;
-  TreeNode* left;
-  TreeNode* right;
-  TreeNode() : val(0), left(nullptr), right(nullptr) {}
-  TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-  TreeNode(int x, TreeNode* left, TreeNode* right)
-      : val(x), left(left), right(right) {}
-};
-
-void PrePrintLCTree(TNP root) {
-  if (!root) return;
-  dbgi(root->val);
-  PrePrintLCTree(root->left);
-  PrePrintLCTree(root->right);
-}
-
-class LCCodec {
- public:
-  // Encodes a tree to a single string.
-  string serialize(TreeNode* root) {
-    if (!root) return "";
-
-    vector<TNP> a;
-    a.pb(root);
-    string ans;
-
-    while (nemp(a)) {
-      vector<TNP> b;
-
-      string tmp;
-      for (auto x : a) {
-        if (nemp(ans)) {
-          ans += ',';
-        }
-
-        if (x)
-          ans += to_string(x->val);
-        else
-          ans += "null";
-      }
-
-      bool ok{false};
-      for (auto x : a) {
-        if (x) {
-          b.pb(x->left);
-          b.pb(x->right);
-
-          if (x->left || x->right) {
-            ok = true;
-          }
-        }
-      }
-
-      if (ok)
-        a = std::move(b);
-      else
-        a = {};
-    }
-
-    return ans;
-  }
-
-  // Decodes your encoded data to tree.
-  TreeNode* deserialize(string data) {
-    vector<TNP> a;
-    int n = SZ(data);
-    vector<string> b;
-
-    if (!n) return nullptr;
-
-    string t;
-    for (auto x : data) {
-      if (x == ',') {
-        b.pb(t);
-        t = "";
-      } else
-        t += x;
-    }
-    b.pb(t);
-
-    for (auto x : b) {
-      if (x == "null")
-        a.pb(nullptr);
-      else
-        a.pb(new TN(stoi(x)));
-    }
-
-    int m = SZ(a);
-    int i = 0, j = 1;
-
-    while (i < m) {
-      while (i < m && !a[i]) ++i;
-      if (i >= n) break;
-
-      if (j < m) a[i]->left = a[j++];
-      if (j < m) a[i]->right = a[j++];
-      ++i;
-    }
-
-    return a[0];
-  }
-};
-
-LNP CreateList(VI a) {
-  LN *du{new LN(0)}, *cur{}, *pre{du};
-
-  for (auto x : a) {
-    cur = new LN(x);
-    pre->next = cur;
-    pre = cur;
-  }
-
-  auto res = du->next;
-  delete du;
-  return res;
-}
-
-void PrintList(LNP head) {
-  while (head) {
-    dbgi(head->val);
-    head = head->next;
-  }
-  dbgln();
-}
-
-#endif
-// End of LeetCode
-
 class Solution {
  public:
   long long minimumCost(string s, string t, int flipCost, int swapCost,
                         int crossCost) {
     int cnt1 = 0, cnt2 = 0, n = SZ(s), k = 0;
+    dbg(s, t);
 
     For(i, 0, n) {
       if (s[i] != t[i]) {
@@ -306,7 +165,6 @@ class Solution {
 #ifdef _DEBUG
 
 int main(void) {
-  // freopen("input.txt", "r", stdin);
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
   cout.tie(NULL);
