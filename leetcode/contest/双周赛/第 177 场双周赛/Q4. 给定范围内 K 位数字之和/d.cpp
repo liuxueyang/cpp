@@ -16,6 +16,8 @@
 #include <sstream>
 #include <stack>
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -24,6 +26,13 @@ using namespace std;
 typedef long long ll;
 typedef unsigned long long ull;
 typedef vector<int> VI;
+typedef vector<VI> VVI;
+typedef vector<ll> VL;
+typedef vector<VL> VVL;
+typedef vector<string> VS;
+typedef vector<vector<string>> VVS;
+typedef vector<bool> VB;
+typedef vector<vector<bool>> VVB;
 typedef pair<int, int> PII;
 typedef pair<ll, ll> PLL;
 template <class T>
@@ -39,7 +48,7 @@ const int dir[8][2] = {
 };
 mt19937_64 _m_gen64;
 
-const ull Pr = 131;
+const ull Pr = 131, Pr1 = 13331;
 
 #define For(i, a, b) for (int i = int(a); i < int(b); ++i)
 #define Rof(i, a, b) for (int i = int(b) - 1; i >= int(a); --i)
@@ -66,20 +75,37 @@ bool ckmax(T& a, const T& b) {
   return a < b ? a = b, 1 : 0;
 }
 
-template <typename t>
-istream& operator>>(istream& in, vector<t>& vec) {
-  for (t& x : vec) in >> x;
-  return in;
+template <class T>
+ostream& operator<<=(ostream& os, const vector<T>& a) {
+  int n = int(a.size()) - 1;
+  for (int i = 1; i <= n; ++i) {
+    os << a[i] << " \n"[i == n];
+  }
+  return os;
 }
 
-template <typename t>
-ostream& operator<<(ostream& out, vector<t>& vec) {
-  int n = SZ(vec);
-  For(i, 0, n) {
-    out << vec[i];
-    if (i < n - 1) out << ' ';
+template <class T>
+istream& operator>>=(istream& is, vector<T>& a) {
+  int n = int(a.size()) - 1;
+  for (int i = 1; i <= n; ++i) {
+    is >> a[i];
   }
-  return out;
+  return is;
+}
+
+template <class T>
+ostream& operator<<(ostream& os, const vector<T>& a) {
+  int n = int(a.size());
+  for (int i = 0; i < n; ++i) {
+    os << a[i] << " \n"[i == n - 1];
+  }
+  return os;
+}
+
+template <class T>
+istream& operator>>(istream& is, vector<T>& a) {
+  for (auto& x : a) is >> x;
+  return is;
 }
 
 // For LeetCode
@@ -87,34 +113,41 @@ ostream& operator<<(ostream& out, vector<t>& vec) {
 #define LNP ListNode*
 #define TN TreeNode
 #define TNP TreeNode*
+// End of LeetCode
 
 #ifdef _DEBUG
 #include "debug.h"
 #else
 #define dbg(x...)
-#define dbgi(x)
-#define dbgln()
-#define dbgr(x...)
 #endif
 
-// End of LeetCode
+ll qmod(ll a, ll b) {
+  ll res = 1;
+  while (b) {
+    if (b & 1) res = res * a % MOD;
+    a = a * a % MOD;
+    b >>= 1;
+  }
+  return res;
+}
 
 class Solution {
  public:
-  long long countSubarrays(vector<int>& nums, int k) {
-    int n{SZ(nums)}, mx = *max_element(all(nums)), cnt{};
-    ll ans{};
+  int sumOfNumbers(int l, int r, int k) {
+    ll res = 0;
+    int len = r - l + 1;
+    res = qmod(len, k - 1);
+    int sum = 0;
+    For1(i, l, r) sum += i;
+    res = res * sum % MOD;
 
-    for (int i = 0, j = 0; i < n; ++i) {
-      if (nums[i] == mx) cnt++;
-      while (cnt >= k) {
-        if (nums[j] == mx) cnt--;
-        ++j;
-      }
-      ans += j;
-    }
+    ll tot = qmod(10, k);
+    tot = (tot + MOD - 1) % MOD;
+    res = res * tot % MOD;
 
-    return ans;
+    tot = qmod(9, MOD - 2);
+    res = res * tot % MOD;
+    return res;
   }
 };
 
@@ -124,15 +157,11 @@ int main(void) {
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
   cout.tie(NULL);
-  _m_gen64.seed(Pr);
 
   Solution a;
-  int n, k;
-  cin >> n;
-  VI arr(n);
-  cin >> arr;
-  cin >> k;
-  auto res = a.countSubarrays(arr, k);
+  int l, r, k;
+  cin >> l >> r >> k;
+  auto res = a.sumOfNumbers(l, r, k);
   cout << res << '\n';
 
   return 0;

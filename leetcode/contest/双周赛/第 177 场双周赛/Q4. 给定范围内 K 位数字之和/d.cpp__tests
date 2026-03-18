@@ -1,0 +1,23 @@
+[
+	{
+		"correct_answers":
+		[
+			"66"
+		],
+		"test": "1\n2\n2\n"
+	},
+	{
+		"correct_answers":
+		[
+			"444"
+		],
+		"test": "0\n1\n3\n"
+	},
+	{
+		"correct_answers":
+		[
+			"555555520"
+		],
+		"test": "5\n5\n10\n"
+	}
+]

@@ -1,0 +1,23 @@
+[
+	{
+		"correct_answers":
+		[
+			"(fad@cb#e)"
+		],
+		"test": ")ebc#da@f(\n"
+	},
+	{
+		"correct_answers":
+		[
+			"z"
+		],
+		"test": "z\n"
+	},
+	{
+		"correct_answers":
+		[
+			")(*&^%$#@!"
+		],
+		"test": "!@#$%^&*()\n"
+	}
+]

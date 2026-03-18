@@ -1,0 +1,9 @@
+[
+	{
+		"correct_answers":
+		[
+			"0\n3\n0\n3\n3\n1\n1\n2\n6"
+		],
+		"test": "9\nsus\nuuuu\nsssss\nuusuuu\nsuuuuuu\nusssssss\nsssuuusss\nsusuusuuus\nuuuuuuuuuuu\n"
+	}
+]

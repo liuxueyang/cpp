@@ -16,6 +16,8 @@
 #include <sstream>
 #include <stack>
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -24,6 +26,13 @@ using namespace std;
 typedef long long ll;
 typedef unsigned long long ull;
 typedef vector<int> VI;
+typedef vector<VI> VVI;
+typedef vector<ll> VL;
+typedef vector<VL> VVL;
+typedef vector<string> VS;
+typedef vector<vector<string>> VVS;
+typedef vector<bool> VB;
+typedef vector<vector<bool>> VVB;
 typedef pair<int, int> PII;
 typedef pair<ll, ll> PLL;
 template <class T>
@@ -39,7 +48,7 @@ const int dir[8][2] = {
 };
 mt19937_64 _m_gen64;
 
-const ull Pr = 131;
+const ull Pr = 131, Pr1 = 13331;
 
 #define For(i, a, b) for (int i = int(a); i < int(b); ++i)
 #define Rof(i, a, b) for (int i = int(b) - 1; i >= int(a); --i)
@@ -66,20 +75,37 @@ bool ckmax(T& a, const T& b) {
   return a < b ? a = b, 1 : 0;
 }
 
-template <typename t>
-istream& operator>>(istream& in, vector<t>& vec) {
-  for (t& x : vec) in >> x;
-  return in;
+template <class T>
+ostream& operator<<=(ostream& os, const vector<T>& a) {
+  int n = int(a.size()) - 1;
+  for (int i = 1; i <= n; ++i) {
+    os << a[i] << " \n"[i == n];
+  }
+  return os;
 }
 
-template <typename t>
-ostream& operator<<(ostream& out, vector<t>& vec) {
-  int n = SZ(vec);
-  For(i, 0, n) {
-    out << vec[i];
-    if (i < n - 1) out << ' ';
+template <class T>
+istream& operator>>=(istream& is, vector<T>& a) {
+  int n = int(a.size()) - 1;
+  for (int i = 1; i <= n; ++i) {
+    is >> a[i];
   }
-  return out;
+  return is;
+}
+
+template <class T>
+ostream& operator<<(ostream& os, const vector<T>& a) {
+  int n = int(a.size());
+  for (int i = 0; i < n; ++i) {
+    os << a[i] << " \n"[i == n - 1];
+  }
+  return os;
+}
+
+template <class T>
+istream& operator>>(istream& is, vector<T>& a) {
+  for (auto& x : a) is >> x;
+  return is;
 }
 
 // For LeetCode
@@ -87,31 +113,43 @@ ostream& operator<<(ostream& out, vector<t>& vec) {
 #define LNP ListNode*
 #define TN TreeNode
 #define TNP TreeNode*
+// End of LeetCode
 
 #ifdef _DEBUG
 #include "debug.h"
 #else
 #define dbg(x...)
-#define dbgi(x)
-#define dbgln()
-#define dbgr(x...)
 #endif
-
-// End of LeetCode
 
 class Solution {
  public:
-  long long countSubarrays(vector<int>& nums, int k) {
-    int n{SZ(nums)}, mx = *max_element(all(nums)), cnt{};
-    ll ans{};
-
-    for (int i = 0, j = 0; i < n; ++i) {
-      if (nums[i] == mx) cnt++;
-      while (cnt >= k) {
-        if (nums[j] == mx) cnt--;
-        ++j;
+  string maximumXor(string s, string t) {
+    string ans;
+    int cnt0 = 0, cnt1 = 0;
+    for (auto c : t) {
+      if (c == '0')
+        cnt0++;
+      else
+        cnt1++;
+    }
+    for (auto c : s) {
+      if (c == '0') {
+        if (cnt1) {
+          cnt1--;
+          ans += '1';
+        } else {
+          cnt0--;
+          ans += '0';
+        }
+      } else {
+        if (cnt0) {
+          cnt0--;
+          ans += '1';
+        } else {
+          cnt1--;
+          ans += '0';
+        }
       }
-      ans += j;
     }
 
     return ans;
@@ -124,15 +162,11 @@ int main(void) {
   std::ios::sync_with_stdio(false);
   cin.tie(NULL);
   cout.tie(NULL);
-  _m_gen64.seed(Pr);
 
   Solution a;
-  int n, k;
-  cin >> n;
-  VI arr(n);
-  cin >> arr;
-  cin >> k;
-  auto res = a.countSubarrays(arr, k);
+  string s, t;
+  cin >> s >> t;
+  auto res = a.maximumXor(s, t);
   cout << res << '\n';
 
   return 0;
