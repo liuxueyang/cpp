@@ -114,15 +114,15 @@ class LCCodec {
     if (!root) return "";
 
     vector<TNP> a;
-    a.pb(root);
+    a.push_back(root);
     string ans;
 
-    while (nemp(a)) {
+    while (!a.empty()) {
       vector<TNP> b;
 
       string tmp;
       for (auto x : a) {
-        if (nemp(ans)) {
+        if (!ans.empty()) {
           ans += ',';
         }
 
@@ -135,8 +135,8 @@ class LCCodec {
       bool ok{false};
       for (auto x : a) {
         if (x) {
-          b.pb(x->left);
-          b.pb(x->right);
+          b.push_back(x->left);
+          b.push_back(x->right);
 
           if (x->left || x->right) {
             ok = true;
@@ -156,7 +156,7 @@ class LCCodec {
   // Decodes your encoded data to tree.
   TreeNode* deserialize(string data) {
     vector<TNP> a;
-    int n = SZ(data);
+    int n = int(data.size());
     vector<string> b;
 
     if (!n) return nullptr;
@@ -164,21 +164,21 @@ class LCCodec {
     string t;
     for (auto x : data) {
       if (x == ',') {
-        b.pb(t);
+        b.push_back(t);
         t = "";
       } else
         t += x;
     }
-    b.pb(t);
+    b.push_back(t);
 
     for (auto x : b) {
       if (x == "null")
-        a.pb(nullptr);
+        a.push_back(nullptr);
       else
-        a.pb(new TN(stoi(x)));
+        a.push_back(new TN(stoi(x)));
     }
 
-    int m = SZ(a);
+    int m = int(a.size());
     int i = 0, j = 1;
 
     while (i < m) {
