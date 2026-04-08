@@ -11,7 +11,7 @@ struct Tag {
   ll val;
 
   bool empty() const { return val == 0; }
-  Tag operator+(const Tag &rh) const {
+  Tag operator+(const Tag& rh) const {
     Tag res{val + rh.val};
     return res;
   }
@@ -22,12 +22,12 @@ struct Info {
   int len;
   ll val;
 
-  Info operator+(const Info &rh) const {
+  Info operator+(const Info& rh) const {
     Info res{len + rh.len, val + rh.val};
     return res;
   }
 
-  Info operator+(const Tag &t) const {
+  Info operator+(const Tag& t) const {
     Info res{len, val + 1LL * len * t.val};
     return res;
   }
@@ -41,13 +41,14 @@ struct Node {
   Node(ll val) : info{1, val}, tag{0} {}
 };
 
-template <typename V> struct SegmentTree {
+template <typename V>
+struct SegmentTree {
   int n{0};
   vector<V> a{};
 
   vector<Node> seg{};
 
-  explicit SegmentTree(vector<V> &a_) {
+  explicit SegmentTree(vector<V>& a_) {
     n = int(a_.size());
     a = vector<V>(n + 1);
     copy(a_.begin(), a_.end(), a.begin() + 1);
@@ -84,9 +85,8 @@ template <typename V> struct SegmentTree {
   }
 
   void push_down(int id) {
-    Tag &t = seg[id].tag;
-    if (t.empty())
-      return;
+    Tag& t = seg[id].tag;
+    if (t.empty()) return;
 
     auto [lc, rc] = child(id);
     set_tag(lc, t);

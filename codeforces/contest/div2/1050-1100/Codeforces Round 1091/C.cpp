@@ -1,8 +1,8 @@
-// Problem: P1558 色板游戏
-// Contest: Luogu
-// URL: https://www.luogu.com.cn/problem/P1558
-// Memory Limit: 128 MB
-// Time Limit: 1000 ms
+// Problem: C. Grid Covering
+// Contest: Codeforces - Codeforces Round 1091 (Div. 2) and CodeCraft 26
+// URL: https://codeforces.com/contest/2217/problem/C
+// Memory Limit: 256 MB
+// Time Limit: 2000 ms
 //
 // Powered by CP Editor (https://cpeditor.org)
 
@@ -230,7 +230,7 @@ int main(void) {
 #endif
 
   int T = 1;
-  // cin >> T;
+  cin >> T;
   while (T--) {
     Init();
     solve();
@@ -248,196 +248,13 @@ int main(void) {
 
 void Init() {}
 
-#ifndef SEGMENT_TREE_H
-#define SEGMENT_TREE_H
-
-#include <tuple>
-#include <vector>
-
-using namespace std;
-using ll = long long;
-
-struct Tag {
-  short a;
-
-  Tag() : a(-1) {}
-  Tag(int a_) : a(a_) {}
-  bool empty() const { return a == -1; }
-  Tag operator+(const Tag& rh) const { return rh; }
-  void clear() { a = -1; }
-};
-
-struct Info {
-  bool val;
-
-  Info operator+(const Info& rh) const {
-    Info res{val || rh.val};
-    return res;
-  }
-
-  Info operator+(const Tag& t) const {
-    Info res = *this;
-    if (t.a == 0)
-      res.val = false;
-    else if (t.a == 1)
-      res.val = true;
-    return res;
-  }
-
-  Info() : val(false) {}
-  Info(bool val_) : val(val_) {}
-};
-
-struct Node {
-  Info info;
-  Tag tag;
-
-  Node() : info{}, tag{} {}
-  Node(bool val) : info{val}, tag{} {}
-};
-
-template <typename V>
-struct SegmentTree {
-  int n{0};
-  vector<V> a{};
-
-  vector<Node> seg{};
-
-  SegmentTree() {}
-  explicit SegmentTree(vector<V>& a_) {
-    n = int(a_.size());
-    a = vector<V>(n + 1);
-    copy(a_.begin(), a_.end(), a.begin() + 1);
-    seg = vector<Node>(n * 4 + 10);
-    build(1, 1, n);
-  }
-
-  void change(int pos, V val) {
-    a[pos] = val;
-    change(1, 1, n, pos, val);
-  }
-  void modify(int ql, int qr, Tag t) { modify(1, 1, n, ql, qr, t); }
-  Info query(int ql, int qr) { return query(1, 1, n, ql, qr); }
-  void add(int pos, V val) { modify(pos, pos, {val}); }
-
-  static pair<int, int> child(int id) { return {id * 2, id * 2 + 1}; }
-
-  void update(int id) {
-    auto [lc, rc] = child(id);
-    seg[id].info = seg[lc].info + seg[rc].info;
-  }
-
-  void build(int id, int l, int r) {
-    if (l == r) {
-      seg[id] = Node(a[l]);
-      return;
-    }
-
-    int mid = (l + r) / 2;
-    auto [lc, rc] = child(id);
-    build(lc, l, mid);
-    build(rc, mid + 1, r);
-    update(id);
-  }
-
-  void push_down(int id) {
-    Tag& t = seg[id].tag;
-    if (t.empty()) return;
-
-    auto [lc, rc] = child(id);
-    set_tag(lc, t);
-    set_tag(rc, t);
-    t.clear();
-  }
-
-  void set_tag(int id, Tag t) {
-    seg[id].info = seg[id].info + t;
-    seg[id].tag = seg[id].tag + t;
-  }
-
-  void change(int id, int l, int r, int pos, V val) {
-    if (l == r) {
-      seg[id] = Node(val);
-      return;
-    }
-
-    push_down(id);
-    int mid = (l + r) / 2;
-    auto [lc, rc] = child(id);
-    if (pos <= mid)
-      change(lc, l, mid, pos, val);
-    else
-      change(rc, mid + 1, r, pos, val);
-    update(id);
-  }
-
-  void modify(int id, int l, int r, int ql, int qr, Tag t) {
-    if (l >= ql && r <= qr) {
-      set_tag(id, t);
-      return;
-    }
-    int mid = (l + r) / 2;
-    auto [lc, rc] = child(id);
-    push_down(id);
-    if (qr <= mid)
-      modify(lc, l, mid, ql, qr, t);
-    else if (ql > mid)
-      modify(rc, mid + 1, r, ql, qr, t);
-    else {
-      modify(lc, l, mid, ql, mid, t);
-      modify(rc, mid + 1, r, mid + 1, qr, t);
-    }
-    update(id);
-  }
-
-  Info query(int id, int l, int r, int ql, int qr) {
-    if (l >= ql && r <= qr) {
-      return seg[id].info;
-    }
-    int mid = (l + r) / 2;
-    auto [lc, rc] = child(id);
-    push_down(id);
-    if (qr <= mid)
-      return query(lc, l, mid, ql, qr);
-    else if (ql > mid)
-      return query(rc, mid + 1, r, ql, qr);
-    else
-      return query(lc, l, mid, ql, mid) + query(rc, mid + 1, r, mid + 1, qr);
-  }
-};
-
-#endif
+ll gcd(ll a, ll b) { return b == 0 ? a : gcd(b, a % b); }
 
 void solve() {
-  int n, T, q;
-  cin >> n >> T >> q;
-
-  vector<SegmentTree<int>> trees(30);
-  For(i, 0, T) {
-    VI a(n);
-    trees[i] = SegmentTree<int>(a);
-  }
-  trees[0].modify(1, n, {1});
-
-  while (q--) {
-    string op;
-    int l, r, C;
-    cin >> op >> l >> r;
-    if (l > r) swap(l, r);
-
-    if (op == "C") {
-      cin >> C;
-      For(i, 0, T) {
-        if (i + 1 == C) {
-          trees[i].modify(l, r, {1});
-        } else {
-          trees[i].modify(l, r, {0});
-        }
-      }
-    } else {
-      int ans{};
-      For(i, 0, T) { ans += trees[i].query(l, r).val; }
-      cout << ans << '\n';
-    }
-  }
+  int n, m, a, b;
+  cin >> n >> m >> a >> b;
+  if (gcd(a, n) == 1 && gcd(b, m) == 1 && gcd(n, m) <= 2)
+    YES();
+  else
+    NO();
 }

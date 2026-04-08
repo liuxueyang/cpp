@@ -15,9 +15,7 @@ struct FenwickTree {
 
   explicit FenwickTree(int n_) : n(n_), a{vector<ll>(n + 1)} {
     if (n <= 0) {
-      ostringstream output;
-      output << "n<=0: " << "n=" << n;
-      throw invalid_argument(output.str());
+      cout << "n<=0: " << "n=" << n;
     }
   }
 

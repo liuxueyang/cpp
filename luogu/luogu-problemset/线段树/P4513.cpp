@@ -1,6 +1,6 @@
-// Problem: P1558 色板游戏
+// Problem: P4513 小白逛公园
 // Contest: Luogu
-// URL: https://www.luogu.com.cn/problem/P1558
+// URL: https://www.luogu.com.cn/problem/P4513
 // Memory Limit: 128 MB
 // Time Limit: 1000 ms
 //
@@ -258,34 +258,31 @@ using namespace std;
 using ll = long long;
 
 struct Tag {
-  short a;
+  ll val;
 
-  Tag() : a(-1) {}
-  Tag(int a_) : a(a_) {}
-  bool empty() const { return a == -1; }
-  Tag operator+(const Tag& rh) const { return rh; }
-  void clear() { a = -1; }
+  bool empty() const { return val == 0; }
+  Tag operator+(const Tag& rh) const {
+    Tag res{val + rh.val};
+    return res;
+  }
+  void clear() { val = 0; }
 };
 
 struct Info {
-  bool val;
+  int len;
+  int pre, suf, val, sum;
 
   Info operator+(const Info& rh) const {
-    Info res{val || rh.val};
+    Info res{len + rh.len, pre, rh.suf, max({val, rh.val, suf + rh.pre}),
+             sum + rh.sum};
+    ckmax(res.pre, sum + rh.pre);
+    ckmax(res.suf, rh.sum + suf);
+    ckmax(res.val, max({res.pre, res.suf}));
+
     return res;
   }
 
-  Info operator+(const Tag& t) const {
-    Info res = *this;
-    if (t.a == 0)
-      res.val = false;
-    else if (t.a == 1)
-      res.val = true;
-    return res;
-  }
-
-  Info() : val(false) {}
-  Info(bool val_) : val(val_) {}
+  Info operator+(const Tag&) const { return *this; }
 };
 
 struct Node {
@@ -293,7 +290,7 @@ struct Node {
   Tag tag;
 
   Node() : info{}, tag{} {}
-  Node(bool val) : info{val}, tag{} {}
+  Node(int val) : info{1, val, val, val, val}, tag{0} {}
 };
 
 template <typename V>
@@ -303,7 +300,6 @@ struct SegmentTree {
 
   vector<Node> seg{};
 
-  SegmentTree() {}
   explicit SegmentTree(vector<V>& a_) {
     n = int(a_.size());
     a = vector<V>(n + 1);
@@ -409,35 +405,21 @@ struct SegmentTree {
 #endif
 
 void solve() {
-  int n, T, q;
-  cin >> n >> T >> q;
-
-  vector<SegmentTree<int>> trees(30);
-  For(i, 0, T) {
-    VI a(n);
-    trees[i] = SegmentTree<int>(a);
-  }
-  trees[0].modify(1, n, {1});
-
+  int n, q;
+  cin >> n >> q;
+  VI a(n);
+  for (auto& x : a) cin >> x;
+  SegmentTree<int> tree(a);
   while (q--) {
-    string op;
-    int l, r, C;
-    cin >> op >> l >> r;
-    if (l > r) swap(l, r);
-
-    if (op == "C") {
-      cin >> C;
-      For(i, 0, T) {
-        if (i + 1 == C) {
-          trees[i].modify(l, r, {1});
-        } else {
-          trees[i].modify(l, r, {0});
-        }
-      }
+    int op, l, r, p, s;
+    cin >> op;
+    if (op == 1) {
+      cin >> l >> r;
+      if (l > r) swap(l, r);
+      cout << tree.query(l, r).val << '\n';
     } else {
-      int ans{};
-      For(i, 0, T) { ans += trees[i].query(l, r).val; }
-      cout << ans << '\n';
+      cin >> p >> s;
+      tree.change(p, s);
     }
   }
 }
