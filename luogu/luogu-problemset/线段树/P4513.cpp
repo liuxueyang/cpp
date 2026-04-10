@@ -273,11 +273,8 @@ struct Info {
   int pre, suf, val, sum;
 
   Info operator+(const Info& rh) const {
-    Info res{len + rh.len, pre, rh.suf, max({val, rh.val, suf + rh.pre}),
-             sum + rh.sum};
-    ckmax(res.pre, sum + rh.pre);
-    ckmax(res.suf, rh.sum + suf);
-    ckmax(res.val, max({res.pre, res.suf}));
+    Info res{len + rh.len, max(pre, sum + rh.pre), max(rh.suf, rh.sum + suf),
+             max({val, rh.val, suf + rh.pre}), sum + rh.sum};
 
     return res;
   }

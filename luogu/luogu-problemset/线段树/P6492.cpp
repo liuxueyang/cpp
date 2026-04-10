@@ -285,7 +285,6 @@ struct Info {
       if (pre == len) res.pre += rh.pre;
       if (rh.suf == rh.len) res.suf += suf;
     }
-    ckmax(res.val, max(res.pre, res.suf));
 
     return res;
   }
