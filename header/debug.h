@@ -20,6 +20,8 @@ void __print(const char* x) { cerr << '\"' << x << '\"'; }
 void __print(const string& x) { cerr << '\"' << x << '\"'; }
 void __print(bool x) { cerr << (x ? "true" : "false"); }
 
+#define MYNOCOLOR 1
+
 #if defined(MYNOCOLOR)
 #define _BEGIN_COLOR ""
 #define _END_COLOR ""
